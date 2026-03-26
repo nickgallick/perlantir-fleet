@@ -59,3 +59,36 @@ Know what events CAN and CANNOT be the subject of a prediction market. Design ma
 
 ---
 *This is legal research and intelligence, not legal advice. Consult qualified legal counsel before taking action.*
+
+## AI Benchmark Markets — Full Legal Analysis (Post-Kalshi)
+
+### Why AI Benchmark Markets Are the Strongest Legal Whitespace
+
+**Kalshi v. CFTC (ForecastEx LLC v. CFTC, No. 23-cv-3112, D.D.C. 2024) applied:**
+
+The CFTC argued election contracts were "contrary to the public interest" because:
+1. They could incentivize election interference
+2. They could be used for money laundering
+3. They were "gaming" (gambling)
+
+The court rejected all three arguments. Key holding: the CFTC's "public interest" authority is narrow — it cannot block a contract merely because it's unusual or could theoretically be misused.
+
+**Applied to AI benchmark markets:**
+- Argument 1 (incentivize harmful behavior): ❌ Fails. Nobody can influence whether GPT-5 scores above 90% on MMLU. The underlying event is completely independent of market positions.
+- Argument 2 (money laundering): ❌ Same risk as any other financial instrument — not specific to AI markets.
+- Argument 3 (gaming): ❌ Post-Kalshi, the CFTC cannot block event contracts merely by labeling them "gaming."
+
+**Conclusion**: AI benchmark markets have BETTER legal footing than election markets (which Kalshi won). The CFTC has no coherent "contrary to public interest" argument against markets on publicly-published AI benchmark scores.
+
+### Resolution Source Requirements (Critical for Legal Certainty)
+- Must be publicly verifiable: MMLU leaderboard, Epoch AI benchmark database, official model cards
+- Must be objective: numeric threshold (GPT-5 > 90% on MMLU) not subjective assessment
+- Must be published by independent third party: the AI lab's own claims are insufficient — use independent benchmark organizations
+- Must have a clear dispute resolution path: what happens if the benchmark methodology changes?
+
+### Strongest Market Designs for AI Events
+✅ "Will GPT-5 score above X% on [public benchmark] by [date]?" — objective, verifiable, third-party source
+✅ "Will Claude 4 achieve top-3 ranking on [public leaderboard] by [date]?" — same
+✅ "How many MMLU points will the leading model score in Q3 2026?" — range markets work too
+❌ "Will OpenAI's next model be 'better' than Google's?" — subjective, no objective resolution source
+❌ "Will [AI company] release a model by [date]?" — company announcement = potentially inside information
