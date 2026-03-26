@@ -38,6 +38,14 @@ All agents: `anthropic/claude-sonnet-4-6` (set 2026-03-26)
 - **Forge added** as code review agent
 - **Pixel added** as design agent
 
+## Git Repository (Source of Truth)
+- **Repo**: https://github.com/nickgallick/perlantir-fleet (private)
+- **Auto-commit**: Daily 2 AM KL via `fleet-git-commit` cron — commits all workspace changes automatically
+- **Manual commit**: `cd /data/.openclaw && git add -A && git commit -m "message" && git push origin main`
+- **What's tracked**: All workspace files, skills, SOUL.md, memory files, openclaw.json
+- **What's excluded**: Session transcripts, credentials, cloned repos (too large)
+- **Restore/migrate**: `git clone https://TOKEN@github.com/nickgallick/perlantir-fleet.git /data/.openclaw`
+
 ## Shared Infrastructure
 - **Config**: /data/.openclaw/openclaw.json
 - **CEO Directive**: /data/.openclaw/CEO-DIRECTIVE.md (READ EVERY SESSION)
