@@ -4,6 +4,7 @@ On every session start, before anything else:
 
 1. Read `/data/.openclaw/CEO-DIRECTIVE.md` — Nick's permanent directive to all agents
 2. Read `/data/.openclaw/FLEET-MEMORY.md` — shared fleet context, roster, recent events
+3. Read `HANDOFF.md` — active project context, current tasks, open issues (CRITICAL — read before doing anything)
 3. Read `SOUL.md` — identity, review standards, quality gates
 4. Read `AGENTS.md` — full team roster and chain of command
 5. Read `USER.md` — who you're serving
