@@ -1,176 +1,173 @@
-# RESTORE.md — Fleet Restore & Migration Guide
-# Use this to clone the fleet to a new VPS, Mac, or any environment.
-# Last updated: 2026-03-26
+# How to Restore the Fleet on a New Machine
+# Written for: anyone, no technical experience needed
 
 ---
 
-## Step 1: Clone the fleet workspace
-
-```bash
-git clone https://ghp_TOKEN@github.com/nickgallick/perlantir-fleet.git /data/.openclaw
-cd /data/.openclaw
-```
-
-Replace `ghp_TOKEN` with a valid GitHub personal access token (scope: `repo`).
+## What you need before starting
+- A computer or VPS with internet access
+- Your GitHub token (the `ghp_...` token — save this somewhere safe)
+- About 30 minutes
 
 ---
 
-## Step 2: Install OpenClaw
+## Step 1 — Install the software OpenClaw needs
 
-On a Hostinger VPS (Docker):
-```bash
-docker pull ghcr.io/hostinger/hvps-openclaw:latest
-```
+Open a terminal and run this one command:
 
-On Mac or other VPS:
 ```bash
 npm install -g openclaw
 ```
 
+> **Don't have npm?** Install Node.js first from https://nodejs.org (click "Download Node.js LTS", install it like any app). Then come back and run the command above.
+
 ---
 
-## Step 3: Restore secrets (not in git)
+## Step 2 — Download the fleet
 
-`openclaw.json` is in the repo with tokens included (private repo).
-If tokens have been rotated since last commit, update them manually:
+Run this command (replace `YOUR_TOKEN` with your GitHub token):
 
 ```bash
-nano /data/.openclaw/openclaw.json
-# Update botToken for each agent channel
-# Update auth.anthropic.apiKey if rotated
+git clone https://YOUR_TOKEN@github.com/nickgallick/perlantir-fleet.git /data/.openclaw
 ```
+
+This downloads everything — all 9 agents, their skills, memory, and config.
+
+> **On a Mac**, you might want a different folder. Replace `/data/.openclaw` with `~/openclaw` and it'll go in your home folder.
 
 ---
 
-## Step 4: Start OpenClaw
+## Step 3 — Start OpenClaw
 
 ```bash
 openclaw gateway start
-# or via Docker as per your setup
 ```
+
+That's it. All 9 agents are now running.
 
 ---
 
-## Step 5: Re-authenticate Claude Code (if using it)
+## Step 4 — Test it
 
-```bash
-claude  # follow interactive OAuth flow
-# Select option 1 (Claude subscription)
-# Open URL in browser, paste code back
-```
+Open Telegram and message any of your bots. They should respond immediately.
 
 ---
 
-## Step 6: Re-clone reference repos (optional but recommended)
+## Step 5 (optional) — Re-authenticate Claude Code
 
-These were excluded from git due to size. Each agent can re-clone on first use,
-or run these scripts to restore everything at once.
-
-### Chain (94 repos → /data/.openclaw/workspace-chain/repos/)
+Only needed if you use Claude Code directly. Run:
 
 ```bash
-mkdir -p /data/.openclaw/workspace-chain/repos
-cd /data/.openclaw/workspace-chain/repos
+claude
+```
 
-git clone --depth 1 https://github.com/SunWeb3Sec/DeFiHackLabs
-git clone --depth 1 https://github.com/chiru-labs/ERC721A
-git clone --depth 1 https://github.com/NexusMutual/smart-contracts NexusMutual
-git clone --depth 1 https://github.com/immunefi-team/Web3-Security-Library
+Pick option 1, open the link it gives you in your browser, paste the code back. Done.
+
+---
+
+## Step 6 (optional) — Restore the reference repos
+
+The agents work fine without these. They're just reference codebases the agents use to look things up. Only restore them if an agent asks for them.
+
+To restore all of them at once, run the script for each agent:
+
+**Chain's repos** (blockchain reference code):
+```bash
+mkdir -p /data/.openclaw/workspace-chain/repos && cd /data/.openclaw/workspace-chain/repos
+git clone --depth 1 https://github.com/OpenZeppelin/openzeppelin-contracts
+git clone --depth 1 https://github.com/Uniswap/v3-core
 git clone --depth 1 https://github.com/aave/aave-v3-core
+git clone --depth 1 https://github.com/morpho-org/morpho-blue
+git clone --depth 1 https://github.com/safe-global/safe-smart-account
+git clone --depth 1 https://github.com/foundry-rs/forge-std
+git clone --depth 1 https://github.com/transmissions11/solmate
+git clone --depth 1 https://github.com/Vectorized/solady
+git clone --depth 1 https://github.com/crytic/slither
+git clone --depth 1 https://github.com/SunWeb3Sec/DeFiHackLabs
 git clone --depth 1 https://github.com/eth-infinitism/account-abstraction
-git clone --depth 1 https://github.com/artblocks/artblocks-contracts
-git clone --depth 1 https://github.com/paradigmxyz/artemis
-git clone --depth 1 https://github.com/azuro-protocol/Azuro-v2-public azuro
-git clone --depth 1 https://github.com/cadCAD-org/cadCAD
-git clone --depth 1 https://github.com/starkware-libs/cairo
-git clone --depth 1 https://github.com/OpenZeppelin/cairo-contracts
-git clone --depth 1 https://github.com/smartcontractkit/ccip
-git clone --depth 1 https://github.com/smartcontractkit/ccip-starter-kit-foundry
-git clone --depth 1 https://github.com/smartcontractkit/chainlink
+git clone --depth 1 https://github.com/Uniswap/v4-core
+git clone --depth 1 https://github.com/Uniswap/v2-core
+git clone --depth 1 https://github.com/Uniswap/v2-periphery
+git clone --depth 1 https://github.com/Uniswap/v3-periphery
+git clone --depth 1 https://github.com/Uniswap/permit2
+git clone --depth 1 https://github.com/Uniswap/universal-router
 git clone --depth 1 https://github.com/compound-finance/comet
-git clone --depth 1 https://github.com/OpenZeppelin/compound-monitoring
-git clone --depth 1 https://github.com/compound-finance/compound-protocol compound-v2
 git clone --depth 1 https://github.com/gnosis/conditional-tokens-contracts
-git clone --depth 1 https://github.com/thirdweb-dev/contracts
-git clone --depth 1 https://github.com/cowprotocol/contracts cowprotocol
-git clone --depth 1 https://github.com/pcaversaccio/createx
+git clone --depth 1 https://github.com/Polymarket/ctf-exchange
+git clone --depth 1 https://github.com/Layr-Labs/eigenlayer-contracts
+git clone --depth 1 https://github.com/matter-labs/zksync-era
+git clone --depth 1 https://github.com/ethereum-optimism/optimism
+git clone --depth 1 https://github.com/paradigmxyz/reth
+git clone --depth 1 https://github.com/coinbase/onchainkit
+git clone --depth 1 https://github.com/smartcontractkit/chainlink
+git clone --depth 1 https://github.com/smartcontractkit/ccip
+git clone --depth 1 https://github.com/lidofinance/lido-dao
+git clone --depth 1 https://github.com/rocket-pool/rocketpool
+git clone --depth 1 https://github.com/yearn/yearn-vaults-v3 yearn-vaults
+git clone --depth 1 https://github.com/Synthetixio/synthetix-v3 synthetix
 git clone --depth 1 https://github.com/curvefi/curve-stablecoin
 git clone --depth 1 https://github.com/makerdao/dss
 git clone --depth 1 https://github.com/makerdao/dss-psm
+git clone --depth 1 https://github.com/ProjectOpenSea/seaport
+git clone --depth 1 https://github.com/safe-global/safe-core-sdk
+git clone --depth 1 https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable
+git clone --depth 1 https://github.com/OpenZeppelin/openzeppelin-foundry-upgrades
 git clone --depth 1 https://github.com/crytic/echidna
-git clone --depth 1 https://github.com/Layr-Labs/eigenlayer-contracts
-git clone --depth 1 https://github.com/ensdomains/ens-contracts
-git clone --depth 1 https://github.com/matter-labs/era-contracts
+git clone --depth 1 https://github.com/Layr-Labs/incredible-squaring-avs
+git clone --depth 1 https://github.com/zerodevapp/kernel
+git clone --depth 1 https://github.com/flashbots/mev-boost
+git clone --depth 1 https://github.com/flashbots/mev-share-client-ts
+git clone --depth 1 https://github.com/paradigmxyz/artemis
+git clone --depth 1 https://github.com/flashbots/suave-geth
+git clone --depth 1 https://github.com/gmx-io/gmx-contracts gmx
+git clone --depth 1 https://github.com/azuro-protocol/Azuro-v2-public azuro
 git clone --depth 1 https://github.com/euler-xyz/euler-vault-kit
+git clone --depth 1 https://github.com/pcaversaccio/createx
+git clone --depth 1 https://github.com/pcaversaccio/reentrancy-attacks
+git clone --depth 1 https://github.com/pcaversaccio/snekmate
+git clone --depth 1 https://github.com/huff-language/huff-rs
+git clone --depth 1 https://github.com/huff-language/huffmate
+git clone --depth 1 https://github.com/vyperlang/vyper
+git clone --depth 1 https://github.com/starkware-libs/cairo
+git clone --depth 1 https://github.com/OpenZeppelin/cairo-contracts
 git clone --depth 1 https://github.com/zama-ai/fhevm
-git clone --depth 1 https://github.com/foundry-rs/forge-std
+git clone --depth 1 https://github.com/MystenLabs/sui
+git clone --depth 1 https://github.com/metaplex-foundation/mpl-bubblegum
+git clone --depth 1 https://github.com/metaplex-foundation/sugar
+git clone --depth 1 https://github.com/metaplex-foundation/umi
 git clone --depth 1 https://github.com/forta-network/forta-bot-sdk
+git clone --depth 1 https://github.com/graphprotocol/graph-node
+git clone --depth 1 https://github.com/messari/subgraphs
+git clone --depth 1 https://github.com/duneanalytics/spellbook
 git clone --depth 1 https://github.com/Cyfrin/foundry-full-course-cu
 git clone --depth 1 https://github.com/framesjs/frames.js
 git clone --depth 1 https://github.com/wevm/frog
-git clone --depth 1 https://github.com/gmx-io/gmx-contracts gmx
-git clone --depth 1 https://github.com/graphprotocol/graph-node
-git clone --depth 1 https://github.com/huff-language/huff-rs
-git clone --depth 1 https://github.com/huff-language/huffmate
-git clone --depth 1 https://github.com/Layr-Labs/incredible-squaring-avs
-git clone --depth 1 https://github.com/zerodevapp/kernel
-git clone --depth 1 https://github.com/lidofinance/lido-dao
-git clone --depth 1 https://github.com/liquity/dev liquity
-git clone --depth 1 https://github.com/Uniswap/merkle-distributor
-git clone --depth 1 https://github.com/OpenZeppelin/merkle-tree
-git clone --depth 1 https://github.com/flashbots/mev-boost
-git clone --depth 1 https://github.com/flashbots/mev-share-client-ts
-git clone --depth 1 https://github.com/morpho-org/morpho-blue
-git clone --depth 1 https://github.com/metaplex-foundation/mpl-bubblegum
-git clone --depth 1 https://github.com/OffchainLabs/nitro
-git clone --depth 1 https://github.com/coinbase/onchainkit
-git clone --depth 1 https://github.com/OpenZeppelin/openzeppelin-contracts
-git clone --depth 1 https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable
-git clone --depth 1 https://github.com/OpenZeppelin/openzeppelin-foundry-upgrades
-git clone --depth 1 https://github.com/ethereum-optimism/optimism
-git clone --depth 1 https://github.com/ordinals/ord
 git clone --depth 1 https://github.com/pimlicolabs/permissionless.js
-git clone --depth 1 https://github.com/Uniswap/permit2
+git clone --depth 1 https://github.com/chiru-labs/ERC721A
+git clone --depth 1 https://github.com/artblocks/artblocks-contracts
+git clone --depth 1 https://github.com/NexusMutual/smart-contracts NexusMutual
+git clone --depth 1 https://github.com/immunefi-team/Web3-Security-Library
+git clone --depth 1 https://github.com/thirdweb-dev/contracts
+git clone --depth 1 https://github.com/cowprotocol/contracts cowprotocol
+git clone --depth 1 https://github.com/compound-finance/compound-protocol compound-v2
+git clone --depth 1 https://github.com/ensdomains/ens-contracts
+git clone --depth 1 https://github.com/OpenZeppelin/compound-monitoring
+git clone --depth 1 https://github.com/OffchainLabs/nitro
+git clone --depth 1 https://github.com/taikoxyz/taiko-mono
 git clone --depth 1 https://github.com/convex-eth/platform
 git clone --depth 1 https://github.com/superfluid-finance/protocol-monorepo
 git clone --depth 1 https://github.com/0xProject/protocol
-git clone --depth 1 https://github.com/pcaversaccio/reentrancy-attacks
-git clone --depth 1 https://github.com/paradigmxyz/reth
-git clone --depth 1 https://github.com/rocket-pool/rocketpool
-git clone --depth 1 https://github.com/safe-global/safe-core-sdk
-git clone --depth 1 https://github.com/safe-global/safe-smart-account
-git clone --depth 1 https://github.com/ProjectOpenSea/seaport
-git clone --depth 1 https://github.com/crytic/slither
-git clone --depth 1 https://github.com/pcaversaccio/snekmate
-git clone --depth 1 https://github.com/Vectorized/solady
-git clone --depth 1 https://github.com/LayerZero-Labs/solidity-examples
-git clone --depth 1 https://github.com/transmissions11/solmate
-git clone --depth 1 https://github.com/duneanalytics/spellbook
-git clone --depth 1 https://github.com/flashbots/suave-geth
-git clone --depth 1 https://github.com/messari/subgraphs
-git clone --depth 1 https://github.com/metaplex-foundation/sugar
-git clone --depth 1 https://github.com/MystenLabs/sui
-git clone --depth 1 https://github.com/Synthetixio/synthetix-v3 synthetix
-git clone --depth 1 https://github.com/taikoxyz/taiko-mono
+git clone --depth 1 https://github.com/liquity/dev liquity
+git clone --depth 1 https://github.com/Uniswap/merkle-distributor
+git clone --depth 1 https://github.com/OpenZeppelin/merkle-tree
+git clone --depth 1 https://github.com/cadCAD-org/cadCAD
 git clone --depth 1 https://github.com/yearn/tokenized-strategy
-git clone --depth 1 https://github.com/metaplex-foundation/umi
-git clone --depth 1 https://github.com/Uniswap/universal-router
-git clone --depth 1 https://github.com/Uniswap/v2-core
-git clone --depth 1 https://github.com/Uniswap/v2-periphery
-git clone --depth 1 https://github.com/Uniswap/v3-core
-git clone --depth 1 https://github.com/Uniswap/v3-periphery
-git clone --depth 1 https://github.com/Uniswap/v4-core
-git clone --depth 1 https://github.com/vyperlang/vyper
-git clone --depth 1 https://github.com/yearn/yearn-vaults-v3 yearn-vaults
-git clone --depth 1 https://github.com/matter-labs/zksync-era
+git clone --depth 1 https://github.com/smartcontractkit/ccip-starter-kit-foundry
+git clone --depth 1 https://github.com/ordinals/ord
 ```
 
-### Counsel (12 repos → /data/.openclaw/workspace-counsel/repos/)
-
+**Counsel's repos** (legal reference code):
 ```bash
-mkdir -p /data/.openclaw/workspace-counsel/repos
-cd /data/.openclaw/workspace-counsel/repos
-
+mkdir -p /data/.openclaw/workspace-counsel/repos && cd /data/.openclaw/workspace-counsel/repos
 git clone --depth 1 https://github.com/lexDAO/LexCorpus
 git clone --depth 1 https://github.com/compound-finance/compound-governance
 git clone --depth 1 https://github.com/gnosis/conditional-tokens-contracts
@@ -185,12 +182,9 @@ git clone --depth 1 https://github.com/safe-global/safe-smart-account
 git clone --depth 1 https://github.com/Polymarket/uma-ctf-adapter
 ```
 
-### Forge (70 repos → /data/.openclaw/workspace-forge/repos/)
-
+**Forge's repos** (web dev reference code):
 ```bash
-mkdir -p /data/.openclaw/workspace-forge/repos
-cd /data/.openclaw/workspace-forge/repos
-
+mkdir -p /data/.openclaw/workspace-forge/repos && cd /data/.openclaw/workspace-forge/repos
 git clone --depth 1 https://github.com/anthropics/anthropic-sdk-typescript anthropic-sdk-js
 git clone --depth 1 https://github.com/anthropics/anthropic-sdk-python anthropic-sdk
 git clone --depth 1 https://github.com/alan2207/bulletproof-react
@@ -256,29 +250,16 @@ git clone --depth 1 https://github.com/colinhacks/zod
 git clone --depth 1 https://github.com/pmndrs/zustand
 ```
 
-### ClawExpert (3 repos → /data/.openclaw/workspace-clawexpert/)
-
+**ClawExpert's repos** (OpenClaw internals):
 ```bash
 cd /data/.openclaw/workspace-clawexpert
 git clone --depth 1 https://github.com/anthropics/anthropic-sdk-python
 git clone --depth 1 https://github.com/NVIDIA/NemoClaw nemoclaw
-git clone https://github.com/openclaw/openclaw  # full clone, no depth
+git clone https://github.com/openclaw/openclaw
 ```
 
 ---
 
-## Summary
+## That's it. You're done.
 
-| What | How to restore |
-|------|---------------|
-| All workspace files, skills, config | `git clone` (Step 1) |
-| OpenClaw software | npm install or Docker pull (Step 2) |
-| Bot tokens / API keys | Already in `openclaw.json` from git clone |
-| Claude Code auth | Re-auth interactively (Step 5) |
-| Chain repos (94) | Run Chain clone script above |
-| Counsel repos (12) | Run Counsel clone script above |
-| Forge repos (70) | Run Forge clone script above |
-| ClawExpert repos (3) | Run ClawExpert clone script above |
-
-**Total restore time estimate**: ~20-30 min (mostly repo cloning speed)
-**Fleet is operational** after Steps 1-4. Repos are optional for immediate use.
+The fleet is running. All 9 agents are ready to go.
