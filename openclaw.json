@@ -1,0 +1,508 @@
+{
+  "plugins": {
+    "allow": [
+      "whatsapp",
+      "discord",
+      "telegram",
+      "slack",
+      "nostr",
+      "googlechat",
+      "llm-task"
+    ],
+    "entries": {
+      "whatsapp": {
+        "enabled": true
+      },
+      "discord": {
+        "enabled": true
+      },
+      "imessage": {
+        "enabled": false
+      },
+      "telegram": {
+        "enabled": true
+      },
+      "slack": {
+        "enabled": true
+      },
+      "nostr": {
+        "enabled": true
+      },
+      "signal": {
+        "enabled": false
+      },
+      "googlechat": {
+        "enabled": true
+      },
+      "llm-task": {
+        "enabled": true
+      }
+    },
+    "installs": {}
+  },
+  "tools": {
+    "web": {
+      "search": {
+        "enabled": true,
+        "provider": "brave",
+        "apiKey": "BSAeiLQv-uUQjrKHNmFU-dgLaZ4Up0P"
+      },
+      "fetch": {
+        "enabled": true
+      }
+    },
+    "profile": "coding",
+    "sessions": {
+      "visibility": "all"
+    },
+    "agentToAgent": {
+      "enabled": true
+    }
+  },
+  "channels": {
+    "telegram": {
+      "dmPolicy": "allowlist",
+      "groupPolicy": "disabled",
+      "streaming": "partial",
+      "botToken": "8446459267:AAHcyZMhGGUZ1F7PykARbXK58JGGl0N5Ih4",
+      "enabled": true,
+      "allowFrom": [
+        "7474858103"
+      ],
+      "accounts": {
+        "default": {
+          "dmPolicy": "allowlist",
+          "botToken": "8446459267:AAHcyZMhGGUZ1F7PykARbXK58JGGl0N5Ih4",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
+        },
+        "pm": {
+          "dmPolicy": "allowlist",
+          "botToken": "8608454670:AAGBE4QWHPY-w7I1i6S6pSwz8T3xAS6LGTQ",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
+        },
+        "scout": {
+          "dmPolicy": "allowlist",
+          "botToken": "8604845082:AAHn9acacFqzqZ2y2N18qb7SNNY0aYe0-K0",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
+        },
+        "clawexpert": {
+          "dmPolicy": "allowlist",
+          "botToken": "8345790323:AAFJ-bbjLNpz7gTTSHD5a8IocPfdy6vABDA",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
+        },
+        "launch": {
+          "dmPolicy": "allowlist",
+          "botToken": "8769637136:AAGDbfBe9rxXw_DxPnBiZfE4zPhO8rrqeBU",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
+        },
+        "forge": {
+          "dmPolicy": "allowlist",
+          "botToken": "8705994304:AAHF3akB-Htw4OoT7693zukPl4XPCc0iuQE",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
+        },
+        "pixel": {
+          "dmPolicy": "allowlist",
+          "botToken": "8775069765:AAF6T6y-ekGAPYFxlu5XQj3Tu5aLOtn81b0",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
+        },
+        "chain": {
+          "dmPolicy": "allowlist",
+          "botToken": "8624458366:AAE0AK0p1c6KUTJnjw7TU52BpnYzAXLfMl0",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
+        },
+        "counsel": {
+          "dmPolicy": "allowlist",
+          "botToken": "8611581579:AAG9xCSet-cevK0-QXTkJU_co6l5k5G6xso",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
+        }
+      }
+    }
+  },
+  "meta": {
+    "lastTouchedVersion": "2026.3.13",
+    "lastTouchedAt": "2026-03-26T04:11:19.021Z"
+  },
+  "env": {
+    "VERCEL_TOKEN": "vcp_7GiwykvvHW98J25mWLz1P39n24v61d4YjzgfdWM84d9f8IfAsj3kBNub",
+    "MC_SUPABASE_URL": "https://sbirszjpnmduxnhxfnll.supabase.co",
+    "MC_SUPABASE_SERVICE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNiaXJzempwbm1kdXhuaHhmbmxsIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDE0NTkxMywiZXhwIjoyMDg5NzIxOTEzfQ.HZwLoXKQyUEQa7hf4li1NIGeCEfzndzctsFr3_TIkbA",
+    "ARENA_SUPABASE_URL": "https://gojpbtlajzigvyfkghrg.supabase.co",
+    "ARENA_SUPABASE_SERVICE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdvanBidGxhanppZ3Z5ZmtnaHJnIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDEyMDg3NywiZXhwIjoyMDg5Njk2ODc3fQ.AnAmAz6_-seg_vkhJzq2MVQKKc4k5XcTgLvFOZ-wxp4"
+  },
+  "wizard": {
+    "lastRunAt": "2026-03-16T12:52:19.666Z",
+    "lastRunVersion": "2026.3.12",
+    "lastRunCommand": "onboard",
+    "lastRunMode": "local"
+  },
+  "diagnostics": {
+    "enabled": true,
+    "stuckSessionWarnMs": 120000
+  },
+  "update": {
+    "channel": "stable",
+    "checkOnStart": false
+  },
+  "browser": {
+    "headless": true,
+    "noSandbox": true,
+    "defaultProfile": "openclaw"
+  },
+  "auth": {
+    "profiles": {
+      "anthropic:default": {
+        "provider": "anthropic",
+        "mode": "token"
+      },
+      "openai-codex:default": {
+        "provider": "openai-codex",
+        "mode": "oauth"
+      },
+      "anthropic:manual": {
+        "provider": "anthropic",
+        "mode": "token"
+      }
+    }
+  },
+  "models": {
+    "mode": "merge"
+  },
+  "agents": {
+    "defaults": {
+      "model": "anthropic/claude-sonnet-4-6",
+      "models": {
+        "anthropic/claude-sonnet-4-6": {
+          "alias": "Claude Sonnet 4.6",
+          "params": {
+            "cacheRetention": "short"
+          }
+        },
+        "anthropic/claude-haiku-4-5": {
+          "alias": "Claude Haiku 4.5",
+          "params": {
+            "cacheRetention": "short"
+          }
+        }
+      },
+      "workspace": "/data/.openclaw/workspace",
+      "userTimezone": "Asia/Kuala_Lumpur",
+      "contextPruning": {
+        "mode": "cache-ttl",
+        "ttl": "1h",
+        "keepLastAssistants": 3
+      },
+      "compaction": {
+        "mode": "safeguard",
+        "recentTurnsPreserve": 4,
+        "qualityGuard": {
+          "enabled": true,
+          "maxRetries": 2
+        }
+      },
+      "timeoutSeconds": 600,
+      "heartbeat": {
+        "every": "2h"
+      }
+    },
+    "list": [
+      {
+        "id": "main",
+        "default": true,
+        "name": "Maks",
+        "model": "anthropic/claude-sonnet-4-6",
+        "identity": {
+          "name": "Maks",
+          "emoji": "\u26a1"
+        }
+      },
+      {
+        "id": "pm",
+        "name": "MaksPM",
+        "workspace": "/data/.openclaw/workspace-pm",
+        "model": "anthropic/claude-sonnet-4-6",
+        "heartbeat": {
+          "every": "2h",
+          "activeHours": {
+            "start": "07:00",
+            "end": "23:00",
+            "timezone": "Asia/Kuala_Lumpur"
+          }
+        },
+        "identity": {
+          "name": "MaksPM",
+          "emoji": "\ud83d\udccb"
+        },
+        "subagents": {
+          "allowAgents": [
+            "*"
+          ]
+        }
+      },
+      {
+        "id": "scout",
+        "name": "Scout",
+        "workspace": "/data/.openclaw/workspace-scout",
+        "model": "anthropic/claude-sonnet-4-6",
+        "heartbeat": {
+          "every": "6h",
+          "activeHours": {
+            "start": "08:00",
+            "end": "23:00",
+            "timezone": "Asia/Kuala_Lumpur"
+          }
+        },
+        "identity": {
+          "name": "Scout",
+          "emoji": "\ud83d\udd0d"
+        }
+      },
+      {
+        "id": "clawexpert",
+        "name": "ClawExpert",
+        "workspace": "/data/.openclaw/workspace-clawexpert",
+        "model": "anthropic/claude-sonnet-4-6",
+        "heartbeat": {
+          "every": "6h",
+          "activeHours": {
+            "start": "08:00",
+            "end": "23:00",
+            "timezone": "Asia/Kuala_Lumpur"
+          }
+        },
+        "identity": {
+          "name": "ClawExpert",
+          "emoji": "\ud83e\udde0"
+        }
+      },
+      {
+        "id": "launch",
+        "name": "Launch",
+        "workspace": "/data/.openclaw/workspace-launch",
+        "model": "anthropic/claude-sonnet-4-6",
+        "heartbeat": {
+          "every": "24h"
+        },
+        "identity": {
+          "name": "Launch",
+          "emoji": "\ud83d\ude80"
+        },
+        "subagents": {
+          "allowAgents": [
+            "*"
+          ]
+        }
+      },
+      {
+        "id": "forge",
+        "name": "Forge",
+        "workspace": "/data/.openclaw/workspace-forge",
+        "model": "anthropic/claude-sonnet-4-6",
+        "heartbeat": {
+          "every": "8h",
+          "activeHours": {
+            "start": "08:00",
+            "end": "23:00",
+            "timezone": "Asia/Kuala_Lumpur"
+          },
+          "model": "anthropic/claude-sonnet-4-6"
+        }
+      },
+      {
+        "id": "pixel",
+        "name": "Pixel",
+        "workspace": "/data/.openclaw/workspace-pixel",
+        "model": "anthropic/claude-sonnet-4-6",
+        "heartbeat": {
+          "every": "8h"
+        }
+      },
+      {
+        "id": "chain",
+        "name": "Chain",
+        "workspace": "/data/.openclaw/workspace-chain",
+        "model": "anthropic/claude-sonnet-4-6",
+        "identity": {
+          "name": "Chain",
+          "emoji": "\u26d3\ufe0f"
+        },
+        "subagents": {
+          "allowAgents": [
+            "*"
+          ]
+        }
+      },
+      {
+        "id": "counsel",
+        "name": "Counsel",
+        "workspace": "/data/.openclaw/workspace-counsel",
+        "model": "anthropic/claude-sonnet-4-6",
+        "identity": {
+          "name": "Counsel",
+          "emoji": "\u2696\ufe0f"
+        },
+        "subagents": {
+          "allowAgents": [
+            "*"
+          ]
+        }
+      }
+    ]
+  },
+  "bindings": [
+    {
+      "agentId": "main",
+      "match": {
+        "channel": "telegram",
+        "accountId": "default"
+      }
+    },
+    {
+      "agentId": "pm",
+      "match": {
+        "channel": "telegram",
+        "accountId": "pm"
+      }
+    },
+    {
+      "agentId": "scout",
+      "match": {
+        "channel": "telegram",
+        "accountId": "scout"
+      }
+    },
+    {
+      "agentId": "clawexpert",
+      "match": {
+        "channel": "telegram",
+        "accountId": "clawexpert"
+      }
+    },
+    {
+      "agentId": "launch",
+      "match": {
+        "channel": "telegram",
+        "accountId": "launch"
+      }
+    },
+    {
+      "agentId": "forge",
+      "match": {
+        "channel": "telegram",
+        "accountId": "forge"
+      }
+    },
+    {
+      "agentId": "pixel",
+      "match": {
+        "channel": "telegram",
+        "accountId": "pixel"
+      }
+    },
+    {
+      "agentId": "chain",
+      "match": {
+        "channel": "telegram",
+        "accountId": "chain"
+      }
+    },
+    {
+      "agentId": "counsel",
+      "match": {
+        "channel": "telegram",
+        "accountId": "counsel"
+      }
+    }
+  ],
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto",
+    "bash": true,
+    "restart": true,
+    "ownerDisplay": "raw"
+  },
+  "session": {
+    "dmScope": "per-channel-peer"
+  },
+  "cron": {
+    "enabled": true,
+    "retry": {
+      "maxAttempts": 2,
+      "backoffMs": [
+        30000,
+        120000
+      ]
+    },
+    "failureDestination": {
+      "channel": "telegram",
+      "to": "7474858103",
+      "accountId": "clawexpert",
+      "mode": "announce"
+    }
+  },
+  "hooks": {
+    "enabled": true,
+    "token": "hooks_R0ddvlV8VIER6QRhJ8KujsOdZfJG7HxM"
+  },
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "loopback",
+    "controlUi": {},
+    "auth": {
+      "mode": "token",
+      "token": "R0ddvlV8VIER6QRhJ8KujsOdZfJG7HxM",
+      "rateLimit": {
+        "maxAttempts": 10,
+        "windowMs": 60000,
+        "lockoutMs": 300000
+      }
+    },
+    "tailscale": {
+      "mode": "off",
+      "resetOnExit": false
+    },
+    "remote": {
+      "token": "R0ddvlV8VIER6QRhJ8KujsOdZfJG7HxM"
+    }
+  },
+  "memory": {
+    "backend": "builtin",
+    "citations": "on"
+  }
+}

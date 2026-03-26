@@ -1,0 +1,50 @@
+# ── Secrets & credentials ──────────────────────────────
+credentials/
+devices/
+identity/
+*.env
+.env*
+agents/*/agent/auth-profiles.json
+
+# ── Session transcripts ─────────────────────────────────
+agents/*/sessions/
+cron/
+delivery-queue/
+subagents/
+canvas/
+extensions/
+media/
+logs/
+
+# ── All cloned repos (too large, not needed in git) ─────
+workspace-chain/repos/
+workspace-chain/chainlink/
+workspace-chain/foundry-full-course-cu/
+workspace-chain/morpho-blue/
+workspace-chain/permit2/
+workspace-chain/protocol/
+workspace-chain/reth/
+workspace-clawexpert/repos/
+workspace-clawexpert/anthropic-sdk-python/
+workspace-clawexpert/nemoclaw/
+workspace-counsel/repos/
+workspace-forge/repos/
+workspace-pixel/repos/
+workspace-launch/repos/
+workspace-pm/repos/
+workspace/repos/
+workspace-scout/repos/
+
+# ── Backup files ────────────────────────────────────────
+*.bak
+*.bak-*
+*.backup-*
+*.pre-upgrade
+
+# ── Build artifacts ─────────────────────────────────────
+node_modules/
+.build_complete*
+
+# ── Large reference materials (re-cloneable) ────────────
+workspace-chain/exploit-reproductions/
+workspace-chain/whitepapers/

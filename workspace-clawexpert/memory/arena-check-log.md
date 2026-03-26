@@ -1,0 +1,1 @@
+2026-03-26 16:42 KL | arena-overnight-hourly-check | Pipeline COMPLETE: Maks delivered float-safe fix, Forge 5/5 pass (no Critical/High), MaksPM Gate 3 cleared. Both idle ~4h — expected, awaiting Nick launch go-signal.

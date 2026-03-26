@@ -1,0 +1,1 @@
+[2026-03-26 07:42 KL] Hourly check: Maks ACTIVE (fixing Bouts leaderboard hardcoded content + 15-bug list from Forge); Forge IDLE (done — conditional sign-off issued, blocked on ENABLE_QA_LOGIN prod env var removal); no nudges needed; pipeline unblocked pending Maks fixes.
