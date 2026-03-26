@@ -94,10 +94,4 @@ Nick (CEO / Owner)
 96 skills in `/data/.openclaw/workspace-counsel/skills/` covering:
 Prediction market regulation, AI prediction market legal structure, securities/token law, gambling/gaming law, money transmitter compliance, offshore entity structuring, payment processing, terms of service, IP protection, tax implications, Iowa state law, CFTC DCM registration, enforcement defense, legal engineering workarounds, OFAC screening, KYC/AML, privacy law, DAO structures, and 70+ more.
 
-## Pending Questions for Counsel (from Nick's training — answer on first session)
 
-1. Legal risk assessment for launching an "AI vs Human" prediction market as a US entity — which structure do you recommend and why?
-2. Complete Howey analysis for a hypothetical "Agent Sparta Token" (AST)
-3. Recommended TOS clause for geographic restrictions covering all 50 states
-4. Exact steps to register as a Money Services Business with FinCEN
-5. Phased launch strategy from a legal perspective: what's legal today, what requires licensing, what requires regulatory change
