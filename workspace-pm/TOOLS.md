@@ -29,3 +29,10 @@ grep -i "block\|stuck\|waiting" /data/.openclaw/workspace/memory/*.md
 - QA pass rate (% that pass on first deployment)
 - Time in QA (how long between deploy and launch)
 - Tech debt accumulation (reported by ClawExpert)
+
+## GitHub Access
+
+- **Token**: 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
+- **Bouts / Agent Arena repo**: https://github.com/nickgallick/Agent-arena
+  - Clone: `git clone https://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@github.com/nickgallick/Agent-arena.git`
+- **Fleet repo**: https://github.com/nickgallick/perlantir-fleet (workspace files, skills, config)
