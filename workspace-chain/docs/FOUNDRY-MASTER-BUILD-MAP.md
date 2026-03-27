@@ -1,11 +1,13 @@
 # FOUNDRY — MASTER BUILD MAP
-**Version:** 1.1 (Post Legal Review + Creator Royalty + Anti-Bot)
+**Version:** 1.2 (Post Legal Review + Creator Royalty + Anti-Bot + Fiat On-Ramp)
 **Prepared by:** Chain ⛓️ (Blockchain Architect)
 **Legal Clearance:** Counsel ⚖️ (2026-03-27 + 2026-03-28)
+**Market Research:** Scout 🔍 (2026-03-28)
 **Status:** Ready for MaksPM Orchestration → Board Review → Build
 **Date:** 2026-03-28
 
 ### Changelog
+- **v1.2 (2026-03-28):** Added Fiat On-Ramp as V1 requirement (Scout research: blockchain must be invisible to mainstream backers)
 - **v1.1 (2026-03-28):** Added Creator Royalty (ERC-2981, Counsel approved) + Per-Wallet Purchase Cap (anti-bot)
 
 ---
@@ -46,6 +48,9 @@ Crowdfunding is broken in three ways:
 
 ### One-Line Pitch
 *"The crowdfunding platform where creators prove it to earn it — and backers are never stuck."*
+
+### Core Design Principle (Scout Research — 2026-03-28)
+**Blockchain must be invisible to mainstream backers.** Every prior blockchain crowdfunding attempt (KickICO, WeiFund, ICO era) failed by leading with crypto instead of the benefit. Foundry is a crowdfunding product that happens to use blockchain — not a crypto product. Fiat card payments are V1, not V2. Wallets are optional unless the backer chooses the marketplace exit.
 
 ### What Makes This Different from Kickstarter
 
@@ -171,10 +176,18 @@ Views campaign detail page:
   ↓
 Selects tier and backs campaign
   ↓
-Pays in USDC (wallet connect via RainbowKit/wagmi)
-  → USDC goes directly to CampaignEscrow.sol (never touches platform wallet)
-  → Supabase records: backer ID, campaign ID, tier ID, amount paid, timestamp
+Chooses payment method:
+  → Option A: **Crypto wallet** (RainbowKit/wagmi — existing crypto users)
+     USDC sent directly from wallet → CampaignEscrow.sol
+  → Option B: **Credit/debit card** (mainstream backers — blockchain invisible)
+     Card charged via Coinbase Commerce or Stripe + Coinbase SDK
+     Fiat converted to USDC on-ramp → USDC deposited to CampaignEscrow.sol automatically
+     Backer never sees a wallet, never touches MetaMask
+  → USDC goes directly to CampaignEscrow.sol (never touches platform wallet — both paths)
+  → Supabase records: backer ID, campaign ID, tier ID, amount paid, timestamp, payment_method
   → No token minted at this point (lazy mint — token only created if marketplace listed)
+
+  ⚠️ NOTE: Fiat on-ramp backers who later want to use the marketplace must connect/create a wallet at that point. Platform guides them through this only if they choose the marketplace exit path.
   ↓
 Backer receives:
   - Confirmation screen
@@ -716,7 +729,8 @@ POST   /api/admin/campaigns/[id]/fail       → Declare campaign failed
 ### Stack
 - **Framework:** Next.js 14 App Router
 - **Styling:** Tailwind CSS + shadcn/ui
-- **Web3:** wagmi v2 + viem + RainbowKit
+- **Web3:** wagmi v2 + viem + RainbowKit (crypto wallet path)
+- **Fiat on-ramp:** Coinbase Commerce or Stripe + Coinbase SDK on Base (card payment path)
 - **State:** React Query (server state) + Zustand (client state)
 - **Forms:** React Hook Form + Zod validation
 
@@ -1048,6 +1062,9 @@ pledges
   tier_id uuid REFERENCES campaign_tiers(id)
   amount_paid numeric -- USDC
   tx_hash text -- on-chain pledge transaction
+  payment_method text -- 'crypto' | 'fiat'
+  fiat_payment_id text -- Coinbase Commerce or Stripe payment ID (fiat path only)
+  wallet_address text -- NULL for fiat backers until they connect wallet
   status text -- active | refunded | tokenized | delivered
   token_id text -- set when lazy minted
   created_at timestamptz
@@ -1263,6 +1280,7 @@ Creators may set a royalty % (0–10%) at campaign creation. Paid to creator wal
 - [ ] Supabase schema deployed (all tables from Section 9)
 - [ ] All API routes implemented (Section 5)
 - [ ] AI review integration (Claude API — campaign intake + milestone verification)
+- [ ] Fiat on-ramp integration (Coinbase Commerce or Stripe + Coinbase SDK — card → USDC → escrow)
 - [ ] IPFS upload integration (milestone proof storage)
 - [ ] The Graph subgraph deployed (Base Sepolia)
 - [ ] Email notifications (Resend — campaign updates, milestone alerts)
@@ -1280,7 +1298,9 @@ Creators may set a royalty % (0–10%) at campaign creation. Paid to creator wal
 - [ ] All public pages (homepage, discovery, campaign detail, marketplace)
 - [ ] Backer dashboard (pledges, exit flow — both paths clearly separated)
 - [ ] Creator dashboard (campaign management, milestone submission)
-- [ ] RainbowKit wallet connect integration
+- [ ] RainbowKit wallet connect integration (crypto path)
+- [ ] Fiat payment flow (card → Coinbase Commerce/Stripe → USDC → escrow, blockchain invisible)
+- [ ] Wallet prompt only shown to fiat backers who choose marketplace exit
 - [ ] wagmi hooks for all on-chain interactions
 - [ ] Legal copy rules implemented throughout (Section 6 language table)
 - [ ] Exit flow modal (two explicit paths, legal framing)
