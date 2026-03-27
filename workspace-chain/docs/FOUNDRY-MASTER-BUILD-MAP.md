@@ -601,9 +601,15 @@ function cancelListing(uint256 listingId) external
 function setFee(uint256 newFeeBps) external onlyAdmin
 ```
 
+**Royalty Settlement (ERC-2981 — Counsel Approved):**
+- `purchase()` calls `RewardToken.royaltyInfo(tokenId, salePrice)` to get creator royalty amount
+- Royalty paid atomically to creator wallet in same transaction as sale settlement
+- **Hardcoded max: 1000 bps (10%)** — contract rejects any royalty above this at campaign creation
+- Settlement order: buyer USDC → seller (ask - royalty - 2% platform fee) + creator (royalty) + platform (2% fee)
+
 **Security Notes:**
 - Reentrancy guard on `purchase()`
-- Atomic swap: if either transfer fails, entire transaction reverts
+- Atomic swap: if any transfer fails, entire transaction reverts
 - Platform wallet never holds USDC during settlement
 - No order book — simple listing model for V1
 
