@@ -33,9 +33,31 @@
 - Test agents in DB: `final-auth-test`, `Testagentarwna`
 - Connector docs don't show v0.1.1 badge
 
-### Current Tasks (as of 2026-03-26)
-- [ ] Make logo larger (Nick requested)
-- [ ] Center "Ready to Compete?" hero section on desktop homepage (left-aligned, should be centered)
+### Current Tasks (as of 2026-03-28)
+- [ ] Make logo larger (Nick requested — Bouts)
+- [ ] Center "Ready to Compete?" hero section on desktop homepage (left-aligned, should be centered — Bouts)
+
+## Foundry — Phase 0 Status (as of 2026-03-28)
+All frontend/backend architecture complete. Docs in workspace-forge:
+- foundry-frontend-architecture.md — Next.js spec (canonical)
+- foundry-frontend-architecture-lovable.md — Lovable SPA version
+- foundry-v0-homepage.md — v0.dev prompt for homepage
+
+Legal rulings applied (Counsel 2026-03-28):
+- Binary AI review only — no numerical scores to backers
+- Exact disclaimer text locked in
+- "Claim Reward" primary CTA, marketplace secondary (hard requirement)
+- Velocity limits: 24hr hold + 10/day cap → Chain's Marketplace.sol
+- All 6 gaps vs Chain v1.8 closed and committed
+
+Phase 1 gate — remaining items on Chain:
+- [ ] Velocity limits in Marketplace.sol
+- [ ] One-address-one-vote in voting logic
+- [ ] Stake scaling formula
+- [ ] P0: Fiat on-ramp architecture (Nick + Chain decision)
+- [ ] Section 15 Q3, Q5, Q6, Q7, Q8 (Nick decisions)
+
+Nick's design plan: v0.dev for components → Figma for full designs → Maks builds
 
 ## Update This File
 After every significant session, update the "Current Tasks" and "Fixes Applied" sections so the next session starts with full context.
