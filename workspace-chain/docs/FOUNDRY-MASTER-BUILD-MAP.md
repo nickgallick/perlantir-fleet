@@ -7,6 +7,7 @@
 **Date:** 2026-03-28
 
 ### Changelog
+- **v1.8.1 (2026-03-28):** Forge backend alignment (e9ea9bc) — ListingSummary `campaign_ai_score` → `campaign_ai_reviewed: boolean` (marketplace API); field name `ai_reviewed_passed` → `ai_reviewed` + `ai_review_summary` to match DB schema
 - **v1.8 (2026-03-28):** Forge/Chain gap analysis — 6 gaps closed: TVL cap banner, ai_score stripped from public API, score sort removed, creator royalty language rules added, exact Counsel disclaimer text, reward-first UX principle
 - **v1.7 (2026-03-28):** Final pre-build pass — Counsel cleared: binary AI score (no numbers to backers), velocity limits + wash trading detection in Marketplace.sol, one-address-one-vote confirmed, creator stake sliding scale added, all Phase 0 gates cleared
 - **v1.6 (2026-03-28):** All 6 platform parameters locked by Nick — fiat on-ramp (Coinbase hybrid), all-or-nothing funding, $10K–$1M limits, 40–100% refund bounds, 3–5 milestones, 7–60 day duration. Contract constants defined.
@@ -840,7 +841,7 @@ POST   /api/campaigns/[id]/milestones/[n]/vote   → Backer votes on disputed mi
 
 **Marketplace Routes:**
 ```
-GET    /api/marketplace              → Browse listings (filtered by campaign, tier, price)
+GET    /api/marketplace              → Browse listings (filtered by campaign, tier, price) — ListingSummary uses campaign_ai_reviewed: boolean NOT campaign_ai_score (Forge e9ea9bc)
 POST   /api/marketplace/list         → Backer lists reward claim (triggers lazy mint)
 POST   /api/marketplace/[id]/buy     → Purchase listing
 DELETE /api/marketplace/[id]         → Cancel listing
