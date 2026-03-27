@@ -1,5 +1,5 @@
 # FOUNDRY — MASTER BUILD MAP
-**Version:** 1.2 (Post Legal Review + Creator Royalty + Anti-Bot + Fiat On-Ramp)
+**Version:** 1.3 (Forge Architecture Review Applied)
 **Prepared by:** Chain ⛓️ (Blockchain Architect)
 **Legal Clearance:** Counsel ⚖️ (2026-03-27 + 2026-03-28)
 **Market Research:** Scout 🔍 (2026-03-28)
@@ -7,6 +7,7 @@
 **Date:** 2026-03-28
 
 ### Changelog
+- **v1.3 (2026-03-28):** Forge architecture review applied — 15 issues resolved: DB schema gaps fixed (campaign_tiers, milestones, marketplace_listings, users), refund pull pattern, token ID scheme clarified, royaltyInfo() spec, split pledge API routes, added missing webhooks, indexes + RLS defined, locked ABI requirement, milestone deadline enforcement. P0 (fiat on-ramp architecture) + 5 Nick decisions flagged as open blockers.
 - **v1.2 (2026-03-28):** Added Fiat On-Ramp as V1 requirement (Scout research: blockchain must be invisible to mainstream backers)
 - **v1.1 (2026-03-28):** Added Creator Royalty (ERC-2981, Counsel approved) + Per-Wallet Purchase Cap (anti-bot)
 
@@ -474,16 +475,14 @@ function releaseMilestone(uint256 milestoneIndex) external onlyPlatform nonReent
 // Creator submits milestone proof
 function submitMilestoneProof(uint256 milestoneIndex, bytes32 ipfsHash) external onlyCreator
 
-// Backer or platform triggers refund for a single backer
-function processRefund(address backer) external nonReentrant
-// Refund = pledges[backer] * refundRateBps / 10000
-// Capped at pledges[backer] (cannot exceed original payment)
+// PULL PATTERN — backer claims own refund (Forge P1: avoids gas limit bomb on large campaigns)
+// Refund = pledges[backer] * refundRateBps / 10000, capped at original pledge amount
+function claimRefund() external nonReentrant
+// Replaces push-based processAllRefunds — no gas limit issues at any campaign size
 
-// Platform declares campaign failed (or auto-triggers on deadline miss)
+// Platform declares campaign failed (or auto-triggers via Supabase cron on deadline miss)
 function declareFailed() external onlyPlatform
-
-// Distributes refunds to all backers from creator stake on failure
-function processAllRefunds(address[] calldata backers) external nonReentrant
+// Sets status = FAILED, locks creator stake for refund claims, emits CampaignFailed event
 
 // Creator retrieves stake after successful delivery
 function returnCreatorStake() external onlyCreator
@@ -515,8 +514,11 @@ address public platform;             // Authorized platform minter
 mapping(uint256 => TierConfig) public tiers;          // tierId → tier details
 mapping(uint256 => uint256) public tierSupplyCap;     // tierId → max tokens
 mapping(uint256 => uint256) public tierMinted;        // tierId → minted count
-mapping(uint256 => uint256) public originalPrice;     // tokenId → original backer price paid
-mapping(uint256 => address) public originalBacker;    // tokenId → original backer address
+mapping(uint256 => uint256) public tokenTier;         // tokenId → tierId (Forge P2: resolves fungibility vs per-token price contradiction)
+address public creatorWallet;                         // stored for ERC-2981 royaltyInfo() (Forge P2)
+uint256 public nextTokenId;                           // each lazy mint gets unique tokenId for tracking + burn
+// NOTE: tokens are NOT fungible across different minted instances despite same tierId
+// All tokens in same tier have identical price (derived from tiers[tierId].price) but unique IDs
 ```
 
 **Tier Config Struct:**
@@ -676,7 +678,8 @@ function setFee(uint256 newFeeBps) external onlyAdmin
 POST   /api/campaigns/apply          → Submit campaign application
 GET    /api/campaigns                → List campaigns (paginated, filtered)
 GET    /api/campaigns/[id]           → Campaign detail
-POST   /api/campaigns/[id]/pledge    → Submit pledge (+ trigger USDC tx)
+POST   /api/campaigns/[id]/pledge/crypto-confirm  → Record pledge after on-chain tx confirmed (Forge P2)
+POST   /api/campaigns/[id]/pledge/fiat-initiate   → Initiate Coinbase Commerce charge (fiat path) (Forge P2)
 GET    /api/campaigns/[id]/milestones → Milestone status
 POST   /api/campaigns/[id]/milestones/[n]/submit → Creator submits proof
 POST   /api/campaigns/[id]/milestones/[n]/vote   → Backer votes on disputed milestone
@@ -700,7 +703,9 @@ POST   /api/user/exit/[claimId]      → Request refund OR marketplace listing
 **Webhook Routes:**
 ```
 POST   /api/webhooks/ai-review       → AI review completion callback
+POST   /api/webhooks/payment         → Coinbase Commerce / Stripe fiat charge completion (Forge P2)
 POST   /api/webhooks/chain-events    → On-chain event listener (via The Graph or Alchemy webhooks)
+POST   /api/admin/ai/review/trigger  → Platform triggers AI review job (async) (Forge P2)
 ```
 
 **Admin Routes (platform use only):**
@@ -1000,6 +1005,9 @@ users
   id uuid PRIMARY KEY
   wallet_address text UNIQUE
   email text
+  display_name text          -- (Forge P3)
+  avatar_url text            -- (Forge P3)
+  bio text                   -- (Forge P3)
   role text[] -- ['backer', 'creator', 'admin']
   kyc_status text -- pending | approved | rejected (creators only)
   kyc_verified_at timestamptz
@@ -1035,6 +1043,8 @@ campaign_tiers
   price numeric -- USDC
   supply_cap int
   minted_count int -- tracked off-chain, validated against contract
+  max_per_wallet int NOT NULL DEFAULT 0 -- 0 = unlimited (Forge P1, Change 9)
+  royalty_bps int NOT NULL DEFAULT 0    -- 0–1000 bps creator royalty (Forge P1, Change 8)
   active bool
 
 -- Milestones
@@ -1051,6 +1061,9 @@ milestones
   proof_ipfs_hash text
   ai_decision text
   ai_reasoning text
+  resubmission_count int DEFAULT 0        -- max 2 resubmissions allowed (Forge P3)
+  dispute_vote_deadline timestamptz       -- 72-hour voting window end (Forge P3)
+  dispute_result text                     -- final vote outcome (Forge P3)
   submitted_at timestamptz
   verified_at timestamptz
 
@@ -1073,10 +1086,13 @@ pledges
 marketplace_listings
   id uuid PRIMARY KEY
   pledge_id uuid REFERENCES pledges(id)
+  campaign_id uuid REFERENCES campaigns(id)  -- avoid join for browse (Forge P3)
+  tier_id uuid REFERENCES campaign_tiers(id) -- tier-based filtering (Forge P3)
   token_contract text
   token_id text
   seller_id uuid REFERENCES users(id)
   ask_price numeric
+  original_price numeric                     -- display "you paid $X, asking $Y" (Forge P3)
   status text -- active | sold | cancelled
   on_chain_listing_id int -- Marketplace.sol listingId
   created_at timestamptz
@@ -1104,6 +1120,28 @@ ai_reviews
   decision text
   score int
   created_at timestamptz
+```
+
+### Required Indexes (Forge P3 — add to migration)
+```sql
+CREATE INDEX idx_campaigns_status ON campaigns(status);
+CREATE INDEX idx_campaigns_creator_id ON campaigns(creator_id);
+CREATE INDEX idx_pledges_user_id ON pledges(user_id);
+CREATE INDEX idx_pledges_campaign_id ON pledges(campaign_id);
+CREATE INDEX idx_pledges_status ON pledges(status);
+CREATE INDEX idx_milestones_campaign_id ON milestones(campaign_id);
+CREATE INDEX idx_marketplace_listings_status ON marketplace_listings(status);
+CREATE INDEX idx_marketplace_listings_campaign_id ON marketplace_listings(campaign_id);
+CREATE UNIQUE INDEX ON milestone_votes(milestone_id, voter_id); -- prevent double voting
+```
+
+### Required RLS Policies (Forge P3 — minimum for launch)
+```
+campaigns:           SELECT = public | INSERT/UPDATE = creator (user_id = auth.uid()) only
+pledges:             SELECT = own only (user_id = auth.uid()) | INSERT/UPDATE = service role only
+milestone_votes:     SELECT = public | INSERT = own only | UPDATE = never
+ai_reviews:          SELECT = campaign owner + admin only (contains internal scoring)
+marketplace_listings: SELECT = public | INSERT/UPDATE = seller only
 ```
 
 ---
@@ -1266,6 +1304,8 @@ Creators may set a royalty % (0–10%) at campaign creation. Paid to creator wal
 - [ ] Deployed to Base Sepolia (testnet)
 - [ ] Contracts verified on Basescan Sepolia
 - [ ] Integration test: full lifecycle on testnet
+- [ ] **Locked ABI spec published** (interfaces only) before Maks starts Phase 2 — any ABI change requires formal flag to Maks (Forge P2)
+- [ ] Milestone deadline enforcement: Supabase cron job calls `declareFailed()` when deadline passes (Forge P3)
 
 **Forge review gate before Phase 2.**
 
