@@ -1,5 +1,5 @@
 # FOUNDRY — MASTER BUILD MAP
-**Version:** 1.6 (All Platform Parameters Locked)
+**Version:** 1.7 (Final Pre-Build — All Gates Cleared)
 **Prepared by:** Chain ⛓️ (Blockchain Architect)
 **Legal Clearance:** Counsel ⚖️ (2026-03-27 + 2026-03-28)
 **Market Research:** Scout 🔍 (2026-03-28)
@@ -7,6 +7,7 @@
 **Date:** 2026-03-28
 
 ### Changelog
+- **v1.7 (2026-03-28):** Final pre-build pass — Counsel cleared: binary AI score (no numbers to backers), velocity limits + wash trading detection in Marketplace.sol, one-address-one-vote confirmed, creator stake sliding scale added, all Phase 0 gates cleared
 - **v1.6 (2026-03-28):** All 6 platform parameters locked by Nick — fiat on-ramp (Coinbase hybrid), all-or-nothing funding, $10K–$1M limits, 40–100% refund bounds, 3–5 milestones, 7–60 day duration. Contract constants defined.
 - **v1.5 (2026-03-28):** Slasher Module — Counsel approved. min() cap mathematically enforced in claimRefund(), language rules added
 - **v1.4 (2026-03-28):** Slasher Module added — tiered slash (soft 25% / hard 100%), cure period, no-confidence vote, USDC-weighted voting, 80% delivery confirmation for stake release, full state machine
@@ -148,7 +149,7 @@ AI Review runs (automated, 48-72 hrs):
   ↓
 Creator pays AI review fee ($99–$299, based on campaign size)
   ↓
-Creator stakes performance bond (2–5% of funding goal in USDC)
+Creator stakes performance bond (sliding scale — see formula below)
   → Stake goes directly into CampaignEscrow.sol (not platform wallet)
   ↓
 Campaign contract deployed:
@@ -171,7 +172,7 @@ Backer browses campaigns
   ↓
 Views campaign detail page:
   - Project description
-  - AI feasibility score
+  - "AI Reviewed ✓" badge (binary — no numerical score, Counsel 2026-03-28)
   - Team info
   - Milestone schedule + current status
   - Funding progress
@@ -460,8 +461,16 @@ address public factory;
 address public platformFeeRecipient;
 uint256 public fundingGoal;
 uint256 public totalRaised;
-uint256 public creatorStake;
+uint256 public creatorStake;             // set at deployment per sliding scale formula below
 uint256 public creatorStakeRemaining;    // tracks after partial slashes
+
+// CREATOR STAKE SLIDING SCALE (Forge recommendation — Counsel cleared):
+// $10K–$50K goal    → 10% stake (e.g., $50K campaign = $5K stake)
+// $50K–$200K goal   → 7%  stake (e.g., $100K campaign = $7K stake)
+// $200K–$500K goal  → 5%  stake (e.g., $300K campaign = $15K stake)
+// $500K–$1M goal    → 3%  stake (e.g., $750K campaign = $22.5K stake)
+// Rationale: flat % makes stake a rounding error at large raises — sliding scale keeps skin in game meaningful
+// Enforced in CampaignFactory.calculateRequiredStake(fundingGoal)
 uint256 public refundPool;               // slashed stake accumulated here (increases refund floor)
 uint256 public refundRateBps;            // e.g., 5000 = 50% — base refund rate
 uint256 public campaignDeadline;
@@ -488,9 +497,9 @@ struct Milestone {
     bytes32 curePlanIpfsHash;        // Set when creator submits revised timeline
     MilestoneStatus status;          // Pending | Submitted | Verified | SoftFailed | CurePeriod | HardFailed
     bool fundsReleased;
-    uint256 cureVoteYes;             // USDC-weighted yes votes on cure plan
-    uint256 cureVoteNo;              // USDC-weighted no votes on cure plan
-    mapping(address => bool) cureVoted; // prevent double voting
+    uint256 cureVoteYes;             // ONE-ADDRESS-ONE-VOTE count (Counsel + Forge — prevents whale control)
+    uint256 cureVoteNo;
+    mapping(address => bool) cureVoted; // prevent double voting — address-based, not token-weighted
 }
 ```
 
@@ -499,14 +508,17 @@ struct Milestone {
 struct NoConfidenceVote {
     bool active;
     uint256 deadline;                // 72-hour window
-    uint256 votesFor;                // USDC-weighted — for no confidence
+    uint256 votesFor;                // ONE-ADDRESS-ONE-VOTE count (Counsel — prevents whale manipulation)
     uint256 votesAgainst;
-    mapping(address => bool) voted;
+    mapping(address => bool) voted;  // address-based, not token/USDC weighted
     bool executed;
 }
 NoConfidenceVote public noConfidenceVote;
-uint256 public constant NO_CONFIDENCE_THRESHOLD = 6600;  // 66% in bps
-uint256 public constant INITIATION_THRESHOLD_BPS = 1000; // 10% of backers by value to trigger vote
+uint256 public constant NO_CONFIDENCE_THRESHOLD = 6600;  // 66% of participating unique addresses
+uint256 public constant MIN_PARTICIPATION = 10;          // minimum 10 unique addresses to be valid vote
+// NOTE: One-address-one-vote confirmed by Counsel (2026-03-28)
+// Prevents secondary buyer accumulating 60%+ of tier claims from controlling all dispute votes
+// Platform liability protection — whale-manipulated vote outcome creates platform negligence exposure
 ```
 
 **Key Functions:**
@@ -530,14 +542,15 @@ function triggerSoftSlash(uint256 milestoneIndex) external onlyPlatform
 // Creator submits revised timeline + explanation during 14-day cure window
 function submitCurePlan(uint256 milestoneIndex, bytes32 curePlanIpfsHash) external onlyCreator
 
-// Backers vote on creator's cure plan (USDC-weighted, 72-hr window, simple majority)
+// Backers vote on creator's cure plan (ONE-ADDRESS-ONE-VOTE, 72-hr window, simple majority)
+// Any address that has pledged to this campaign gets exactly one vote
 // accept=true extends deadline + keeps stake | accept=false triggers hard slash immediately
 function voteOnCurePlan(uint256 milestoneIndex, bool accept) external
 
-// Any backer initiates no-confidence vote (requires 10% of total pledged value)
+// Any backer initiates no-confidence vote (requires minimum 10 unique backer addresses to be valid)
 function initiateNoConfidenceVote() external
 
-// Backers cast no-confidence votes (USDC-weighted, 72-hr window)
+// Backers cast no-confidence votes (ONE-ADDRESS-ONE-VOTE, 72-hr window, 66% threshold)
 function voteNoConfidence(bool noConfidence) external
 
 // AUTO: Executes hard slash if 66% no-confidence OR 60-day silence
@@ -684,15 +697,25 @@ function getOriginalPrice(uint256 tokenId) external view returns (uint256)
 
 ### Contract 4: Marketplace.sol
 
-**Purpose:** Peer-to-peer listing and settlement for reward claim tokens. Atomic swap — token and payment in same transaction.
+**Purpose:** Peer-to-peer listing and settlement for reward claim tokens. Atomic swap — token and payment in same transaction. Includes velocity limits and wash trading detection per Counsel (2026-03-28).
 
 **Key State:**
 ```solidity
 address public platform;
 address public platformFeeRecipient;
-uint256 public platformFeeBps;          // 200 = 2%
-mapping(uint256 => Listing) public listings;  // listingId → listing details
+uint256 public platformFeeBps;                              // 200 = 2%
+mapping(uint256 => Listing) public listings;                // listingId → listing details
 uint256 public listingCount;
+
+// Velocity limits (Counsel — mandatory, anti-manipulation)
+uint256 public constant MIN_HOLD_BEFORE_RELIST = 24 hours; // cannot relist within 24hrs of purchase
+uint256 public constant MAX_LISTINGS_PER_DAY = 10;         // per wallet per day
+mapping(address => uint256) public lastPurchaseTime;        // wallet → last purchase timestamp
+mapping(address => uint256) public dailyListingCount;       // wallet → listings today
+mapping(address => uint256) public dailyListingReset;       // wallet → day the counter resets
+
+// Wash trading detection
+mapping(address => mapping(address => bool)) public recentCounterparty; // buyer → seller → flagged
 ```
 
 **Listing Struct:**
@@ -704,12 +727,14 @@ struct Listing {
     uint256 price;               // USDC ask price
     bool active;
     uint256 createdAt;
+    uint256 purchasedAt;         // set on purchase — enforces MIN_HOLD_BEFORE_RELIST
 }
 ```
 
 **Key Functions:**
 ```solidity
-// Seller lists token (must hold token and have approved marketplace)
+// Seller lists token — enforces velocity limits
+// Reverts if: token purchased < 24hrs ago, or wallet hit 10 listings today
 function createListing(
     address tokenContract,
     uint256 tokenId,
@@ -718,13 +743,19 @@ function createListing(
 
 // Buyer purchases listing — atomic settlement
 function purchase(uint256 listingId) external nonReentrant
-// 1. Transfer USDC from buyer to seller (minus 2% fee)
-// 2. Transfer fee to platform fee recipient
-// 3. Transfer ERC-1155 token from seller to buyer
-// 4. All in one transaction — no partial fills, no custody
+// 1. Transfer USDC from buyer to seller (minus 2% fee + royalty)
+// 2. Transfer platform fee to fee recipient
+// 3. Transfer creator royalty to creator wallet (ERC-2981)
+// 4. Transfer ERC-1155 token from seller to buyer
+// 5. Record lastPurchaseTime[buyer] = block.timestamp
+// 6. Flag if buyer == recent counterparty (wash trading detection)
+// All in one transaction — no partial fills, no custody
 
 // Seller cancels listing
 function cancelListing(uint256 listingId) external
+
+// Admin: flag wallet for wash trading review
+function flagWallet(address wallet, string calldata reason) external onlyPlatform
 
 // Admin: update fee (only admin, bounded by max fee cap)
 function setFee(uint256 newFeeBps) external onlyAdmin
@@ -895,7 +926,7 @@ POST   /api/admin/campaigns/[id]/fail       → Declare campaign failed
 
 **Campaign Card** — displays in discovery grid:
 - Campaign name, creator, category
-- AI feasibility score badge
+- "AI Reviewed ✓" badge (binary — no numerical score shown to backers, Counsel 2026-03-28)
 - Funding progress bar
 - Days remaining
 - Earliest milestone status
@@ -994,15 +1025,22 @@ Per Counsel — mandatory language rules:
 }
 ```
 
-**What's Displayed Publicly:**
-- Overall score (e.g., "AI Feasibility Score: 82/100")
-- Public summary (plain English, no red flag details)
-- Disclaimer: "AI review is a quality filter, not a guarantee of delivery"
+**What's Displayed Publicly (Counsel approved — binary only):**
+- ✅ "AI Reviewed" badge — pass/fail only, no numerical score ever shown to backers
+- ✅ Plain English public summary ("Project passed automated quality review")
+- ✅ Mandatory disclaimer (exact text required by Counsel):
+  *"AI review is a quality filter designed to screen for obvious red flags. It is not an assessment of investment merit, likelihood of delivery, or endorsement of the campaign. Back campaigns at your own discretion."*
 
-**What's NOT Displayed:**
-- Breakdown scores
-- Internal red flag details
-- Rejection reasons (shown only to creator)
+**What's NEVER Displayed to Backers:**
+- ❌ Numerical score (82/100 or any number) — negligence exposure per Counsel
+- ❌ Score breakdown by category
+- ❌ Internal red flag details
+- ❌ Rejection reasons (shown only to creator)
+
+**Internal Only (platform admin, logged with timestamps, restricted access):**
+- Full numerical score + breakdown stored in `ai_reviews` table
+- Accessible only to platform admins — not through normal discovery
+- Required for methodology documentation if litigation arises
 
 ---
 
@@ -1077,7 +1115,7 @@ Per Counsel — mandatory language rules:
 - Original backing price vs. current ask
 - Refund rate (e.g., "50% refund protection if campaign fails")
 - Estimated delivery window
-- Campaign AI feasibility score
+- Campaign "AI Reviewed ✓" status (binary only)
 
 **What Listings Do NOT Show (V1):**
 - Price history charts
@@ -1140,8 +1178,9 @@ campaigns
   duration_days int
   refund_rate_bps int -- e.g., 5000 = 50%
   creator_stake numeric
-  ai_score int
-  ai_score_public_summary text
+  ai_score int                    -- INTERNAL ONLY — never exposed to backers (Counsel 2026-03-28)
+  ai_reviewed bool DEFAULT false  -- binary pass/fail shown publicly
+  ai_review_summary text          -- plain English summary shown publicly (no score language)
   status text -- draft | under_review | approved | live | funded | delivering | complete | failed
   starts_at timestamptz
   ends_at timestamptz
