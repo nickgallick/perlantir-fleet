@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "profiles": {
+    "nexos:default": {
+      "provider": "nexos",
+      "type": "api_key",
+      "key": ""
+    },
+    "anthropic:default": {
+      "type": "token",
+      "provider": "anthropic",
+      "token": "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"
+    },
+    "openai-codex:default": {
+      "type": "oauth",
+      "provider": "openai-codex",
+      "access": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjE5MzQ0ZTY1LWJiYzktNDRkMS1hOWQwLWY5NTdiMDc5YmQwZSIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiaHR0cHM6Ly9hcGkub3BlbmFpLmNvbS92MSJdLCJjbGllbnRfaWQiOiJhcHBfRU1vYW1FRVo3M2YwQ2tYYVhwN2hyYW5uIiwiZXhwIjoxNzc1MDY2OTY1LCJodHRwczovL2FwaS5vcGVuYWkuY29tL2F1dGgiOnsiY2hhdGdwdF9hY2NvdW50X2lkIjoiMmU3YTJjMTAtZDg0Yi00MmI4LWIyN2YtNGU0ZTJlYjI1YTYyIiwiY2hhdGdwdF9hY2NvdW50X3VzZXJfaWQiOiJ1c2VyLUVNMnU0V0ZxZXNYNzIzY0NTbmNHQTFKMV9fMmU3YTJjMTAtZDg0Yi00MmI4LWIyN2YtNGU0ZTJlYjI1YTYyIiwiY2hhdGdwdF9jb21wdXRlX3Jlc2lkZW5jeSI6Im5vX2NvbnN0cmFpbnQiLCJjaGF0Z3B0X3BsYW5fdHlwZSI6InBsdXMiLCJjaGF0Z3B0X3VzZXJfaWQiOiJ1c2VyLUVNMnU0V0ZxZXNYNzIzY0NTbmNHQTFKMSIsImxvY2FsaG9zdCI6dHJ1ZSwidXNlcl9pZCI6InVzZXItRU0ydTRXRnFlc1g3MjNjQ1NuY0dBMUoxIn0sImh0dHBzOi8vYXBpLm9wZW5haS5jb20vcHJvZmlsZSI6eyJlbWFpbCI6Im5pY2tAdWJlcmtpd2kuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWV9LCJpYXQiOjE3NzQyMDI5NjUsImlzcyI6Imh0dHBzOi8vYXV0aC5vcGVuYWkuY29tIiwianRpIjoiOWUyYzczYTYtOWRlZi00NDIwLWI1ZGEtYmRkNmZjMzY2ZTM1IiwibmJmIjoxNzc0MjAyOTY1LCJwd2RfYXV0aF90aW1lIjoxNzc0MjAyOTQzNjY5LCJzY3AiOlsib3BlbmlkIiwicHJvZmlsZSIsImVtYWlsIiwib2ZmbGluZV9hY2Nlc3MiXSwic2Vzc2lvbl9pZCI6ImF1dGhzZXNzX1l6MFlvQ0dLYVdNNlZ2MTN0cXdTTTRzeiIsInNsIjp0cnVlLCJzdWIiOiJhdXRoMHw2NTU3YWJkZTAzZThiZGZhM2M5Zjg3ODIifQ.5K7JKyGwg6P8uK6FKUigWqa5fK8jWVZB8vVzivcaTvQBdBKBO2AwxR83C-6RkF2svyS5BLv9gcOZLJM0vQ7-b16bPhmoNKerIqA60CA4ENnCK3L4hgtSzIX8mtUrdmnC02wfo1ZcW8AA-fgZZQsKiJcKv2usKX6zejFBgUxcj78szSPpi6ejS9DHaEzt9VqRkhnDzkVaJgXeepx2aigZlyfRLLpyJvapRHGMhqgMVQAuSonDUajCTf1On6DYR5y8RR0ARnEj_xWEcBB3pIuAvRV9zesbjfwHS8tmdgMJrzB0ep2rVy_nmvThpA0cHIgLKp7odezcsQJnwS90OruLHIE-4_Vdh4HHlDG5V_tMserrXKCXJfCqo_9CL6aAbo1FkuFzapuEUYK-s6TARNuFr5Zg8arWxTJu-o0k73_ClZ_EzprtGo0UC8kmCMCOJof4BuxE1QbXoZKEapSsN7rrQb1YGgoC9OvDt4LxM4D0lOH6SGrh8LebygyIWTHAP8EgThrDAg7M1716NRmQWqhJFlOjTZ1iAT1GQkc8SFzGAEkO7LQQXgd2vF1rNaDnWRUcT_FKlPi5iVzcBGSiDDz5acY0wREkk4LcvQe9o117Ab8IkBfM4ltbxa_-V50RGVKP73d5CQNnRcvFlHU-dPXcpQXh4goog2lwdHlAAV_-al8",
+      "refresh": "rt_3uAWs2VsZXYDkNg3U1v1zcgToZMC1M8hwVht8G1kh9o.U7WnfvghjP2CVIacqW1TsF4mQiiRLfsE_IvFRADrPls",
+      "expires": 1775066964548,
+      "accountId": "2e7a2c10-d84b-42b8-b27f-4e4e2eb25a62"
+    },
+    "anthropic:manual": {
+      "type": "token",
+      "provider": "anthropic",
+      "token": "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"
+    },
+    "anthropic:old": {
+      "type": "token",
+      "provider": "anthropic",
+      "token": "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"
+    }
+  },
+  "order": {
+    "anthropic": [
+      "anthropic:manual",
+      "anthropic:old",
+      "anthropic:default"
+    ]
+  },
+  "usageStats": {
+    "anthropic:default": {
+      "errorCount": 1,
+      "lastUsed": 1774154739788,
+      "lastFailureAt": 1774291058037,
+      "failureCounts": {
+        "rate_limit": 1
+      },
+      "cooldownUntil": 1774291118037
+    }
+  }
+}

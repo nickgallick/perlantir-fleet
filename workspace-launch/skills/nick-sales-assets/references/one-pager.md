@@ -1,0 +1,1 @@
+Keep one-pagers specific: problem, buyer, solution, value, proof, CTA.

@@ -1,0 +1,1 @@
+Use pricing to reflect value, urgency, and buyer type. Avoid underpricing strong outcomes.

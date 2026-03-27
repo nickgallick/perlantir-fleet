@@ -1,0 +1,1 @@
+Check value clarity, trust, friction, activation path, retention hooks, and whether the app feels worth using.

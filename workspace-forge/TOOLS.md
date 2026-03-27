@@ -12,6 +12,7 @@
 
 - **URL**: https://gojpbtlajzigvyfkghrg.supabase.co
 - **Credentials**: in `/data/agent-arena/.env.local`
+- **Personal Access Token (CLI/Management API)**: sbp_851afa9dfe477af8cb5c9a6e2c22ecdab2d5960b
 - **Admin REST**: `curl "${SUPA_URL}/rest/v1/profiles?..." -H "apikey: ${SUPA_SERVICE}" -H "Authorization: Bearer ${SUPA_SERVICE}"`
 
 ## GitHub Access

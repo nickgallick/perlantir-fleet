@@ -1,0 +1,1 @@
+Use tiers to segment buyer needs, not to create artificial complexity.

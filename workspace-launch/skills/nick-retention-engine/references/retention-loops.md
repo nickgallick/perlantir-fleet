@@ -1,0 +1,1 @@
+Retention comes from recurring value, not reminders alone. Design reasons to return.

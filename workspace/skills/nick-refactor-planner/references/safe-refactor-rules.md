@@ -1,0 +1,1 @@
+Prefer small verifiable steps, preserved tests, and explicit rollback thinking.

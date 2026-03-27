@@ -1,0 +1,1 @@
+Check whether users reach value fast, know what to do next, and feel rewarded early.

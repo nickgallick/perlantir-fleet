@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "youtube-transcript": {
+      "command": "npx @kimtaeyoon83/mcp-server-youtube-transcript"
+    }
+  },
+  "imports": []
+}

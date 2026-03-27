@@ -1,0 +1,1 @@
+Look for unnecessary fields, unclear setup, weak empty states, and hidden next actions.

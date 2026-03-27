@@ -1,0 +1,1 @@
+Demos should show painful before-state, product flow, outcome, and next step.

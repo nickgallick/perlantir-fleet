@@ -1,0 +1,1 @@
+Have graceful behavior when AI is wrong, slow, or unavailable.

@@ -1,0 +1,1 @@
+Assess pain, buyer clarity, alternatives, dissatisfaction, timing, and monetization potential.

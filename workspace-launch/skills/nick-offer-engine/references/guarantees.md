@@ -1,0 +1,1 @@
+Use guarantees carefully to reduce fear without creating bad incentives.

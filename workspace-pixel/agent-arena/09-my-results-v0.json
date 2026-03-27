@@ -1,0 +1,62 @@
+{
+  "screen": "09-my-results",
+  "project": "agent-arena",
+  "generatedAt": "2026-03-22T06:17:00+08:00",
+  "tool": "v0",
+  "chatId": "ueRnTe77SKC",
+  "webUrl": "https://v0.app/chat/ueRnTe77SKC",
+  "demoUrl": "https://demo-kzmlpew70omxb7kg1ooo.vusercontent.net",
+  "screenshotUrl": "https://api.v0.dev/v1/chats/ueRnTe77SKC/versions/b_WuDeWTjZoC8/screenshot",
+  "versionId": "b_WuDeWTjZoC8",
+  "model": "v0-pro",
+  "privacy": "private",
+  "status": "completed",
+  "files": [
+    { "path": "app/layout.tsx", "description": "Root layout with Space Grotesk, Inter, JetBrains Mono font loading via next/font/google" },
+    { "path": "app/globals.css", "description": "Global styles with dark theme tokens, custom scrollbar, glass morphism variables" },
+    { "path": "components/results/StatsCard.tsx", "description": "Glass morphism stat card with icon badge, monospaced value, colored subtext" },
+    { "path": "components/results/FilterBar.tsx", "description": "Search input + 3 filter dropdowns + Export CSV button in glass card" },
+    { "path": "components/results/ResultBadge.tsx", "description": "WIN/LOSS/DRAW color-coded badges with glow borders" },
+    { "path": "components/results/JudgeBreakdown.tsx", "description": "Expandable judge scores sub-row with dual score bars per judge" },
+    { "path": "components/results/ResultsTable.tsx", "description": "Full results table with hover states, category tags, accordion expand for judge breakdown" },
+    { "path": "components/results/Pagination.tsx", "description": "Smart pagination with page range builder, active page highlight, results count" },
+    { "path": "app/page.tsx", "description": "Main page composing all components with filter state, ambient glow blobs, responsive grid" }
+  ],
+  "designSpecs": {
+    "background": "#0a0e19",
+    "cardSurface": "rgba(255,255,255,0.03)",
+    "cardBorder": "rgba(255,255,255,0.06)",
+    "primaryText": "#f1f5f9",
+    "secondaryText": "#94a3b8",
+    "accentGreen": "#22c55e",
+    "accentRed": "#ef4444",
+    "accentYellow": "#eab308",
+    "accentBlue": "#3b82f6",
+    "fonts": {
+      "headings": "Space Grotesk 700",
+      "body": "Inter 400/500",
+      "data": "JetBrains Mono 500"
+    },
+    "borderRadius": {
+      "cards": "12px",
+      "buttons": "8px"
+    }
+  },
+  "features": [
+    "4 glass stats cards (Total Battles 243, Win Rate 58.4%, Streak 7W, Avg Score 7.82)",
+    "Filter bar with search, result type, category, and timeframe dropdowns",
+    "Export CSV button",
+    "12-row results table with realistic data",
+    "Row 3 (DRAW) expanded with judge breakdown showing 3 judges with score bars",
+    "Smooth accordion animation on expand/collapse",
+    "Category color tags (Coding=blue, Analysis=purple, Creative=pink, Reasoning=orange)",
+    "WIN/LOSS/DRAW badges with glow effects",
+    "Pagination with smart page range (1 2 3 4 5 ... 21)",
+    "Responsive grid: 4-col → 2-col → 1-col stats cards",
+    "Ambient glow blobs in background",
+    "Empty state with icon when filters return no results",
+    "Dark scrollbar styling",
+    "44px touch targets on all interactive elements",
+    "Hover highlight on table rows"
+  ]
+}

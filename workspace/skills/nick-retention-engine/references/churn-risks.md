@@ -1,0 +1,1 @@
+Watch for one-time-use products, weak habit loops, and unclear ongoing value.

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=390px, initial-scale=1.0" name="viewport"/>
+<title>Booksy - Beauty &amp; Wellness Professionals</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0b3c3c",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#122020",
+                        "booksy-teal": "#0B3B3C",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; width: 390px; margin: 0 auto; overflow-x: hidden; }
+        .material-symbols-outlined { font-size: 24px; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
+<!-- 1. Top Notification Bar -->
+<div class="bg-black h-[36px] flex items-center justify-center w-full">
+<span class="text-white text-[12px] font-normal">List Your Business →</span>
+</div>
+<!-- 2. Hero Section -->
+<div class="bg-booksy-teal h-[340px] px-5 pt-6 flex flex-col gap-6">
+<!-- Logo -->
+<div class="flex items-center gap-1">
+<div class="w-3 h-[2px] bg-white"></div>
+<span class="text-white text-[22px] font-black lowercase tracking-tight">booksy</span>
+</div>
+<!-- Tagline -->
+<h1 class="text-white text-[25px] font-bold leading-[1.2]">
+            Discover and book beauty &amp; wellness professionals near you.
+        </h1>
+<!-- Search Bar -->
+<div class="relative w-full h-[48px] bg-white rounded-[12px] flex items-center px-4 shadow-sm">
+<span class="material-symbols-outlined text-slate-400 mr-2">search</span>
+<input class="w-full border-none focus:ring-0 text-[14px] placeholder-slate-400 p-0 bg-transparent" placeholder="Search for services or businesses" type="text"/>
+</div>
+<!-- Category Icons Row -->
+<div class="flex justify-between items-start pt-2">
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-white">content_cut</span>
+<span class="text-white text-[11px]">Hair</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-white">face</span>
+<span class="text-white text-[11px]">Barber</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-white">pan_tool_alt</span>
+<span class="text-white text-[11px]">Nails</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-white">sentiment_satisfied</span>
+<span class="text-white text-[11px]">Skin</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-white">spa</span>
+<span class="text-white text-[11px]">Skincare</span>
+</div>
+</div>
+</div>
+<!-- 3. Recommended Section -->
+<div class="bg-white dark:bg-background-dark px-5 py-8">
+<h2 class="text-[22px] font-bold mb-5">Recommended</h2>
+<!-- Business Card -->
+<div class="rounded-[12px] overflow-hidden shadow-md border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900">
+<div class="relative h-[170px] bg-cover bg-center" data-alt="Dark warm tones of a professional barbershop interior" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA4WXW21d1O954uhtha-IZpx2mvdhRUQiwe8b3jzzqa7Hx_SMNroDx7KmzjggXHpG8DpLmvspC2-LDN5IIUXvmQLO6tlu2NszW19MOi9exzH4UnmOgL7NDzslPqn7ZCZ9NNQyufVmXfxXNnqbsXvFF1_ie_HCNoVeSvww96rky0R-FpbUrk3ChDr89M4KTiMbgWcq1P5-oBTV_vZ_7TVsT9ojz8Y_1dshD-226rnZpK5JD0Jsh_D2Qi9npghmfrw8yR9PnLGM6A0YC2')">
+<div class="absolute top-3 right-3 bg-black/20 backdrop-blur-sm rounded-full p-1.5">
+<span class="material-symbols-outlined text-white text-[20px]">favorite</span>
+</div>
+</div>
+<div class="p-4 flex flex-col gap-1">
+<h3 class="text-[16px] font-semibold">Bower &amp; Co Barbershop</h3>
+<div class="flex items-center gap-1">
+<span class="text-[#FFB800] text-[14px]">★</span>
+<span class="text-[13px] font-medium">5.0</span>
+<span class="text-[#666666] text-[13px]">(842 reviews)</span>
+</div>
+<p class="text-[#9E9E9E] text-[12px]">Barber · 0.3 mi</p>
+</div>
+</div>
+</div>
+<!-- 4. App Download Sections -->
+<div class="bg-white dark:bg-background-dark px-5 py-8 border-t border-slate-100 dark:border-slate-800">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-12 h-12 bg-booksy-teal rounded-xl flex items-center justify-center">
+<span class="text-white text-xl font-black lowercase">b</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[14px] font-bold">Booksy App – iOS, Android</span>
+<h3 class="text-[20px] font-bold">Find &amp; book an appointment</h3>
+</div>
+</div>
+<p class="text-[15px] text-slate-600 dark:text-slate-400 mb-6">Discover local beauty and wellness experts and book your next appointment in seconds.</p>
+<button class="w-full bg-booksy-teal text-white font-bold py-4 rounded-full text-[15px]">Download for iOS</button>
+<!-- Business App Card -->
+<div class="mt-10 p-6 bg-slate-50 dark:bg-slate-900 rounded-[12px] border border-slate-100 dark:border-slate-800">
+<span class="text-booksy-teal font-bold text-[14px]">Booksy Biz App</span>
+<h3 class="text-[24px] font-bold mt-1 mb-4">Grow your business</h3>
+<button class="bg-booksy-teal text-white px-6 py-3 rounded-full font-bold text-[14px]">Grow My Business</button>
+</div>
+</div>
+<!-- 5. Appointments done better Section -->
+<div class="bg-white dark:bg-background-dark px-5 py-12">
+<h2 class="text-[28px] font-bold leading-tight mb-4">Appointments done better</h2>
+<div class="space-y-4 text-[15px] text-slate-700 dark:text-slate-300">
+<p>Looking for your next appointment with a local barber, hair stylist, or massage therapist? Booksy makes it easy to find and book with the best professionals in your area.</p>
+<p>Browse through ratings and reviews, check out portfolios, and book 24/7. No more phone calls or waiting for a callback.</p>
+</div>
+</div>
+<!-- 6. Something come up? Section -->
+<div class="bg-[#F5F5F5] dark:bg-slate-900 px-5 py-12">
+<h2 class="text-[28px] font-bold leading-tight mb-4">Something come up?</h2>
+<p class="text-[15px] text-slate-700 dark:text-slate-300">Life happens. If you need to cancel or reschedule, you can do it right from the app. No stress, no awkward phone calls.</p>
+</div>
+<!-- 7. Find by City Section -->
+<div class="bg-[#F5F5F5] dark:bg-slate-900 px-5 pb-12">
+<h2 class="text-[22px] font-bold mb-6">Find by City</h2>
+<div class="grid grid-cols-2 gap-y-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-booksy-teal text-[18px]">location_on</span>
+<span class="text-[14px]">Charlotte</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-booksy-teal text-[18px]">location_on</span>
+<span class="text-[14px]">Columbus</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-booksy-teal text-[18px]">location_on</span>
+<span class="text-[14px]">Philadelphia</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-booksy-teal text-[18px]">location_on</span>
+<span class="text-[14px]">Dallas</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-booksy-teal text-[18px]">location_on</span>
+<span class="text-[14px]">Chicago</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-booksy-teal text-[18px]">location_on</span>
+<span class="text-[14px]">Austin</span>
+</div>
+</div>
+<button class="mt-8 text-booksy-teal font-bold text-[15px] underline">Show More</button>
+</div>
+<!-- 8. Footer -->
+<footer class="bg-booksy-teal px-5 py-12 text-white">
+<div class="flex items-center gap-1 mb-10">
+<div class="w-3 h-[2px] bg-white"></div>
+<span class="text-white text-[24px] font-black lowercase tracking-tight">booksy</span>
+</div>
+<div class="space-y-10">
+<div>
+<h4 class="font-bold mb-4">Company</h4>
+<ul class="space-y-3 text-[14px] text-slate-200">
+<li>About Us</li>
+<li>Careers</li>
+<li>Contact Us</li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-4">For Customers</h4>
+<ul class="space-y-3 text-[14px] text-slate-200">
+<li>Booksy App</li>
+<li>Customer Support</li>
+<li>Blog</li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-4">For Businesses</h4>
+<ul class="space-y-3 text-[14px] text-slate-200">
+<li>Booksy Biz</li>
+<li>Pricing</li>
+<li>Education</li>
+</ul>
+</div>
+</div>
+<div class="flex gap-6 mt-12 mb-8">
+<span class="material-symbols-outlined">social_leaderboard</span>
+<span class="material-symbols-outlined">camera</span>
+<span class="material-symbols-outlined">brand_family</span>
+</div>
+<p class="text-[12px] text-slate-400">© 2026 Booksy Inc.</p>
+</footer>
+</body></html>

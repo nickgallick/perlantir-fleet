@@ -1,0 +1,1 @@
+Define buyer, core pain, promise, package, proof, risk reversal, and CTA.

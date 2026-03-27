@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PayPulse - Split Bills Effortlessly</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.cdnfonts.com/css/satoshi" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#39FF14",
+                        "background-light": "#f6f8f5",
+                        "background-dark": "#0D0D0D",
+                        "surface": "#1A1A1A",
+                        "surface-elevated": "#262626",
+                        "negative": "#FF4D4D",
+                        "secondary-text": "#A3A3A3",
+                        "muted-text": "#737373",
+                    },
+                    fontFamily: {
+                        "display": ["Satoshi", "sans-serif"],
+                        "body": ["Outfit", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1rem", // 16px as requested
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Outfit', sans-serif;
+        }
+        h1, h2, h3, .font-satoshi {
+            font-family: 'Satoshi', sans-serif;
+            font-weight: 600;
+        }
+        .shadow-glow {
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.4);
+        }
+        .min-h-touch {
+            min-height: 44px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex justify-center items-start">
+<!-- Mobile Container (iPhone 13 Width) -->
+<div class="relative w-full max-w-[390px] min-h-screen flex flex-col bg-background-light dark:bg-background-dark overflow-hidden pb-24">
+<!-- Header -->
+<header class="flex items-center justify-between p-6 pt-8">
+<div class="flex items-center gap-3">
+<div class="bg-primary/20 p-2 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[28px] fill-1">bolt</span>
+</div>
+<h1 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">PayPulse</h1>
+</div>
+<div class="size-11 rounded-full bg-surface-elevated border border-primary/30 flex items-center justify-center text-primary font-bold text-sm">
+            NG
+        </div>
+</header>
+<!-- Summary Card -->
+<section class="px-6 py-2">
+<div class="bg-surface border border-white/5 rounded-xl p-6 flex items-center shadow-xl">
+<div class="flex-1 flex flex-col gap-1 pr-4 border-r border-white/10">
+<p class="text-muted-text text-[13px] font-medium uppercase tracking-[0.05em] font-body">YOU OWE</p>
+<p class="text-negative text-2xl font-bold font-display">$127.50</p>
+<p class="text-secondary-text text-[12px] font-normal font-body">3 people</p>
+</div>
+<div class="flex-1 flex flex-col gap-1 pl-6">
+<p class="text-muted-text text-[13px] font-medium uppercase tracking-[0.05em] font-body">OWED TO YOU</p>
+<p class="text-primary text-2xl font-bold font-display">$284.00</p>
+<p class="text-secondary-text text-[12px] font-normal font-body">5 people</p>
+</div>
+</div>
+</section>
+<!-- Active Splits Section -->
+<section class="px-6 mt-8">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-xl font-bold tracking-tight">Active Splits</h2>
+<a class="text-primary text-sm font-semibold flex items-center min-h-touch hover:underline" href="#">See all</a>
+</div>
+<div class="flex flex-col gap-3">
+<!-- List Item 1 -->
+<div class="bg-surface hover:bg-surface-elevated transition-colors border border-white/5 p-4 rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="size-11 rounded-full bg-surface-elevated flex items-center justify-center text-xl shrink-0">
+                        🍣
+                    </div>
+<div>
+<h3 class="font-bold text-slate-100 font-display">Dinner at Nobu</h3>
+<p class="text-xs text-secondary-text font-body">Mar 18 · 4 people</p>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="text-primary font-bold font-display">+$62.00</span>
+<span class="text-[11px] font-medium uppercase tracking-wider bg-primary/10 text-primary px-2.5 py-0.5 rounded-full font-body">PENDING</span>
+</div>
+</div>
+<!-- List Item 2 -->
+<div class="bg-surface hover:bg-surface-elevated transition-colors border border-white/5 p-4 rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="size-11 rounded-full bg-surface-elevated flex items-center justify-center text-xl shrink-0">
+                        🛒
+                    </div>
+<div>
+<h3 class="font-bold text-slate-100 font-display">Weekly Groceries</h3>
+<p class="text-xs text-secondary-text font-body">Mar 17 · 2 people</p>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="text-negative font-bold font-display">-$34.75</span>
+<span class="text-[11px] font-medium uppercase tracking-wider bg-negative/10 text-negative px-2.5 py-0.5 rounded-full font-body">YOU OWE</span>
+</div>
+</div>
+<!-- List Item 3 -->
+<div class="bg-surface hover:bg-surface-elevated transition-colors border border-white/5 p-4 rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="size-11 rounded-full bg-surface-elevated flex items-center justify-center text-xl shrink-0">
+                        ⛽
+                    </div>
+<div>
+<h3 class="font-bold text-slate-100 font-display">Road Trip Gas</h3>
+<p class="text-xs text-secondary-text font-body">Mar 15 · 3 people</p>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="text-muted-text font-bold font-display">+$28.33</span>
+<span class="text-[11px] font-medium uppercase tracking-wider bg-white/5 text-muted-text px-2.5 py-0.5 rounded-full font-body">SETTLED</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Floating Action Button -->
+<button class="fixed bottom-24 right-6 size-14 bg-primary rounded-full flex items-center justify-center text-background-dark shadow-glow z-20">
+<span class="material-symbols-outlined text-3xl font-bold">add</span>
+</button>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 right-0 max-w-[390px] mx-auto bg-surface/90 backdrop-blur-md border-t border-white/10 px-6 py-3 pb-8 z-10">
+<div class="flex justify-between items-center">
+<a class="flex flex-col items-center gap-1 text-primary" href="#">
+<span class="material-symbols-outlined fill-1">home</span>
+<span class="text-[10px] font-medium">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-muted-text" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="text-[10px] font-medium">Activity</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-muted-text" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-medium">Friends</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-muted-text" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-medium">Profile</span>
+</a>
+</div>
+</nav>
+</div>
+</body></html>

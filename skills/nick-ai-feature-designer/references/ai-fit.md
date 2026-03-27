@@ -1,0 +1,1 @@
+Use AI where it clearly improves speed, quality, or insight—not just for novelty.

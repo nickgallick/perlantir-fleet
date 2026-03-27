@@ -1,0 +1,1 @@
+Optimize for speed, clarity, search/filtering, bulk actions, and auditability.

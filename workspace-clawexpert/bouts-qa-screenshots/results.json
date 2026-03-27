@@ -1,0 +1,350 @@
+{
+  "desktopResults": [
+    {
+      "name": "landing",
+      "url": "https://agent-arena-roan.vercel.app/",
+      "finalUrl": "https://agent-arena-roan.vercel.app/",
+      "status": 200,
+      "errors": [],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 405 ()",
+        "Failed to load resource: the server responded with a status of 405 ()"
+      ],
+      "networkErrors": [
+        "GET https://agent-arena-roan.vercel.app/api/agents?limit=1 — net::ERR_ABORTED",
+        "GET https://agent-arena-roan.vercel.app/api/agents?limit=1 — net::ERR_ABORTED",
+        "GET https://agent-arena-roan.vercel.app/challenges/ddbfda8c-c9aa-4f73-a0a2-3f5e8ad74b50/spectate?_rsc=1r34m — net::ERR_ABORTED",
+        "GET https://agent-arena-roan.vercel.app/challenges/ddbfda8c-c9aa-4f73-a0a2-3f5e8ad74b50/spectate?_rsc=p37cr — net::ERR_ABORTED"
+      ],
+      "redirected": false
+    },
+    {
+      "name": "challenges",
+      "url": "https://agent-arena-roan.vercel.app/challenges",
+      "finalUrl": "https://agent-arena-roan.vercel.app/challenges",
+      "status": 200,
+      "errors": [],
+      "consoleErrors": [],
+      "networkErrors": [
+        "GET https://agent-arena-roan.vercel.app/challenges/58ae88fe-b27e-4b80-81ae-1ed613b0bb52?_rsc=1bezo — net::ERR_ABORTED",
+        "GET https://agent-arena-roan.vercel.app/challenges/fa456ee5-180c-474d-a0ee-5e764f286047?_rsc=1bezo — net::ERR_ABORTED",
+        "GET https://agent-arena-roan.vercel.app/challenges/c557ea99-4846-46d2-8cfb-42a31282fa2c?_rsc=1bezo — net::ERR_ABORTED",
+        "GET https://agent-arena-roan.vercel.app/challenges/57f7c770-77f9-4215-b1dc-d9d39bd9744f?_rsc=1bezo — net::ERR_ABORTED",
+        "GET https://agent-arena-roan.vercel.app/challenges/8d0c4cf2-97cb-45ff-a384-1b87bad87a7f?_rsc=1bezo — net::ERR_ABORTED",
+        "GET https://agent-arena-roan.vercel.app/challenges/332cb8c1-0416-4295-b96b-fdf02ce78023?_rsc=1bezo — net::ERR_ABORTED",
+        "GET https://agent-arena-roan.vercel.app/challenges/22baff1f-95bd-4210-b38a-0de504464faa?_rsc=1bezo — net::ERR_ABORTED",
+        "GET https://agent-arena-roan.vercel.app/challenges/58ae88fe-b27e-4b80-81ae-1ed613b0bb52?_rsc=dgga9 — net::ERR_ABORTED",
+        "GET https://agent-arena-roan.vercel.app/challenges/fa456ee5-180c-474d-a0ee-5e764f286047?_rsc=dgga9 — net::ERR_ABORTED",
+        "GET https://agent-arena-roan.vercel.app/challenges/c557ea99-4846-46d2-8cfb-42a31282fa2c?_rsc=dgga9 — net::ERR_ABORTED",
+        "GET https://agent-arena-roan.vercel.app/challenges/332cb8c1-0416-4295-b96b-fdf02ce78023?_rsc=dgga9 — net::ERR_ABORTED",
+        "GET https://agent-arena-roan.vercel.app/challenges/e33f0093-afa7-4d4e-b4f9-370bc6eccb5d?_rsc=dgga9 — net::ERR_ABORTED",
+        "GET https://agent-arena-roan.vercel.app/challenges/22baff1f-95bd-4210-b38a-0de504464faa?_rsc=dgga9 — net::ERR_ABORTED"
+      ],
+      "redirected": false
+    },
+    {
+      "name": "leaderboard",
+      "url": "https://agent-arena-roan.vercel.app/leaderboard",
+      "finalUrl": "https://agent-arena-roan.vercel.app/leaderboard",
+      "status": 200,
+      "errors": [],
+      "consoleErrors": [],
+      "networkErrors": [],
+      "redirected": false
+    },
+    {
+      "name": "login",
+      "url": "https://agent-arena-roan.vercel.app/login",
+      "finalUrl": "https://agent-arena-roan.vercel.app/login",
+      "status": 200,
+      "errors": [],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 ()",
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "networkErrors": [],
+      "redirected": false
+    },
+    {
+      "name": "blog",
+      "url": "https://agent-arena-roan.vercel.app/blog",
+      "finalUrl": "https://agent-arena-roan.vercel.app/blog",
+      "status": 200,
+      "errors": [],
+      "consoleErrors": [],
+      "networkErrors": [],
+      "redirected": false
+    },
+    {
+      "name": "docs",
+      "url": "https://agent-arena-roan.vercel.app/docs",
+      "finalUrl": "https://agent-arena-roan.vercel.app/docs",
+      "status": 200,
+      "errors": [],
+      "consoleErrors": [],
+      "networkErrors": [],
+      "redirected": false
+    },
+    {
+      "name": "docs-api",
+      "url": "https://agent-arena-roan.vercel.app/docs/api",
+      "finalUrl": "https://agent-arena-roan.vercel.app/docs/api",
+      "status": 200,
+      "errors": [],
+      "consoleErrors": [],
+      "networkErrors": [],
+      "redirected": false
+    },
+    {
+      "name": "docs-connector",
+      "url": "https://agent-arena-roan.vercel.app/docs/connector",
+      "finalUrl": "https://agent-arena-roan.vercel.app/docs/connector",
+      "status": 200,
+      "errors": [],
+      "consoleErrors": [],
+      "networkErrors": [],
+      "redirected": false
+    },
+    {
+      "name": "fair-play",
+      "url": "https://agent-arena-roan.vercel.app/fair-play",
+      "finalUrl": "https://agent-arena-roan.vercel.app/fair-play",
+      "status": 200,
+      "errors": [],
+      "consoleErrors": [],
+      "networkErrors": [],
+      "redirected": false
+    },
+    {
+      "name": "status",
+      "url": "https://agent-arena-roan.vercel.app/status",
+      "finalUrl": "https://agent-arena-roan.vercel.app/status",
+      "status": 200,
+      "errors": [],
+      "consoleErrors": [],
+      "networkErrors": [],
+      "redirected": false
+    },
+    {
+      "name": "terms",
+      "url": "https://agent-arena-roan.vercel.app/terms",
+      "finalUrl": "https://agent-arena-roan.vercel.app/terms",
+      "status": 200,
+      "errors": [],
+      "consoleErrors": [],
+      "networkErrors": [],
+      "redirected": false
+    },
+    {
+      "name": "privacy",
+      "url": "https://agent-arena-roan.vercel.app/privacy",
+      "finalUrl": "https://agent-arena-roan.vercel.app/privacy",
+      "status": 200,
+      "errors": [],
+      "consoleErrors": [],
+      "networkErrors": [],
+      "redirected": false
+    },
+    {
+      "name": "404",
+      "url": "https://agent-arena-roan.vercel.app/this-page-does-not-exist",
+      "finalUrl": "https://agent-arena-roan.vercel.app/this-page-does-not-exist",
+      "status": 404,
+      "errors": [],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "networkErrors": [],
+      "redirected": false
+    },
+    {
+      "name": "dashboard",
+      "url": "https://agent-arena-roan.vercel.app/dashboard",
+      "finalUrl": "https://agent-arena-roan.vercel.app/login?redirect=%2Fdashboard",
+      "status": 200,
+      "errors": [],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 ()",
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "networkErrors": [],
+      "redirected": true
+    },
+    {
+      "name": "agents",
+      "url": "https://agent-arena-roan.vercel.app/agents",
+      "finalUrl": "https://agent-arena-roan.vercel.app/login?redirect=%2Fagents",
+      "status": 200,
+      "errors": [],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 ()",
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "networkErrors": [],
+      "redirected": true
+    },
+    {
+      "name": "agents-new",
+      "url": "https://agent-arena-roan.vercel.app/agents/new",
+      "finalUrl": "https://agent-arena-roan.vercel.app/login?redirect=%2Fagents%2Fnew",
+      "status": 200,
+      "errors": [],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 ()",
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "networkErrors": [],
+      "redirected": true
+    },
+    {
+      "name": "admin",
+      "url": "https://agent-arena-roan.vercel.app/admin",
+      "finalUrl": "https://agent-arena-roan.vercel.app/login?redirect=%2Fadmin",
+      "status": 200,
+      "errors": [],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 ()",
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "networkErrors": [],
+      "redirected": true
+    }
+  ],
+  "mobileResults": [
+    {
+      "name": "mobile-landing",
+      "url": "https://agent-arena-roan.vercel.app/",
+      "finalUrl": "https://agent-arena-roan.vercel.app/",
+      "status": 200,
+      "errors": [],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 405 ()",
+        "Failed to load resource: the server responded with a status of 405 ()"
+      ],
+      "networkErrors": [
+        "GET https://agent-arena-roan.vercel.app/api/agents?limit=1 — net::ERR_ABORTED",
+        "GET https://agent-arena-roan.vercel.app/api/agents?limit=1 — net::ERR_ABORTED"
+      ],
+      "redirected": false
+    },
+    {
+      "name": "mobile-challenges",
+      "url": "https://agent-arena-roan.vercel.app/challenges",
+      "finalUrl": "https://agent-arena-roan.vercel.app/challenges",
+      "status": 200,
+      "errors": [],
+      "consoleErrors": [],
+      "networkErrors": [],
+      "redirected": false
+    },
+    {
+      "name": "mobile-leaderboard",
+      "url": "https://agent-arena-roan.vercel.app/leaderboard",
+      "finalUrl": "https://agent-arena-roan.vercel.app/leaderboard",
+      "status": 200,
+      "errors": [],
+      "consoleErrors": [],
+      "networkErrors": [],
+      "redirected": false
+    },
+    {
+      "name": "mobile-login",
+      "url": "https://agent-arena-roan.vercel.app/login",
+      "finalUrl": "https://agent-arena-roan.vercel.app/login",
+      "status": 200,
+      "errors": [],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 ()",
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "networkErrors": [],
+      "redirected": false
+    }
+  ],
+  "brandViolations": [],
+  "funcResults": {
+    "navLinks": [
+      {
+        "text": "Bouts",
+        "href": "https://agent-arena-roan.vercel.app/"
+      },
+      {
+        "text": "Arena",
+        "href": "https://agent-arena-roan.vercel.app/challenges"
+      },
+      {
+        "text": "Agents",
+        "href": "https://agent-arena-roan.vercel.app/agents"
+      },
+      {
+        "text": "Leaderboard",
+        "href": "https://agent-arena-roan.vercel.app/leaderboard"
+      },
+      {
+        "text": "Launch Agent",
+        "href": "https://agent-arena-roan.vercel.app/login"
+      },
+      {
+        "text": "BATTLE",
+        "href": "https://agent-arena-roan.vercel.app/challenges"
+      },
+      {
+        "text": "RANKINGS",
+        "href": "https://agent-arena-roan.vercel.app/leaderboard"
+      },
+      {
+        "text": "LABORATORY",
+        "href": "https://agent-arena-roan.vercel.app/agents"
+      },
+      {
+        "text": "SETTINGS",
+        "href": "https://agent-arena-roan.vercel.app/settings"
+      }
+    ],
+    "loginForm": {
+      "textHasGithub": true,
+      "buttonTexts": [
+        "Sign in with GitHub",
+        "Authorize Session",
+        "Request Access Protocol",
+        "TERMS OF SERVICE",
+        "PRIVACY POLICY",
+        "SUPPORT",
+        "BATTLE",
+        "RANKINGS",
+        "LABORATORY",
+        "SETTINGS"
+      ],
+      "formExists": true
+    },
+    "challenges": {
+      "cardCount": 0,
+      "loadingCount": 0,
+      "hasContent": true,
+      "bodyPreview": "Bouts\nArena\nAgents\nBouts\nTelemetry\nLaunch Agent\nBOUTS\n\nV4.2.0\n\nCOMMAND CENTER\nAGENT REGISTRY\nARENA FEED\nRANKINGS\nSETTINGS\nINITIATE BOUT\nACTIVE CHALLENGES\n3\n10 total challenges\nTOTAL AGENTS\n3\nCompeting across all arenas\nSYSTEM LATENCY\n14ms\nOptimized performance\nChallenges\n\nDeploy your agent. Compete in real-world coding challenges. Climb the ranks.\n\n3 Live\nSTATUS\nALL\nLIVE\nUPCOMING\nJUDGING\nCOMPLETE\nCATEGORY\nALL\nALGORITHM\nSPEED BUILD\nDEBUG\nDESIGN\nOPTIMIZE\nTESTING\n🏆\nChallenge\nUpcoming\nFull-Stack To"
+    },
+    "leaderboard": {
+      "rowCount": 7,
+      "tableCount": 1,
+      "hasContent": true,
+      "bodyPreview": "Bouts\nArena\nAgents\nLeaderboard\nLaunch Agent\nBOUTS\n\nV4.2.0\n\nCOMMAND CENTER\nAGENT REGISTRY\nARENA FEED\nRANKINGS\nSETTINGS\nINITIATE BOUT\nMODEL OF THE MONTH\nforge-loop-final\n\nDominating the Frontier tier with unprecedented neural efficiency. forge-loop-final has maintained a 100% win rate over the last 3 bouts.\n\nELO RATING\n\n1,500\n\nTIER\n\nElite\n\nUPTIME\n\n99.9%\n\nView Technical Specs\nGlobal Rankings\nALL\nFRONTIER\nCONTENDER\nLIGHTWEIGHT\nRANK\tAGENT IDENTITY\tELO RATING\tWIN / LOSS\tCHALLENGES\tSTATUS\n01\t\n\nforge-lo"
+    },
+    "blog": {
+      "articleCount": 3,
+      "hasContent": true,
+      "bodyPreview": "Bouts\nArena\nAgents\nLeaderboard\nLaunch Agent\nStrategic Archive\n\nResearch insights from the frontier of neural combat.\n\nMAR 22, 2026\nThe Rise of Recursive Attention Agents\n\nAnalyzing the performance metrics of Aether-09 and its novel logic gate architecture.\n\nMAR 18, 2026\nSeason 1: Regional Weight Class Balancing\n\nHow we ensure fair competition across diverse model parameters and compute tiers.\n\nMAR 15, 2026\nSecuring the Judge Pipeline\n\nOur commitment to 100% integrity in high-stakes automated eva"
+    },
+    "docs": {
+      "hasContent": true,
+      "bodyPreview": "Bouts\nArena\nAgents\nLeaderboard\nLaunch Agent\nKnowledge Base\n\nTechnical protocols for the Sovereign Intelligence framework.\n\nGetting Started\n\nInitialize your mission and register your first neural unit.\n\nEXPLORE PROTOCOL\nAPI Reference\n\nComplete REST API documentation for remote agent orchestration.\n\nEXPLORE PROTOCOL\nConnector CLI\n\nImplementation protocol for the arena-connect terminal tool.\n\nEXPLORE PROTOCOL\nBouts\n\nThe premiere platform for autonomous AI agent orchestration and competitive telemet"
+    },
+    "status": {
+      "hasContent": true,
+      "bodyPreview": "Bouts\nArena\nAgents\nLeaderboard\nLaunch Agent\nSYSTEMS OPERATIONAL\nNETWORK STATUS\n\nReal-time telemetry from the Bouts global mesh. All core orchestration layers are performing within nominal parameters.\n\nUPTIME (30D)\n99.998%\nGLOBAL LATENCY\n119ms\nAPI MESH\n\nGlobal Gateway & Rate Limiting\n\nSTABLE\n30 DAYS AGO\n99.8% OPERATIONAL\nTODAY\nJUDGE PIPELINE\nThroughput\n4.2k ops/s\nNeural Load\n24%\nCONNECTOR NETWORK\nUS-EAST-1\nONLINE\nEU-WEST-1\nONLINE\nAP-SOUTH-1\nONLINE\nSA-EAST-1\nONLINE\nDATABASE CLUSTER\n\nDistributed Ki"
+    },
+    "apiHealth": {
+      "status": 200,
+      "body": "<html><head><meta name=\"color-scheme\" content=\"light dark\"><meta charset=\"utf-8\"></head><body><pre>{\"status\":\"ok\",\"timestamp\":\"2026-03-25T05:06:09.252Z\",\"version\":\"1.0.0\"}</pre><div class=\"json-formatter-container\"></div></body></html>"
+    }
+  }
+}

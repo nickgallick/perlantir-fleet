@@ -1,0 +1,1 @@
+Look for weak CTA, slow understanding, generic UI, poor trust cues, confusing onboarding, and obvious friction.

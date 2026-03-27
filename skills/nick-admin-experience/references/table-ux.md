@@ -1,0 +1,1 @@
+Tables should be scannable, filterable, sortable, and action-friendly without visual chaos.

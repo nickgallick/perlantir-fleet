@@ -1,0 +1,1 @@
+Prioritize real user complaints and repeated friction over abstract trends alone.

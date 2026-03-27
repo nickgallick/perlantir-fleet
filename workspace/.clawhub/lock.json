@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "skills": {
+    "agent-evaluation": {
+      "version": "1.0.0",
+      "installedAt": 1774101601142
+    },
+    "github": {
+      "version": "1.0.0",
+      "installedAt": 1774101721889
+    },
+    "agent-self-reflection": {
+      "version": "1.0.0",
+      "installedAt": 1774102022049
+    },
+    "auto-test-generator": {
+      "version": "1.0.0",
+      "installedAt": 1774102742101
+    }
+  }
+}

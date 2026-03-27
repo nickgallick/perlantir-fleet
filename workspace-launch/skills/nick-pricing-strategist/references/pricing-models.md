@@ -1,0 +1,1 @@
+Choose pricing based on value delivery, buyer budget, and usage shape.

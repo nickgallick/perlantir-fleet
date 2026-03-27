@@ -1,0 +1,697 @@
+{
+  "url": "https://booksy.com/en-us/",
+  "extractedAt": "2026-03-19T23:04:44.757Z",
+  "viewport": {
+    "width": 390,
+    "height": 844,
+    "deviceScaleFactor": 2
+  },
+  "fullPageHeight": 5772,
+  "sectionCount": 7,
+  "fonts": [
+    "Times New Roman",
+    "ProximaNova-Regular",
+    "ProximaNova-Semibold",
+    "ProximaNova-Bold",
+    "ProximaNova",
+    "Arial"
+  ],
+  "colors": [
+    "#000000",
+    "#161718",
+    "#ffffff",
+    "#00beb7",
+    "#f0f0f0",
+    "#e6e6e6",
+    "#737373",
+    "#151618",
+    "#141414",
+    "#f5f5f5",
+    "#d5d5d5",
+    "#ebebeb",
+    "#8a8b8c",
+    "#383734",
+    "#484848",
+    "#767676",
+    "#2a2d32",
+    "#e6f6f6",
+    "#218cac",
+    "#2a2c32",
+    "#dbdbdb",
+    "#393939",
+    "#afafaf",
+    "#c2c2c2",
+    "#686868",
+    "#8c8b88",
+    "#e4f8ff",
+    "#00a6ae"
+  ],
+  "typography": [
+    {
+      "text": "List Your Business",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "46px",
+      "letterSpacing": "normal",
+      "y": 0
+    },
+    {
+      "text": "Discover and book beauty & wellness professionals near you",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 46
+    },
+    {
+      "text": "Search services or businesses",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 164
+    },
+    {
+      "text": "Hair",
+      "fontFamily": "ProximaNova-Semibold",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "color": "rgb(138, 139, 140)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 242
+    },
+    {
+      "text": "Barber",
+      "fontFamily": "ProximaNova-Semibold",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "color": "rgb(138, 139, 140)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 242
+    },
+    {
+      "text": "Nails",
+      "fontFamily": "ProximaNova-Semibold",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "color": "rgb(138, 139, 140)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 242
+    },
+    {
+      "text": "Skin care",
+      "fontFamily": "ProximaNova-Semibold",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "color": "rgb(138, 139, 140)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 242
+    },
+    {
+      "text": "Brows and lashes",
+      "fontFamily": "ProximaNova-Semibold",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "color": "rgb(138, 139, 140)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 242
+    },
+    {
+      "text": "Massage",
+      "fontFamily": "ProximaNova-Semibold",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "color": "rgb(138, 139, 140)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 242
+    },
+    {
+      "text": "Makeup",
+      "fontFamily": "ProximaNova-Semibold",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "color": "rgb(138, 139, 140)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 242
+    },
+    {
+      "text": "Wellness and spa",
+      "fontFamily": "ProximaNova-Semibold",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "color": "rgb(138, 139, 140)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 242
+    },
+    {
+      "text": "Braids and locs",
+      "fontFamily": "ProximaNova-Semibold",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "color": "rgb(138, 139, 140)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 242
+    },
+    {
+      "text": "Tattoos",
+      "fontFamily": "ProximaNova-Semibold",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "color": "rgb(138, 139, 140)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 242
+    },
+    {
+      "text": "Medical aesthetics",
+      "fontFamily": "ProximaNova-Semibold",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "color": "rgb(138, 139, 140)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 242
+    },
+    {
+      "text": "Hair removal",
+      "fontFamily": "ProximaNova-Semibold",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "color": "rgb(138, 139, 140)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 242
+    },
+    {
+      "text": "Home services",
+      "fontFamily": "ProximaNova-Semibold",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "color": "rgb(138, 139, 140)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 242
+    },
+    {
+      "text": "Piercing",
+      "fontFamily": "ProximaNova-Semibold",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "color": "rgb(138, 139, 140)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 242
+    },
+    {
+      "text": "Pet services",
+      "fontFamily": "ProximaNova-Semibold",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "color": "rgb(138, 139, 140)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 242
+    },
+    {
+      "text": "Dental and orthodontics",
+      "fontFamily": "ProximaNova-Semibold",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "color": "rgb(138, 139, 140)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 242
+    },
+    {
+      "text": "Health and fitness",
+      "fontFamily": "ProximaNova-Semibold",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "color": "rgb(138, 139, 140)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 242
+    },
+    {
+      "text": "Professional services",
+      "fontFamily": "ProximaNova-Semibold",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "color": "rgb(138, 139, 140)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 242
+    },
+    {
+      "text": "Other",
+      "fontFamily": "ProximaNova-Semibold",
+      "fontSize": "12px",
+      "fontWeight": "400",
+      "color": "rgb(138, 139, 140)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 242
+    },
+    {
+      "text": "Recommended",
+      "fontFamily": "ProximaNova-Bold",
+      "fontSize": "24px",
+      "fontWeight": "400",
+      "color": "rgb(56, 55, 52)",
+      "lineHeight": "35px",
+      "letterSpacing": "normal",
+      "y": 452
+    },
+    {
+      "text": "5.0\n171 reviews\nRenee’Z Edge\n60 Bowling Dr, Suite 1, Jackson, 38305\n\nPromoted",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "5.0\n171 reviews\nRenee’Z Edge\n60 Bowling Dr, Suite 1, Jackson, 38305",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "5.0\n171 reviews",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "5.0\n446 reviews\nAnthony @ Westside Barbershop\n2800 N MacDill Ave, Suite R, Tampa, 33607\n\nPromoted",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "5.0\n446 reviews\nAnthony @ Westside Barbershop\n2800 N MacDill Ave, Suite R, Tampa, 33607",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "5.0\n446 reviews",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "5.0\n247 reviews\nKrispi King 1\n115 N Junction Street, Muskogee, OK, 74401\n\nPromoted",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "5.0\n247 reviews\nKrispi King 1\n115 N Junction Street, Muskogee, OK, 74401",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "5.0\n247 reviews",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "4.9\n930 reviews\nClippers &Co.\n1290 Main St, Leominster, 01453\n\nPromoted",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "4.9\n930 reviews\nClippers &Co.\n1290 Main St, Leominster, 01453",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "4.9\n930 reviews",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "5.0\n231 reviews\nJordan Nunez\n676 Larkfield Ctr, Santa Rosa CA, 95403\n\nPromoted",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "5.0\n231 reviews\nJordan Nunez\n676 Larkfield Ctr, Santa Rosa CA, 95403",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "5.0\n231 reviews",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "4.7\n178 reviews\nDezelClippz @ DiamondCutz\n8480 south Las Vegas Blvd, Suite 140, Las Vegas, 89183\n\nPr",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "4.7\n178 reviews\nDezelClippz @ DiamondCutz\n8480 south Las Vegas Blvd, Suite 140, Las Vegas, 89183",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "4.7\n178 reviews",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "5.0\n643 reviews\nFLAWLESS CUTS/GoldenHands\nCentreville Rd, 7545, Manassas, 20111\n\nPromoted",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "5.0\n643 reviews\nFLAWLESS CUTS/GoldenHands\nCentreville Rd, 7545, Manassas, 20111",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "5.0\n643 reviews",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "5.0\n435 reviews\nNanDito Barber💈/ Elite Barber Studio\n4504 Pacific Ave, Wildwood, 08260\n\nPromoted",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "5.0\n435 reviews\nNanDito Barber💈/ Elite Barber Studio\n4504 Pacific Ave, Wildwood, 08260",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "5.0\n435 reviews",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "5.0\n466 reviews\nShane’s Barbershop\n15 Holmes Street, Mystic, 06355\n\nPromoted",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "5.0\n466 reviews\nShane’s Barbershop\n15 Holmes Street, Mystic, 06355",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    },
+    {
+      "text": "5.0\n466 reviews",
+      "fontFamily": "ProximaNova-Regular",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(22, 23, 24)",
+      "lineHeight": "normal",
+      "letterSpacing": "normal",
+      "y": 519
+    }
+  ],
+  "sections": [
+    {
+      "tag": "header",
+      "className": "purify_1UQ++elv8X2Uw1EAGsffCA==",
+      "y": 0,
+      "height": 416,
+      "bgColor": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "tag": "section",
+      "className": "",
+      "y": 46,
+      "height": 118,
+      "bgColor": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "tag": "section",
+      "className": "",
+      "y": 164,
+      "height": 68,
+      "bgColor": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "tag": "section",
+      "className": "purify_qDDOxbeZYuH37P9+gRUPcw== purify_GnpWFUR1LTzVS7vB2l7LQQ==",
+      "y": 232,
+      "height": 184,
+      "bgColor": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "tag": "main",
+      "className": "mainSection",
+      "y": 452,
+      "height": 5314.078125,
+      "bgColor": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "tag": "section",
+      "className": "pageSection",
+      "y": 452,
+      "height": 5314.078125,
+      "bgColor": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "tag": "div",
+      "className": "row row--section",
+      "y": 2481.53125,
+      "height": 876.578125,
+      "bgColor": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "tag": "div",
+      "className": "row reverse row--section",
+      "y": 3458.109375,
+      "height": 633.328125,
+      "bgColor": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "tag": "div",
+      "className": "row row--section",
+      "y": 4191.4375,
+      "height": 765.921875,
+      "bgColor": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "tag": "footer",
+      "className": "purify_RWjajvlVHFovrDn4uCitlA== purify_l8wESnkSHhsMN3do4Y0s6w== purify_X-wOW7AfZDJsRU5ZFVpi7g==",
+      "y": 5816.078125,
+      "height": 432.125,
+      "bgColor": "rgb(22, 23, 24)"
+    },
+    {
+      "tag": "nav",
+      "className": "purify_1L0R93x1akq8vZOQgVhbOQ==",
+      "y": 5868.078125,
+      "height": 182,
+      "bgColor": "rgba(0, 0, 0, 0)"
+    }
+  ],
+  "images": [
+    {
+      "src": "https://d2zdpiztbgorvt.cloudfront.net/region1/us/482909/biz_photo/6a59e694070c4654b6e80e5cd206f0-reneez-edge-biz-photo-bfeca9089c524abdbd51c09ebfe219-booksy.jpeg?size=640x427",
+      "alt": "Renee’Z Edge - Jackson",
+      "width": 275,
+      "height": 183.46875,
+      "x": 25.0244140625,
+      "y": 518.921875,
+      "localFile": "assets/images/img-0.jpeg"
+    },
+    {
+      "src": "https://d2zdpiztbgorvt.cloudfront.net/region1/us/98245/biz_photo/5b1ce27de72e49ac9c2aa921d1d59f-anthony-westside-barbershop-biz-photo-ec3cc553a4c14549816ec0c0970f90-booksy.jpeg?size=640x427",
+      "alt": "Anthony @ Westside Barbershop - Tampa",
+      "width": 275,
+      "height": 183.46875,
+      "x": 324.005859375,
+      "y": 518.921875,
+      "localFile": "assets/images/img-1.jpeg"
+    },
+    {
+      "src": "https://dk2h3gy4kn9jw.cloudfront.net/web-2019/30476702/img/customer-app-en.043f64a.webp",
+      "alt": "Booksy app",
+      "width": 343.984375,
+      "height": 265.609375,
+      "x": 23,
+      "y": 1452.3125,
+      "localFile": "assets/images/img-2.webp"
+    },
+    {
+      "src": "https://dk2h3gy4kn9jw.cloudfront.net/web-2019/30476702/img/biz-app-en.4d93e66.webp",
+      "alt": "Booksy app",
+      "width": 343.984375,
+      "height": 265.609375,
+      "x": 23,
+      "y": 2115.921875,
+      "localFile": "assets/images/img-3.webp"
+    },
+    {
+      "src": "https://d2zdpiztbgorvt.cloudfront.net/us/cms_content/None/72b93a8b968a47baa5e33e2f7e6cc8f3.jpg",
+      "alt": "Best Mustache Styles",
+      "width": 264,
+      "height": 176,
+      "x": 15.0015869140625,
+      "y": 5483.71875,
+      "localFile": "assets/images/img-4.jpg"
+    },
+    {
+      "src": "https://d2zdpiztbgorvt.cloudfront.net/us/cms_content/None/460504009e8f48a49add0252c37af80f.jpg",
+      "alt": "What does an esthetician do?",
+      "width": 264,
+      "height": 185.515625,
+      "x": 295.0015869140625,
+      "y": 5478.9609375,
+      "localFile": "assets/images/img-5.jpg"
+    },
+    {
+      "src": "https://dk2h3gy4kn9jw.cloudfront.net/web-2019/30476702/img/home-gradient.e296fa1.jpg",
+      "alt": "bg-image",
+      "width": 390,
+      "height": 416,
+      "x": 0,
+      "y": 0,
+      "localFile": "assets/images/img-6.jpg"
+    }
+  ],
+  "svgCount": 63,
+  "fontUrlCount": 0
+}

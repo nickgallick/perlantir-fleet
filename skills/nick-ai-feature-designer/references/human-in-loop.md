@@ -1,0 +1,1 @@
+Design handoff, review, and correction paths so AI output is usable and safe.
