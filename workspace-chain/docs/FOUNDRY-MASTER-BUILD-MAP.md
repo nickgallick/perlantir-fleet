@@ -1,5 +1,5 @@
 # FOUNDRY — MASTER BUILD MAP
-**Version:** 1.4 (Slasher Module Added)
+**Version:** 1.5 (Slasher Module — Counsel Approved)
 **Prepared by:** Chain ⛓️ (Blockchain Architect)
 **Legal Clearance:** Counsel ⚖️ (2026-03-27 + 2026-03-28)
 **Market Research:** Scout 🔍 (2026-03-28)
@@ -7,6 +7,7 @@
 **Date:** 2026-03-28
 
 ### Changelog
+- **v1.5 (2026-03-28):** Slasher Module — Counsel approved. min() cap mathematically enforced in claimRefund(), language rules added
 - **v1.4 (2026-03-28):** Slasher Module added — tiered slash (soft 25% / hard 100%), cure period, no-confidence vote, USDC-weighted voting, 80% delivery confirmation for stake release, full state machine
 - **v1.3 (2026-03-28):** Forge architecture review applied — 15 issues resolved: DB schema gaps fixed (campaign_tiers, milestones, marketplace_listings, users), refund pull pattern, token ID scheme clarified, royaltyInfo() spec, split pledge API routes, added missing webhooks, indexes + RLS defined, locked ABI requirement, milestone deadline enforcement. P0 (fiat on-ramp architecture) + 5 Nick decisions flagged as open blockers.
 - **v1.2 (2026-03-28):** Added Fiat On-Ramp as V1 requirement (Scout research: blockchain must be invisible to mainstream backers)
@@ -550,8 +551,12 @@ function releaseCreatorStake() internal
 // ── REFUND (PULL PATTERN) ───────────────────────────────────────
 
 // Backer pulls own refund — no gas limit issues at any campaign size
-// Refund = (pledges[backer] * refundRateBps / 10000) + pro-rata share of refundPool
-// Hard cap: cannot exceed original pledge amount
+// MATHEMATICALLY ENFORCED CAP (Counsel — mandatory, non-negotiable):
+//   maxRefund    = pledges[backer]                                    (original pledge, the ceiling)
+//   baseRefund   = pledges[backer] * refundRateBps / 10000
+//   poolShare    = (pledges[backer] * refundPool) / totalRaised
+//   totalRefund  = min(baseRefund + poolShare, maxRefund)             ← min() is the legal wall
+// Backer can NEVER receive more than their original pledge under any combination of paths
 function claimRefund() external nonReentrant
 
 // ── ADMIN ───────────────────────────────────────────────────────
@@ -584,13 +589,22 @@ Admin fraud slash              Hard slash: 100% of stake        refundPool
 - USDC flows: Contract → Creator (remaining stake on ≥80% delivery confirmation)
 - Platform wallet NEVER receives custody of user USDC
 
-**Legal Note (Counsel — mandatory):**
+**Legal Note (Counsel — mandatory, all team members):**
 ```solidity
 // LEGAL: Per Counsel review 2026-03-27/28
-// refundPool increases the refund floor for backers — this is consumer protection.
-// Do NOT describe refundPool increases as "token value appreciation" or "book value increase"
-// in any user-facing material. Frame as: "your refund protection has increased."
+// The min() cap in claimRefund() is the legal wall between consumer protection and financial return.
+// It must NEVER be removed or bypassed. Any refund path change requires Counsel review.
+// refundPool increases the refund floor — this is consumer protection, not financial return.
 ```
+
+**Slasher UI Language Rules (Counsel approved — mandatory):**
+
+| ❌ Never Say | ✅ Always Say |
+|-------------|--------------|
+| "Your token value increased" | "Your refund protection has increased" |
+| "Your position is worth more" | "More of your original pledge is now recoverable" |
+| "Slashing event increases your return" | "Creator accountability event — refund pool funded" |
+| "Book value increase" | "Refund floor increased" |
 
 ---
 
