@@ -612,7 +612,8 @@ GET /api/campaigns
 
 CampaignSummary {
   id, title, creator_id, category, funding_goal, total_raised,
-  ai_reviewed_passed: boolean,   // GAP 2: binary only — ai_score and ai_score_public_summary STRIPPED from public response per Counsel
+  ai_reviewed: boolean,          // binary pass/fail — ai_score STRIPPED per Counsel
+  ai_review_summary: string,     // plain English only e.g. "Project passed automated quality review" — no score language
   status, ends_at,
   milestone_count, milestones_verified_count,
   tier_price_min, tier_price_max
@@ -646,7 +647,9 @@ GET /api/marketplace
 ListingSummary {
   id, token_id, campaign_id, campaign_title, tier_id, tier_name,
   reward_description, ask_price, original_price, refund_rate_bps,
-  milestone_progress, estimated_delivery, campaign_ai_score, seller_id
+  milestone_progress, estimated_delivery,
+  campaign_ai_reviewed: boolean,  // binary only — campaign_ai_score STRIPPED per Counsel
+  seller_id
 }
 ```
 
