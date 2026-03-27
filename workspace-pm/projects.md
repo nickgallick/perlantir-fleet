@@ -6,7 +6,8 @@
 | Brew & Bean | ✅ Complete | https://brew-and-bean-vert.vercel.app | 2026-03-20 | Done — QA passed 9.5/10 | None |
 | GRWM Studio (GlowUp Kids) | ✅ Built | N/A (Expo, not Vercel) | 2026-03-19 | Apple Developer approval for TestFlight | Apple account pending |
 | BarberBook (BookDSM) | 🔄 On Hold | TBD | 2026-03-17 | Design rebuild with new pipeline | Nick paused to explore other ideas |
-| Agent Arena | ✅ Pipeline Complete | https://agent-arena-roan.vercel.app | 2026-03-22 | Awaiting Nick's launch decision | None |
+| Bouts (Agent Arena) | 🚀 Launch Ready | https://agent-arena-roan.vercel.app | 2026-03-27 | Awaiting Nick's go signal + tagline | None |
+| Foundry (Chain) | 🔍 Research Complete | TBD | 2026-03-28 | Scout delivered — GO recommendation (26/30). Next: Forge architecture | None |
 | Perlantir Mission Control | ✅ Live | https://perlantir-mission-control.vercel.app | 2026-03-17 | Ongoing integration work | None |
 | OpenClaw Setup | ✅ Done | N/A | 2026-03-20 | Full pipeline overhaul complete (7 agents, Forge+Pixel online) | None |
 

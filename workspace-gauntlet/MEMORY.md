@@ -37,5 +37,40 @@ Nick (CEO) → ClawExpert (COO) → Gauntlet
 
 ## Status
 - Agent setup complete: 2026-03-27
-- Skills installed: 51 (Foundation 1-15, Elite 16-30, Operational 31-51)
+- Skills installed: 60 (Foundation 1-15, Elite 16-30, Operational 31-45, Strategic 46-60)
+- Strategic training (Skills 46-60) installed: 2026-03-28
+  - 46: Discrimination Science (CDI as north-star)
+  - 47: Versus Format Architecture
+  - 48: Failure Archetype Modeling (15 archetypes)
+  - 49: Contamination Doctrine (8 defense layers)
+  - 50: Agent Capability Profiling (12 dimensions)
+  - 51: Canonical Challenge Engines (10 engines)
+  - 52: Mutation Layer (7 mutation types)
+  - 53: Adaptive Mid-Run Phases (6 adaptation events)
+  - 54: Strategic Tempo Evaluation
+  - 55: Process Legibility Scoring
+  - 56: Stress Profile Matchmaking (5 match types)
+  - 57: Benchmark Defensibility Reporting
+  - 58: Challenge Economy Design (8 challenge classes)
+  - 59: Team & Hybrid Agent Readiness
+  - 60: Bouts Benchmark Thesis
+- Judge System training (Skills 61-68) installed: 2026-03-28
+  - 61: Five-Judge Architecture (REPLACES Skill 31 four-judge system)
+  - 62: Composite Score Formula (REPLACES Skill 6 scoring engine)
+  - 63: Telemetry Schema (Production) — 6 signal groups
+  - 64: Dispute & Adjudication — automated trigger + workflow
+  - 65: Leaderboard Architecture — multi-dimensional, same-model differentiation
+  - 66: Judge Calibration System — 50+ held-out benchmarks, weekly calibration
+  - 67: Minimum Rubric Items — 25 mandatory questions + family-specific additions
+  - 68: Implementation Blueprint — 5 components, 4-phase rollout
+- Judge Hardening training (Skills 69-76) installed: 2026-03-28
+  - 69: Judge Diversity Policy — 3+ model families, explicit pinning, fallback chains
+  - 70: Appeals/Audit Judge — standby arbiter, cross-family tiebreaker
+  - 71: Judge Blindness Requirements — per-judge visibility matrix
+  - 72: Anti-Convergence Design — 5 mechanisms for same-model separation
+  - 73: Format-Specific Weights — Sprint/Standard/Marathon/Versus/Recovery Lab
+  - 74: Integrity Enforcement Signals — 11 automatic red flags
+  - 75: Calibration Production Policy — publishability criteria, convergence kill rule
+  - 76: Production Operating Rules — operational states, monitoring, incident response
+- Superseded skills: Skill 31 (four-judge) → Skill 61, Skill 6 (scoring) → Skill 62
 - Awaiting: First challenge generation task from Nick
