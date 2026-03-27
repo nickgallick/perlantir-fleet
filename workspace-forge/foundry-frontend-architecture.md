@@ -219,6 +219,7 @@ Filters and pagination live in the URL (not Zustand) so links are shareable:
 ```
 <RootLayout>
   <Providers>           ← Supabase, wagmi, RainbowKit, TanStack Query
+    <TVLCapBanner />    ← GAP 1 (Counsel/Chain v1.8): Site-wide dismissible banner — "⚠️ Platform is in early access — maximum $10,000 in active campaigns. TVL cap will be raised after external security audit completes." Read cap value from CampaignFactory.maxTVL via API — auto-hides when admin raises cap. DO NOT hardcode $10K.
     <Header>
       <NavLinks />
       <WalletButton />  ← RainbowKit ConnectButton (shows only when relevant)
@@ -227,7 +228,7 @@ Filters and pagination live in the URL (not Zustand) so links are shareable:
     <main>{children}</main>
     <Footer>
       <FooterLinks />
-      <LegalDisclaimer />   ← "AI review is a quality filter, not a guarantee..."
+      <LegalDisclaimer />   ← Exact Counsel text (GAP 5): "AI review is a quality filter designed to screen for obvious red flags. It is not an assessment of investment merit, likelihood of delivery, or endorsement of the campaign. Back campaigns at your own discretion."
     </Footer>
     <Toaster />
   </Providers>
@@ -279,7 +280,7 @@ Filters and pagination live in the URL (not Zustand) so links are shareable:
     <SearchInput />
     <CategoryFilter />      ← tech, games, physical, creative, etc.
     <StatusFilter />        ← live, funded, delivering, complete
-    <SortSelect />          ← newest, ending soon, most funded, highest score
+    <SortSelect />          ← newest, ending soon, most funded, most backers — NO "highest score" option (GAP 3: scores internal only per Counsel)
   </SearchAndFilters>
 
   <CampaignGrid>
@@ -307,7 +308,7 @@ Filters and pagination live in the URL (not Zustand) so links are shareable:
     <CreatorInfo />
     <CategoryBadge />
     <AIReviewedBadge />     ← "AI Reviewed ✓" pass/fail badge ONLY — no numerical score per Counsel 2026-03-28
-    <AIReviewDisclaimer />  ← REQUIRED exact text: "AI review is a quality filter designed to screen for obvious red flags. It is not an assessment of investment merit, likelihood of delivery, or endorsement of the campaign. Back campaigns at your own discretion."
+    <AIReviewDisclaimer />  ← REQUIRED EXACT TEXT (GAP 5 — Counsel verbatim, do not paraphrase): "AI review is a quality filter designed to screen for obvious red flags. It is not an assessment of investment merit, likelihood of delivery, or endorsement of the campaign. Back campaigns at your own discretion."
   </CampaignHeader>
 
   <CampaignSplit>           ← two-column on desktop
@@ -611,10 +612,12 @@ GET /api/campaigns
 
 CampaignSummary {
   id, title, creator_id, category, funding_goal, total_raised,
-  ai_score, ai_score_public_summary, status, ends_at,
+  ai_reviewed_passed: boolean,   // GAP 2: binary only — ai_score and ai_score_public_summary STRIPPED from public response per Counsel
+  status, ends_at,
   milestone_count, milestones_verified_count,
   tier_price_min, tier_price_max
 }
+// Backend MUST explicitly strip ai_score from all public serializers — do not rely on field omission
 ```
 
 ### `/campaigns/[id]` (Campaign Detail)
@@ -713,7 +716,10 @@ These are non-negotiable per Counsel. Every component that shows relevant langua
 | "Portfolio" | "Backed campaigns" |
 | "Yield" | "Reward" |
 | "Early backers sell at premium" | *(don't say this at all)* |
-| "Earn passive income from royalties" | "Receive compensation when your reward claims are transferred" |
+| "Earn passive income from secondary sales" | "Receive compensation when your reward claims are transferred" |
+| "Royalty revenue stream" | "Creator royalty on transfers" |
+| "Monetize your token" | "Ongoing creator compensation" |
+| "Secondary market earnings" | "Transfer royalty" |
 
 **Hardcoded disclaimers (required on specific pages):**
 - Campaign detail → "AI review is a quality filter, not a guarantee of delivery. Back campaigns at your own discretion."
