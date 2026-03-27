@@ -48,3 +48,9 @@ node_modules/
 # ── Large reference materials (re-cloneable) ────────────
 workspace-chain/exploit-reproductions/
 workspace-chain/whitepapers/
+
+# OpenClaw system files
+completions/
+memory/*.sqlite
+openclaw.json.bak.*
+openclaw.json.pre-update-*

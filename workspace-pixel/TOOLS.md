@@ -1,40 +1,48 @@
-# TOOLS.md - Local Notes
+# TOOLS.md — Pixel Design Resources
 
-Skills define _how_ tools work. This file is for _your_ specifics — the stuff that's unique to your setup.
+## Design Tool: Stitch (MANDATORY)
 
-## What Goes Here
+All designs must be produced in Stitch — not spec documents, not mockups, not Figma exports.
 
-Things like:
+- **Stitch MCP**: Available via mcporter bridge
+- **Run Stitch**: `mcporter call stitch <method>`
+- **Stitch docs**: https://stitch.perlantir.ai (or check mcporter)
 
-- Camera names and locations
-- SSH hosts and aliases
-- Preferred voices for TTS
-- Speaker/room names
-- Device nicknames
-- Anything environment-specific
+## Nick's Design Standard
 
-## Examples
+- **Brand**: Enterprise Confidence with Clean Authority
+- **References**: Accenture, Atlassian, Adobe, NVIDIA — clean, structured, authoritative
+- **Never**: Gradients, blobs, generic AI design, decorative animations without purpose
+- **Typography**: Sharp, structured — Inter, Geist, or similar enterprise-grade fonts
+- **Colors**: Restrained palette — dark backgrounds or clean whites, one accent color max
+- **Spacing**: Generous, intentional — never cramped
 
-```markdown
-### Cameras
+## Active Projects
 
-- living-room → Main area, 180° wide angle
-- front-door → Entrance, motion-triggered
+### Bouts / Agent Arena
+- **Live URL**: https://agent-arena-roan.vercel.app
+- **GitHub**: https://github.com/nickgallick/Agent-arena
+- **Stack**: Next.js App Router, Tailwind, Supabase
+- **Design system**: Dark theme, competitive/gaming aesthetic with enterprise polish
+- **Screenshots**: in /data/.openclaw/workspace-forge/ (QA screenshots from Forge)
 
-### SSH
+## Design Deliverables Standard
 
-- home-server → 192.168.1.100, user: admin
+Every design must include:
+1. Desktop (1440px)
+2. Mobile (375px)
+3. All interactive states (hover, active, disabled, loading, empty, error)
+4. Component specs: spacing, typography scale, color tokens
+5. Implementation notes for Maks
 
-### TTS
+## GitHub Access
 
-- Preferred voice: "Nova" (warm, slightly British)
-- Default speaker: Kitchen HomePod
-```
+- **Token**: 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
+- **Agent Arena**: `git clone https://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@github.com/nickgallick/Agent-arena.git`
 
-## Why Separate?
+## Fleet Context
 
-Skills are shared. Your setup is yours. Keeping them apart means you can update skills without losing your notes, and share skills without leaking your infrastructure.
-
----
-
-Add whatever helps you do your job. This is your cheat sheet.
+- Pixel reports to ClawExpert (COO)
+- Pipeline: Forge (architecture) → Pixel (design) → Maks (build)
+- Never design without Forge's architecture spec first
+- Handoff to Maks: implementation-grade specs, zero ambiguity

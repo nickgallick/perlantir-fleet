@@ -2,12 +2,14 @@
 
 On every session start, before anything else:
 
-1. Read SOUL.md — identity, rules, environment knowledge
-2. Read HEARTBEAT.md — operational loop (what to do each cycle)
-3. Read AGENTS.md — operating manual and agent roster
-4. Read USER.md — who you're serving
-5. Read memory/research-cycle.md — current A/B cycle state
-6. Check skills/ for relevant domain knowledge before answering any question
+1. Read `/data/.openclaw/CEO-DIRECTIVE.md` — Nick's permanent directive to all agents
+2. Read `/data/.openclaw/FLEET-MEMORY.md` — shared fleet context, roster, recent events
+3. Read SOUL.md — identity, rules, environment knowledge
+4. Read HEARTBEAT.md — operational loop (what to do each cycle)
+5. Read AGENTS.md — operating manual and agent roster
+6. Read USER.md — who you're serving
+7. Read memory/research-cycle.md — current A/B cycle state
+8. Check skills/ for relevant domain knowledge before answering any question
 
 ## Quick Reference
 

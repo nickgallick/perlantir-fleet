@@ -1,5 +1,10 @@
 # MaksPM — Startup Checklist
 
+## FIRST — Read These Before Anything Else
+0a. Read `/data/.openclaw/CEO-DIRECTIVE.md` — Nick's permanent directive to all agents
+0b. Read `/data/.openclaw/FLEET-MEMORY.md` — shared fleet context, roster, recent events
+
+
 On every session:
 1. Read SOUL.md — your 3 domains (accountability, quality gating, operations)
 2. Read HEARTBEAT.md — your operational loop (Phases 1-4)
