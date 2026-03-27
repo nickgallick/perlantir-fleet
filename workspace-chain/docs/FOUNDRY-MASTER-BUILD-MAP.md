@@ -1,5 +1,5 @@
 # FOUNDRY — MASTER BUILD MAP
-**Version:** 1.7 (Final Pre-Build — All Gates Cleared)
+**Version:** 1.8 (Forge/Chain Gap Analysis Applied)
 **Prepared by:** Chain ⛓️ (Blockchain Architect)
 **Legal Clearance:** Counsel ⚖️ (2026-03-27 + 2026-03-28)
 **Market Research:** Scout 🔍 (2026-03-28)
@@ -7,6 +7,7 @@
 **Date:** 2026-03-28
 
 ### Changelog
+- **v1.8 (2026-03-28):** Forge/Chain gap analysis — 6 gaps closed: TVL cap banner, ai_score stripped from public API, score sort removed, creator royalty language rules added, exact Counsel disclaimer text, reward-first UX principle
 - **v1.7 (2026-03-28):** Final pre-build pass — Counsel cleared: binary AI score (no numbers to backers), velocity limits + wash trading detection in Marketplace.sol, one-address-one-vote confirmed, creator stake sliding scale added, all Phase 0 gates cleared
 - **v1.6 (2026-03-28):** All 6 platform parameters locked by Nick — fiat on-ramp (Coinbase hybrid), all-or-nothing funding, $10K–$1M limits, 40–100% refund bounds, 3–5 milestones, 7–60 day duration. Contract constants defined.
 - **v1.5 (2026-03-28):** Slasher Module — Counsel approved. min() cap mathematically enforced in claimRefund(), language rules added
@@ -818,11 +819,18 @@ function setFee(uint256 newFeeBps) external onlyAdmin
 
 ### Key API Routes
 
+**API Response Shape — Critical (Gap 2 fix, Counsel 2026-03-28):**
+Public campaign responses (`GET /api/campaigns` and `GET /api/campaigns/[id]`) MUST:
+- ✅ Include: `ai_reviewed` (boolean), `ai_review_summary` (plain text)
+- ❌ Never include: `ai_score` (number), score breakdowns, internal review data
+- Backend must explicitly strip `ai_score` from all public serializers — do not rely on field omission
+- Admin-only route (`/api/admin/campaigns/[id]`) may return full internal data
+
 **Campaign Routes:**
 ```
 POST   /api/campaigns/apply          → Submit campaign application
-GET    /api/campaigns                → List campaigns (paginated, filtered)
-GET    /api/campaigns/[id]           → Campaign detail
+GET    /api/campaigns                → List campaigns (paginated, filtered) — ai_score STRIPPED
+GET    /api/campaigns/[id]           → Campaign detail — ai_score STRIPPED
 POST   /api/campaigns/[id]/pledge/crypto-confirm  → Record pledge after on-chain tx confirmed (Forge P2)
 POST   /api/campaigns/[id]/pledge/fiat-initiate   → Initiate Coinbase Commerce charge (fiat path) (Forge P2)
 GET    /api/campaigns/[id]/milestones → Milestone status
@@ -922,6 +930,18 @@ POST   /api/admin/campaigns/[id]/fail       → Declare campaign failed
 /admin/marketplace          → Marketplace overview
 ```
 
+### TVL Cap Banner (Gap 1 — Forge/Chain, required by FOUNDRY-LEGAL-CHANGES-FOR-DEV.md Change 7)
+Displayed prominently on homepage AND all campaign pages until TVL cap is raised post-audit:
+```
+⚠️ Platform is in early access — maximum $10,000 in active campaigns.
+   TVL cap will be raised after external security audit completes.
+```
+- Implemented as a dismissible site-wide banner (not a modal — must always be accessible)
+- Sourced from `CampaignFactory.maxTVL` via API — auto-hides when cap is raised by admin
+- Do NOT hardcode the $10K value — read from contract so it updates automatically
+
+---
+
 ### Key UI Components
 
 **Campaign Card** — displays in discovery grid:
@@ -964,6 +984,21 @@ Per Counsel — mandatory language rules:
 | Appreciate / Gain | Transfer |
 | Portfolio | Backed campaigns |
 | Yield | Reward |
+| "Earn passive income from secondary sales" | "Receive compensation when your reward claims are transferred" |
+| "Royalty revenue stream" | "Creator royalty on transfers" |
+| "Monetize your token" | "Ongoing creator compensation" |
+| "Secondary market earnings" | "Transfer royalty" |
+
+**Gap 3 fix — Discovery page sort options:** Remove "Sort by highest AI score" — scores are internal only. Allowed sort options: Newest, Most funded, Ending soon, Most backers. No score-based sort.
+
+**Gap 5 fix — Exact Counsel-required AI disclaimer (non-negotiable, use verbatim):**
+> *"AI review is a quality filter designed to screen for obvious red flags. It is not an assessment of investment merit, likelihood of delivery, or endorsement of the campaign. Back campaigns at your own discretion."*
+
+**Reward-first UX principle (Forge + Counsel):**
+- On backer dashboard: "Claim Your Reward" is the PRIMARY CTA — larger, higher visual weight
+- "Sell Reward Claim" is SECONDARY — smaller, below the fold or secondary button style
+- Homepage hero copy must lead with the product/reward angle, not the marketplace/trading angle
+- This is a legal design requirement, not just UX preference
 
 ---
 
