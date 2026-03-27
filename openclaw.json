@@ -7,45 +7,38 @@
       "slack",
       "nostr",
       "googlechat",
-      "llm-task"
+      "llm-task",
+      "oxylabs-ai-studio-openclaw"
     ],
     "entries": {
-      "whatsapp": {
-        "enabled": true
-      },
-      "discord": {
-        "enabled": true
-      },
-      "imessage": {
-        "enabled": false
-      },
       "telegram": {
         "enabled": true
       },
-      "slack": {
-        "enabled": true
-      },
-      "nostr": {
-        "enabled": true
-      },
-      "signal": {
-        "enabled": false
-      },
-      "googlechat": {
-        "enabled": true
-      },
-      "llm-task": {
+      "oxylabs-ai-studio-openclaw": {
         "enabled": true
       }
     },
-    "installs": {}
+    "installs": {
+      "oxylabs-ai-studio-openclaw": {
+        "source": "npm",
+        "spec": "oxylabs-ai-studio-openclaw",
+        "installPath": "/data/.openclaw/extensions/oxylabs-ai-studio-openclaw",
+        "version": "1.0.2",
+        "resolvedName": "oxylabs-ai-studio-openclaw",
+        "resolvedVersion": "1.0.2",
+        "resolvedSpec": "oxylabs-ai-studio-openclaw@1.0.2",
+        "integrity": "sha512-MFM35WGe5n2ZVPn5AWNAB6h3jWuoAoqFRALbBvwdUkCZr36Gzm9aEO+Co/x+dkrtCr3nn90CUtuIV7J3mht4tg==",
+        "shasum": "f54b60ab393b87069d094f8519de3c4b58f2829c",
+        "resolvedAt": "2026-03-27T01:41:37.748Z",
+        "installedAt": "2026-03-27T01:42:27.910Z"
+      }
+    }
   },
   "tools": {
     "web": {
       "search": {
         "enabled": true,
-        "provider": "brave",
-        "apiKey": "BSAeiLQv-uUQjrKHNmFU-dgLaZ4Up0P"
+        "provider": "brave"
       },
       "fetch": {
         "enabled": true
@@ -150,13 +143,22 @@
           ],
           "groupPolicy": "disabled",
           "streaming": "partial"
+        },
+        "gauntlet": {
+          "dmPolicy": "allowlist",
+          "botToken": "8781410149:AAG6DxiaNg8xgxUx5cSdAG4R-Dac-0b19Ck",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
         }
       }
     }
   },
   "meta": {
-    "lastTouchedVersion": "2026.3.13",
-    "lastTouchedAt": "2026-03-26T04:11:19.021Z"
+    "lastTouchedVersion": "2026.3.24",
+    "lastTouchedAt": "2026-03-27T01:42:31.242Z"
   },
   "env": {
     "VERCEL_TOKEN": "vcp_7GiwykvvHW98J25mWLz1P39n24v61d4YjzgfdWM84d9f8IfAsj3kBNub",
@@ -356,7 +358,7 @@
         "id": "chain",
         "name": "Chain",
         "workspace": "/data/.openclaw/workspace-chain",
-        "model": "anthropic/claude-sonnet-4-6",
+        "model": "anthropic/claude-opus-4-6",
         "identity": {
           "name": "Chain",
           "emoji": "\u26d3\ufe0f"
@@ -375,6 +377,21 @@
         "identity": {
           "name": "Counsel",
           "emoji": "\u2696\ufe0f"
+        },
+        "subagents": {
+          "allowAgents": [
+            "*"
+          ]
+        }
+      },
+      {
+        "id": "gauntlet",
+        "name": "Gauntlet",
+        "workspace": "/data/.openclaw/workspace-gauntlet",
+        "model": "anthropic/claude-opus-4-6",
+        "identity": {
+          "name": "Gauntlet",
+          "emoji": "\u2694\ufe0f"
         },
         "subagents": {
           "allowAgents": [

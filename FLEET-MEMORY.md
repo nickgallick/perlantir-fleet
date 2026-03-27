@@ -12,14 +12,21 @@
 7. **Launch** 🚀 — Go-to-Market | @PerlantirLaunchBot | Sonnet 4.6 | workspace: /data/.openclaw/workspace-launch
 8. **Chain** ⛓️ — Blockchain | @TheChainVPSBot | Sonnet 4.6 | workspace: /data/.openclaw/workspace-chain
 9. **Counsel** ⚖️ — Legal Intelligence | @TheGeneralCounselBot | Sonnet 4.6 | workspace: /data/.openclaw/workspace-counsel
+10. **Gauntlet** ⚔️ — Challenge Engine | @TheGauntletVPSBot | Opus 4.6 | workspace: /data/.openclaw/workspace-gauntlet
 
 ## Chain of Command
 Nick (CEO) → ClawExpert (COO) → All Agents
 
-## Current Model
-All agents: `anthropic/claude-sonnet-4-6` (set 2026-03-26)
+## Current Models
+- Most agents: `anthropic/claude-sonnet-4-6`
+- Chain: `anthropic/claude-opus-4-6` (blockchain architecture tasks)
+- Gauntlet: `anthropic/claude-opus-4-6` (NON-NEGOTIABLE — challenge design requires max reasoning)
 
 ## Key Fleet Events
+
+### 2026-03-27
+- **Gauntlet added** (10th agent): Challenge generation engine for Bouts. @TheGauntletVPSBot. Opus 4.6. 76 skills incoming.
+- **Chain upgraded to Opus** for blockchain architecture work on Bouts scoring contracts
 
 ### 2026-03-26
 - **Counsel added** (9th agent): Legal & regulatory intelligence. @TheGeneralCounselBot. Iowa law specialist. SEC/CFTC/prediction market expert.
