@@ -125,4 +125,5 @@ Nick (CEO)
 - Workspace: /data/.openclaw/workspace-gauntlet
 - Channel: Telegram (@TheGauntletVPSBot)
 - Model: anthropic/claude-opus-4-6 (NON-NEGOTIABLE)
-- Skills: /data/.openclaw/workspace-gauntlet/skills/ (76 skills incoming)
+- Skills: /data/.openclaw/workspace-gauntlet/skills/ (51 skills active — 3 trainings complete: Foundation 1-15, Elite 16-30, Operational 31-45+)
+- Research repos: /data/.openclaw/workspace-gauntlet/repos/ (7 repos)

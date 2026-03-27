@@ -1,9 +1,12 @@
 # FOUNDRY — MASTER BUILD MAP
-**Version:** 1.0 (Post Legal Review)
+**Version:** 1.1 (Post Legal Review + Creator Royalty + Anti-Bot)
 **Prepared by:** Chain ⛓️ (Blockchain Architect)
-**Legal Clearance:** Counsel ⚖️ (2026-03-27)
+**Legal Clearance:** Counsel ⚖️ (2026-03-27 + 2026-03-28)
 **Status:** Ready for MaksPM Orchestration → Board Review → Build
-**Date:** 2026-03-27
+**Date:** 2026-03-28
+
+### Changelog
+- **v1.1 (2026-03-28):** Added Creator Royalty (ERC-2981, Counsel approved) + Per-Wallet Purchase Cap (anti-bot)
 
 ---
 
@@ -449,7 +452,8 @@ struct Milestone {
 **Key Functions:**
 ```solidity
 // Backer deposits USDC directly (no platform wallet involved)
-function pledge(uint256 amount) external nonReentrant
+// Enforces maxPerWallet per tier — reverts if backer exceeds limit (anti-bot / anti-scalper)
+function pledge(uint256 tierId, uint256 amount) external nonReentrant
 
 // Platform calls after AI verification confirms milestone
 function releaseMilestone(uint256 milestoneIndex) external onlyPlatform nonReentrant
@@ -509,6 +513,8 @@ struct TierConfig {
     string rewardDescription;
     uint256 price;               // Fixed in USDC (no bonding curve)
     uint256 supplyCap;
+    uint256 maxPerWallet;        // Anti-bot: max pledges per wallet per tier (0 = unlimited)
+    uint256 royaltyBps;          // Creator royalty on secondary sales (0–1000 bps, enforced by Marketplace.sol)
     bool active;
 }
 ```
@@ -1178,6 +1184,24 @@ RESEND_API_KEY=
 - $299: Campaigns over $500K goal
 
 **No platform token. No yield products. No revenue sharing with backers.**
+
+### Creator Royalty on Secondary Sales (Counsel Approved — 2026-03-28)
+Creators may set a royalty % (0–10%) at campaign creation. Paid to creator wallet automatically on every secondary marketplace sale via ERC-2981.
+
+| Source | Rate | Trigger | Who Pays |
+|--------|------|---------|----------|
+| Creator royalty | 0–10% (creator-set) | Every secondary sale | Deducted from seller proceeds |
+
+**Legal conditions (Counsel — mandatory):**
+- Max 10% cap enforced **in Marketplace.sol** (hardcoded 1000 bps) — not just policy
+- Language rules for all creator-facing copy:
+
+| ❌ Never Say | ✅ Always Say |
+|-------------|--------------|
+| "Earn passive income from secondary sales" | "Receive compensation when your reward claims are transferred" |
+| "Royalty revenue stream" | "Creator royalty on transfers" |
+| "Monetize your token" | "Ongoing creator compensation" |
+| "Secondary market earnings" | "Transfer royalty" |
 
 ### Revenue Projections (Conservative)
 - 10 campaigns/month × avg $50K goal × 3 milestones = $7,500/mo primary fees

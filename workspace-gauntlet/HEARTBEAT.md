@@ -1,4 +1,7 @@
-# HEARTBEAT.md — Gauntlet
+# HEARTBEAT.md Template
 
-# No scheduled heartbeat for Gauntlet.
-# Gauntlet operates on-demand when Nick or MaksPM requests challenge generation.
+```markdown
+# Keep this file empty (or with only comments) to skip heartbeat API calls.
+
+# Add tasks below when you want the agent to check something periodically.
+```
