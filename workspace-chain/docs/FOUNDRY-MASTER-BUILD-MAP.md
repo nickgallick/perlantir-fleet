@@ -1,5 +1,5 @@
 # FOUNDRY — MASTER BUILD MAP
-**Version:** 1.5 (Slasher Module — Counsel Approved)
+**Version:** 1.6 (All Platform Parameters Locked)
 **Prepared by:** Chain ⛓️ (Blockchain Architect)
 **Legal Clearance:** Counsel ⚖️ (2026-03-27 + 2026-03-28)
 **Market Research:** Scout 🔍 (2026-03-28)
@@ -7,6 +7,7 @@
 **Date:** 2026-03-28
 
 ### Changelog
+- **v1.6 (2026-03-28):** All 6 platform parameters locked by Nick — fiat on-ramp (Coinbase hybrid), all-or-nothing funding, $10K–$1M limits, 40–100% refund bounds, 3–5 milestones, 7–60 day duration. Contract constants defined.
 - **v1.5 (2026-03-28):** Slasher Module — Counsel approved. min() cap mathematically enforced in claimRefund(), language rules added
 - **v1.4 (2026-03-28):** Slasher Module added — tiered slash (soft 25% / hard 100%), cure period, no-confidence vote, USDC-weighted voting, 80% delivery confirmation for stake release, full state machine
 - **v1.3 (2026-03-28):** Forge architecture review applied — 15 issues resolved: DB schema gaps fixed (campaign_tiers, milestones, marketplace_listings, users), refund pull pattern, token ID scheme clarified, royaltyInfo() spec, split pledge API routes, added missing webhooks, indexes + RLS defined, locked ABI requirement, milestone deadline enforcement. P0 (fiat on-ramp architecture) + 5 Nick decisions flagged as open blockers.
@@ -437,12 +438,19 @@ function checkTVLRoom(uint256 amount) external view returns (bool)
 
 **Campaign State Machine:**
 ```
-Active → Funded → Delivering → Complete
-                      ↓ (30-day milestone miss)
-                  SoftFailed (25% stake slashed → refund pool)
-                      ↓ (14-day cure period)
-                  CurePeriod → Delivering (cure accepted)
-                             → HardFailed (cure rejected / 60-day silence / 66% no-confidence)
+Active (fundraising, 7–60 days)
+  ↓ goal reached before deadline
+Funded → Delivering → Complete
+              ↓ (30-day milestone miss)
+          SoftFailed (25% stake slashed → refund pool)
+              ↓ (14-day cure period)
+          CurePeriod → Delivering (cure accepted)
+                     → HardFailed (cure rejected / 60-day silence / 66% no-confidence)
+
+Active (fundraising)
+  ↓ deadline passes, totalRaised < fundingGoal (ALL-OR-NOTHING)
+GoalNotMet → full refund of escrowed funds to all backers + creator stake returned
+             (creator didn't take money — clean fail, no slash)
 ```
 
 **Key State:**
@@ -1524,29 +1532,57 @@ Creators may set a royalty % (0–10%) at campaign creation. Paid to creator wal
 
 ---
 
-## 15. OPEN QUESTIONS BEFORE BUILD
+## 15. PLATFORM PARAMETERS — DECIDED (Nick, 2026-03-28)
 
-**Nick needs to answer these before Phase 0 completes:**
+### ✅ 1. Fiat On-Ramp — Coinbase Commerce Hybrid
+Card payments supported V1. Coinbase Commerce/Smart Wallet approach — backer pays with card, platform mints claim to a managed wallet associated with their email. Blockchain stays invisible. Crypto wallet also supported for existing Web3 users.
 
-1. **Product name** — "Foundry" (working title). Keep it or different direction?
+### ✅ 2. Funding Model — All-or-Nothing
+If campaign does not reach `fundingGoal` by `campaignDeadline`, status = FAILED and all backers get full refund from escrowed funds (not from creator stake — their own money back). Creator stake also returned on clean all-or-nothing fail (creator didn't take the money, they just failed to raise it).
+- **Contract enforcement:** `totalRaised < fundingGoal` at deadline → auto-fail → full refunds from escrow
+- **Flexible funding explicitly excluded** from V1
 
-2. **Creator KYC** — Individuals allowed or business entities only? How strict? (More strict = more compliance protection but fewer campaigns)
+### ✅ 3. Campaign Size Limits — $10K min / $1M max
+```solidity
+uint256 public constant MIN_FUNDING_GOAL = 10_000e6;   // $10,000 USDC
+uint256 public constant MAX_FUNDING_GOAL = 1_000_000e6; // $1,000,000 USDC
+```
+Enforced in `CampaignFactory.createCampaign()` — reverts if outside range.
 
-3. **Campaign size limits** — Minimum goal (suggest $5K floor) and maximum (suggest $2M ceiling for V1)?
+### ✅ 4. Refund Rate Bounds — 40% min / 100% max
+```solidity
+uint256 public constant MIN_REFUND_RATE_BPS = 4000;  // 40% floor
+uint256 public constant MAX_REFUND_RATE_BPS = 10000; // 100% ceiling
+```
+Creator sets their rate at campaign launch within these bounds. Enforced in contract. 40% floor keeps marketplace liquid — token value on secondary market has meaningful downside protection.
 
-4. **Reward types** — Physical products only, or also: digital downloads, software access, services, experiences?
+### ✅ 5. Milestone Count — 3 minimum, 5 maximum
+```solidity
+uint256 public constant MIN_MILESTONES = 3;
+uint256 public constant MAX_MILESTONES = 5;
+```
+Standard 3-milestone structure (suggested default):
+- Milestone 1 — Prototype/Tooling: releases 30% of escrow
+- Milestone 2 — Production Start: releases 40% of escrow
+- Milestone 3 — Shipping/Fulfillment: releases remaining 30% + creator stake returned
 
-5. **Refund rate range** — Creator-set between 25% minimum and 100% maximum? Or different bounds?
+### ✅ 6. Campaign Duration — Creator-set, 60-day maximum
+```solidity
+uint256 public constant MAX_CAMPAIGN_DURATION = 60 days;
+uint256 public constant MIN_CAMPAIGN_DURATION = 7 days;
+```
+Creator sets specific end date (not forced into 30/60/90 buckets). Hard cap at 60 days — campaigns beyond 60 days lose momentum and go stale. Minimum 7 days prevents flash campaigns.
 
-6. **Milestone count** — Require minimum 3 milestones? Or allow creators to define any structure?
+---
 
-7. **Campaign duration** — Fixed options (30/60/90 days) or fully flexible?
+## REMAINING OPEN QUESTIONS (Non-blocking for Phase 1)
 
 8. **Multi-sig signers** — Who are the 3-5 Safe signers for production treasury? Nick + who?
-
-9. **Audit firm preference** — Code4rena (competitive, public) or Sherlock (private, more controlled)?
-
+9. **Audit firm** — Code4rena (competitive, public) or Sherlock (private, more controlled)?
 10. **Geographic restrictions** — Any countries to block at launch? (US allowed? Counsel should confirm.)
+11. **Product name** — "Foundry" confirmed or different direction?
+12. **Creator KYC** — Individuals allowed or business entities only?
+13. **Reward types** — Physical products only, or also digital goods, services, experiences?
 
 ---
 
