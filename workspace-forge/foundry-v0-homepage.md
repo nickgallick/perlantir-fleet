@@ -115,7 +115,7 @@ Body: "Money never goes upfront. Creators earn each tranche by hitting verifiabl
 **Card 3 — AI Review**
 Icon: `Sparkles` (blue)
 Title: "AI vets every campaign"
-Body: "Before going live, every campaign gets an AI feasibility review. Backers see the score. No more mystery projects."
+Body: "Before going live, every campaign passes an AI quality review. Only approved campaigns launch on the platform."
 
 **Card 4 — Backer Exit**
 Icon: `ArrowLeftRight` (emerald)
@@ -139,7 +139,7 @@ bg-[#111111] border border-[#1f1f1f] rounded-xl overflow-hidden
 - Body padding `p-5`
 - Campaign title: white, `font-semibold text-lg`
 - Creator name: muted, `text-sm`
-- AI Score badge: small pill — "AI Score: 87/100" — blue background, white text, `text-xs`
+- AI Reviewed badge: small pill — "AI Reviewed ✓" — blue background, white text, `text-xs` (NO numerical score — platform policy)
 - Funding progress bar: full width, `h-2 rounded-full bg-[#1f1f1f]` with blue fill. Below bar: "$94,500 raised of $120,000 · 28 days left" in muted text
 - Milestone progress: "✓ 2 of 4 milestones complete" — emerald text, `text-sm`
 - Footer: Refund protection badge on left — "50% refund protection" in amber text, small shield icon. Tier price on right — "From $49"
@@ -148,17 +148,17 @@ bg-[#111111] border border-[#1f1f1f] rounded-xl overflow-hidden
 
 1. **Luminary — Smart Home Lighting System**
 Creator: Aria Chen · Category: Tech
-AI Score: 87 · $94,500 / $120,000 · 28 days left
+"AI Reviewed ✓" · $94,500 / $120,000 · 28 days left
 Milestones: 2/4 verified · Refund: 50% · From $49
 
 2. **Echoes — Ambient Sound Machine**
 Creator: Marcus Webb · Category: Creative  
-AI Score: 79 · $31,200 / $75,000 · 44 days left
+"AI Reviewed ✓" · $31,200 / $75,000 · 44 days left
 Milestones: 1/3 verified · Refund: 40% · From $89
 
 3. **Strata — Modular Backpack System**
 Creator: Priya Nair · Category: Physical
-AI Score: 92 · $187,000 / $200,000 · 6 days left
+"AI Reviewed ✓" · $187,000 / $200,000 · 6 days left
 Milestones: 3/5 verified · Refund: 60% · From $129
 
 ---

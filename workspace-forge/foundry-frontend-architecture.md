@@ -284,7 +284,7 @@ Filters and pagination live in the URL (not Zustand) so links are shareable:
 
   <CampaignGrid>
     <CampaignCard> × N
-      <AIScoreBadge />
+      <AIReviewedBadge />     ← "AI Reviewed ✓" pass/fail ONLY — NO numerical score per Counsel 2026-03-28
       <FundingProgressBar />
       <MilestoneStatusDot />
       <DaysRemaining />
@@ -306,8 +306,8 @@ Filters and pagination live in the URL (not Zustand) so links are shareable:
     <CampaignTitle />
     <CreatorInfo />
     <CategoryBadge />
-    <AIScoreBadge />        ← "AI Feasibility Score: 82/100"
-    <AIScoreDisclaimer />   ← legal required
+    <AIReviewedBadge />     ← "AI Reviewed ✓" pass/fail badge ONLY — no numerical score per Counsel 2026-03-28
+    <AIReviewDisclaimer />  ← REQUIRED exact text: "AI review is a quality filter designed to screen for obvious red flags. It is not an assessment of investment merit, likelihood of delivery, or endorsement of the campaign. Back campaigns at your own discretion."
   </CampaignHeader>
 
   <CampaignSplit>           ← two-column on desktop
@@ -413,7 +413,7 @@ Filters and pagination live in the URL (not Zustand) so links are shareable:
     <CampaignHealthSection>
       <MilestoneTracker />   ← read-only version
       <FundingStatus />
-      <AIScoreBadge />
+      <AIReviewedBadge />    ← pass/fail only, no score
     </CampaignHealthSection>
     <RewardDetails>
       <WhatYouGet />
@@ -446,11 +446,15 @@ Filters and pagination live in the URL (not Zustand) so links are shareable:
       <TierName />
       <AmountPaid />
       <MilestoneProgress />
-      <ClaimStatus />     ← active | refunded | tokenized | delivered
-      <ExitButton />
+      <ClaimStatus />         ← active | refunded | tokenized | delivered
+      <ClaimRewardButton />   ← PRIMARY CTA — visually dominant, filled button
+      <ExitButton />          ← SECONDARY — outlined/ghost, less prominent than ClaimReward
       <RefundRateTag />
     </ClaimCard>
   </ActiveClaims>
+  {/* UX RULE (Counsel 2026-03-28): "Claim Reward" must always be more visually prominent
+      than "Sell on Marketplace" on every backer-facing screen. Default UX = hold for reward.
+      Secondary market is an exit option, not the primary action. */}
 
   <DeliveredRewards>
     <RewardCard> × N
