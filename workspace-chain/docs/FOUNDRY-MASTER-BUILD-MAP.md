@@ -1,5 +1,5 @@
 # FOUNDRY — MASTER BUILD MAP
-**Version:** 1.3 (Forge Architecture Review Applied)
+**Version:** 1.4 (Slasher Module Added)
 **Prepared by:** Chain ⛓️ (Blockchain Architect)
 **Legal Clearance:** Counsel ⚖️ (2026-03-27 + 2026-03-28)
 **Market Research:** Scout 🔍 (2026-03-28)
@@ -7,6 +7,7 @@
 **Date:** 2026-03-28
 
 ### Changelog
+- **v1.4 (2026-03-28):** Slasher Module added — tiered slash (soft 25% / hard 100%), cure period, no-confidence vote, USDC-weighted voting, 80% delivery confirmation for stake release, full state machine
 - **v1.3 (2026-03-28):** Forge architecture review applied — 15 issues resolved: DB schema gaps fixed (campaign_tiers, milestones, marketplace_listings, users), refund pull pattern, token ID scheme clarified, royaltyInfo() spec, split pledge API routes, added missing webhooks, indexes + RLS defined, locked ABI requirement, milestone deadline enforcement. P0 (fiat on-ramp architecture) + 5 Nick decisions flagged as open blockers.
 - **v1.2 (2026-03-28):** Added Fiat On-Ramp as V1 requirement (Scout research: blockchain must be invisible to mainstream backers)
 - **v1.1 (2026-03-28):** Added Creator Royalty (ERC-2981, Counsel approved) + Per-Wallet Purchase Cap (anti-bot)
@@ -431,7 +432,17 @@ function checkTVLRoom(uint256 amount) external view returns (bool)
 
 ### Contract 2: CampaignEscrow.sol
 
-**Purpose:** Holds all funds for a single campaign. Releases to creator on milestone verification. Processes refunds on failure.
+**Purpose:** Holds all funds for a single campaign. Releases to creator on milestone verification. Manages tiered creator stake slashing. Processes refunds on failure.
+
+**Campaign State Machine:**
+```
+Active → Funded → Delivering → Complete
+                      ↓ (30-day milestone miss)
+                  SoftFailed (25% stake slashed → refund pool)
+                      ↓ (14-day cure period)
+                  CurePeriod → Delivering (cure accepted)
+                             → HardFailed (cure rejected / 60-day silence / 66% no-confidence)
+```
 
 **Key State:**
 ```solidity
@@ -441,13 +452,18 @@ address public platformFeeRecipient;
 uint256 public fundingGoal;
 uint256 public totalRaised;
 uint256 public creatorStake;
-uint256 public refundRateBps;            // e.g., 5000 = 50%
+uint256 public creatorStakeRemaining;    // tracks after partial slashes
+uint256 public refundPool;               // slashed stake accumulated here (increases refund floor)
+uint256 public refundRateBps;            // e.g., 5000 = 50% — base refund rate
 uint256 public campaignDeadline;
-CampaignStatus public status;            // Active, Funded, Delivering, Failed, Complete
+CampaignStatus public status;            // Active | Funded | Delivering | SoftFailed | CurePeriod | HardFailed | Complete
 Milestone[] public milestones;
-mapping(address => uint256) public pledges;          // backer → total USDC paid
-mapping(address => bool) public refunded;             // backer → refunded
-uint256 public platformFeeBps;           // 500 = 5%
+mapping(address => uint256) public pledges;           // backer → total USDC paid
+mapping(address => bool) public refundClaimed;        // backer → refund claimed (pull pattern)
+mapping(address => bool) public deliveryConfirmed;    // backer → confirmed reward receipt
+uint256 public deliveryConfirmCount;                  // total confirmed deliveries
+uint256 public totalBackerCount;                      // for 80% delivery threshold calc
+uint256 public platformFeeBps;                        // 500 = 5%
 address public consumerProtectionReserve;
 ```
 
@@ -455,18 +471,39 @@ address public consumerProtectionReserve;
 ```solidity
 struct Milestone {
     string name;
-    uint256 releaseBps;          // % of total escrow to release (must sum to 10000)
+    uint256 releaseBps;              // % of total escrow to release (must sum to 10000)
     uint256 deadline;
-    bytes32 proofIpfsHash;       // Set when creator submits
-    MilestoneStatus status;      // Pending, Submitted, Verified, Disputed, Failed
+    uint256 softFailDeadline;        // deadline + 30 days (auto-slash trigger)
+    uint256 cureDeadline;            // softFailDeadline + 14 days (cure window end)
+    bytes32 proofIpfsHash;           // Set when creator submits proof
+    bytes32 curePlanIpfsHash;        // Set when creator submits revised timeline
+    MilestoneStatus status;          // Pending | Submitted | Verified | SoftFailed | CurePeriod | HardFailed
     bool fundsReleased;
+    uint256 cureVoteYes;             // USDC-weighted yes votes on cure plan
+    uint256 cureVoteNo;              // USDC-weighted no votes on cure plan
+    mapping(address => bool) cureVoted; // prevent double voting
 }
+```
+
+**No-Confidence Vote State:**
+```solidity
+struct NoConfidenceVote {
+    bool active;
+    uint256 deadline;                // 72-hour window
+    uint256 votesFor;                // USDC-weighted — for no confidence
+    uint256 votesAgainst;
+    mapping(address => bool) voted;
+    bool executed;
+}
+NoConfidenceVote public noConfidenceVote;
+uint256 public constant NO_CONFIDENCE_THRESHOLD = 6600;  // 66% in bps
+uint256 public constant INITIATION_THRESHOLD_BPS = 1000; // 10% of backers by value to trigger vote
 ```
 
 **Key Functions:**
 ```solidity
 // Backer deposits USDC directly (no platform wallet involved)
-// Enforces maxPerWallet per tier — reverts if backer exceeds limit (anti-bot / anti-scalper)
+// Enforces maxPerWallet per tier — reverts if backer exceeds limit
 function pledge(uint256 tierId, uint256 amount) external nonReentrant
 
 // Platform calls after AI verification confirms milestone
@@ -475,30 +512,85 @@ function releaseMilestone(uint256 milestoneIndex) external onlyPlatform nonReent
 // Creator submits milestone proof
 function submitMilestoneProof(uint256 milestoneIndex, bytes32 ipfsHash) external onlyCreator
 
-// PULL PATTERN — backer claims own refund (Forge P1: avoids gas limit bomb on large campaigns)
-// Refund = pledges[backer] * refundRateBps / 10000, capped at original pledge amount
+// ── SLASHER MODULE ──────────────────────────────────────────────
+
+// AUTO: Triggered by Supabase cron when milestone.softFailDeadline passes with no proof
+// Slashes 25% of creatorStakeRemaining → refundPool, emits SoftSlash event
+function triggerSoftSlash(uint256 milestoneIndex) external onlyPlatform
+
+// Creator submits revised timeline + explanation during 14-day cure window
+function submitCurePlan(uint256 milestoneIndex, bytes32 curePlanIpfsHash) external onlyCreator
+
+// Backers vote on creator's cure plan (USDC-weighted, 72-hr window, simple majority)
+// accept=true extends deadline + keeps stake | accept=false triggers hard slash immediately
+function voteOnCurePlan(uint256 milestoneIndex, bool accept) external
+
+// Any backer initiates no-confidence vote (requires 10% of total pledged value)
+function initiateNoConfidenceVote() external
+
+// Backers cast no-confidence votes (USDC-weighted, 72-hr window)
+function voteNoConfidence(bool noConfidence) external
+
+// AUTO: Executes hard slash if 66% no-confidence OR 60-day silence
+// Slashes 100% of creatorStakeRemaining → refundPool, sets status = HardFailed
+function triggerHardSlash() external onlyPlatform
+
+// Manual hard slash by admin for proven fraud (e.g., funds misused)
+function adminSlash(string calldata reason) external onlyAdmin
+
+// ── DELIVERY & STAKE RELEASE ────────────────────────────────────
+
+// Backer confirms receipt of physical reward
+function confirmDelivery() external
+// When deliveryConfirmCount >= totalBackerCount * 80 / 100: auto-releases creator stake
+
+// AUTO: Releases remaining creator stake + final tranche when ≥80% delivery confirmed
+function releaseCreatorStake() internal
+
+// ── REFUND (PULL PATTERN) ───────────────────────────────────────
+
+// Backer pulls own refund — no gas limit issues at any campaign size
+// Refund = (pledges[backer] * refundRateBps / 10000) + pro-rata share of refundPool
+// Hard cap: cannot exceed original pledge amount
 function claimRefund() external nonReentrant
-// Replaces push-based processAllRefunds — no gas limit issues at any campaign size
 
-// Platform declares campaign failed (or auto-triggers via Supabase cron on deadline miss)
-function declareFailed() external onlyPlatform
-// Sets status = FAILED, locks creator stake for refund claims, emits CampaignFailed event
-
-// Creator retrieves stake after successful delivery
-function returnCreatorStake() external onlyCreator
+// ── ADMIN ───────────────────────────────────────────────────────
 
 // Emergency pause (multi-sig only)
 function pause() external onlyAdmin
 function unpause() external onlyAdmin
 ```
 
+**Slasher Event Table:**
+```
+Event                          Action                           Destination
+─────────────────────────────────────────────────────────────────────────────
+Milestone verified on time     Release tranche                  Creator wallet
+30-day delay (no update)       Soft slash: 25% of stake         refundPool
+14-day cure accepted (vote)    Deadline extended, stake intact  No movement
+14-day cure rejected (vote)    Hard slash: 100% of stake        refundPool
+60-day silence                 Hard slash: 100% of stake        refundPool
+66% no-confidence vote         Hard slash: 100% of stake        refundPool
+Admin fraud slash              Hard slash: 100% of stake        refundPool
+≥80% delivery confirmed        Return remaining stake + final   Creator wallet
+```
+
 **Fund Flow Rules (Enforced in Contract):**
 - USDC flows: Backer → Contract (pledge)
-- USDC flows: Contract → Creator (milestone release, minus platform fee)
-- USDC flows: Contract → Backer (refund, capped at original price)
-- USDC flows: Contract → Platform fee recipient (5% on milestone release)
-- USDC flows: Contract → Consumer protection reserve (surplus creator stake after refunds)
+- USDC flows: Contract → Creator (milestone tranche, minus 5% platform fee)
+- USDC flows: Slashed stake → refundPool (increases refund floor for all backers)
+- USDC flows: Contract → Backer (claimRefund — base refund + pro-rata refundPool share, capped at original pledge)
+- USDC flows: Contract → Consumer protection reserve (any refundPool surplus after all refunds claimed)
+- USDC flows: Contract → Creator (remaining stake on ≥80% delivery confirmation)
 - Platform wallet NEVER receives custody of user USDC
+
+**Legal Note (Counsel — mandatory):**
+```solidity
+// LEGAL: Per Counsel review 2026-03-27/28
+// refundPool increases the refund floor for backers — this is consumer protection.
+// Do NOT describe refundPool increases as "token value appreciation" or "book value increase"
+// in any user-facing material. Frame as: "your refund protection has increased."
+```
 
 ---
 
