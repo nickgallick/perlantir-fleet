@@ -433,28 +433,35 @@ Filters and pagination live in the URL (not Zustand) so links are shareable:
 
 ### Backer Dashboard `/dashboard`
 
+> **⚖️ COUNSEL HARD REQUIREMENT (2026-03-28) — NOT A PREFERENCE:**
+> "Claim Reward" must be the primary, dominant action on every backer-facing screen.
+> "Sell / Transfer" is a secondary escape hatch — smaller, less prominent, requires deliberate choice.
+> Default dashboard view = reward delivery status, milestones, timeline. NOT marketplace price.
+> No price alerts. No "your claim is worth more" notifications. No price data on claim cards.
+> Marketplace requires deliberate navigation — never surfaced as a default or suggested action.
+> Violating this UX hierarchy weakens the legal framing from "crowdfunding platform" to "trading platform."
+
 ```
 <BackerDashboard>
   <DashboardHeader>
     <WelcomeMessage />
-    <WalletStatus />    ← connected wallet or "Connect wallet to access marketplace"
+    <MilestoneUpdates />    ← default prominent content — reward progress, NOT price data
+    <WalletStatus />        ← connected wallet or "Connect wallet to access marketplace"
   </DashboardHeader>
 
   <ActiveClaims>
     <ClaimCard> × N
       <CampaignName />
       <TierName />
-      <AmountPaid />
-      <MilestoneProgress />
+      <RewardDescription />   ← what they'll receive — prominent
+      <MilestoneProgress />   ← reward delivery progress — prominent
+      <EstimatedDelivery />
       <ClaimStatus />         ← active | refunded | tokenized | delivered
-      <ClaimRewardButton />   ← PRIMARY CTA — visually dominant, filled button
-      <ExitButton />          ← SECONDARY — outlined/ghost, less prominent than ClaimReward
-      <RefundRateTag />
+      <ClaimRewardButton />   ← PRIMARY CTA — large filled button, most prominent element
+      <TransferClaimLink />   ← SECONDARY — small text link or ghost button, below primary
+      {/* Never show: current market price, "your claim is worth $X", price trends */}
     </ClaimCard>
   </ActiveClaims>
-  {/* UX RULE (Counsel 2026-03-28): "Claim Reward" must always be more visually prominent
-      than "Sell on Marketplace" on every backer-facing screen. Default UX = hold for reward.
-      Secondary market is an exit option, not the primary action. */}
 
   <DeliveredRewards>
     <RewardCard> × N
