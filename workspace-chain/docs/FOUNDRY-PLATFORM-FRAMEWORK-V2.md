@@ -1,6 +1,6 @@
 # FOUNDRY — PLATFORM FRAMEWORK V2
 **Prepared by**: Counsel (Legal) + Chain (Architecture)
-**Status**: Legal-Reviewed — Cleared for Development
+**Status**: Legal-Reviewed — Cleared for Development (v1.1 — updated 2026-03-28)
 **Date**: 2026-03-27
 **Audience**: Development Team (Maks, Forge, Chain)
 
@@ -243,6 +243,24 @@ Triggered when creator submits milestone completion proof.
 
 **No platform token. No yield products. No revenue sharing with backers. Fees only.**
 
+### Creator Royalty on Secondary Sales (Added v1.1 — Counsel Approved 2026-03-28)
+Creators set a royalty % (0–10%) at campaign creation. Paid automatically to creator wallet on every secondary marketplace sale via ERC-2981.
+
+| Source | Rate | Trigger | Who Pays |
+|--------|------|---------|----------|
+| Creator royalty | 0–10% (creator-set) | Every secondary sale | Deducted from seller proceeds |
+
+**Legal conditions (mandatory):**
+- 10% cap hardcoded in Marketplace.sol — cannot be overridden
+- Creator-facing language rules:
+
+| ❌ Never Say | ✅ Always Say |
+|-------------|--------------|
+| "Earn passive income from secondary sales" | "Receive compensation when your reward claims are transferred" |
+| "Royalty revenue stream" | "Creator royalty on transfers" |
+| "Monetize your token" | "Ongoing creator compensation" |
+| "Secondary market earnings" | "Transfer royalty" |
+
 ---
 
 ## 9. TECH STACK
@@ -275,6 +293,10 @@ Do not build these in V1:
 - Cross-chain support
 - Bonding curve pricing (any automated price appreciation mechanism)
 - Pro-rata creator stake distribution to token holders (refund-only model instead)
+
+**In V1 (added 2026-03-28):**
+- ✅ Creator royalty on secondary sales (ERC-2981, 0–10%, Counsel approved)
+- ✅ Per-wallet purchase cap per tier (anti-bot, creator-set at campaign launch)
 
 ---
 

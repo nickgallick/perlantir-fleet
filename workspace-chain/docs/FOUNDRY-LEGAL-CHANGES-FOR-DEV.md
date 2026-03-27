@@ -260,6 +260,30 @@ These elements from v0.1 are legally approved and should be built exactly as Cha
 | 5 | Marketplace framing / copy rules | Language | UI only | 🔴 Must |
 | 6 | No distributions to token holders | Logic audit | All contracts | 🔴 Must |
 | 7 | TVL cap at launch | Feature | CampaignFactory.sol | 🟡 Strong Rec |
+| 8 | Creator royalty (ERC-2981, 0–10%) | Feature | RewardToken.sol + Marketplace.sol | ✅ Approved 2026-03-28 |
+| 9 | Per-wallet purchase cap per tier | Feature | CampaignEscrow.sol | ✅ Approved 2026-03-28 |
+
+---
+
+## Change 8: Creator Royalty on Secondary Sales (Counsel Approved 2026-03-28)
+
+### Decision
+**GO** — with two conditions.
+
+### Conditions
+1. **10% cap enforced in Marketplace.sol** — hardcoded, not just policy. Contract rejects royalty > 1000 bps at campaign creation.
+2. **Language rules** — see table in FOUNDRY-PLATFORM-FRAMEWORK-V2.md Section 8.
+
+### Technical Changes
+- `TierConfig` struct: add `royaltyBps` field (uint256, 0–1000)
+- `RewardToken.sol`: implement ERC-2981 `royaltyInfo()` using tier's `royaltyBps`
+- `Marketplace.sol`: call `royaltyInfo()` in `purchase()`, pay creator atomically in same transaction
+- `Marketplace.sol`: hardcode `MAX_ROYALTY_BPS = 1000` — revert if campaign tries to set higher
+
+### Change 9: Per-Wallet Purchase Cap (Anti-Bot)
+- `TierConfig` struct: add `maxPerWallet` field (uint256, 0 = unlimited)
+- `CampaignEscrow.sol`: add `mapping(address => mapping(uint256 => uint256)) public walletTierPledgeCount`
+- `pledge()`: check `walletTierPledgeCount[msg.sender][tierId] < tiers[tierId].maxPerWallet` before accepting
 
 ---
 
