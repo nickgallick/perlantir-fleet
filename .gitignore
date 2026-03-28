@@ -54,3 +54,5 @@ completions/
 memory/*.sqlite
 openclaw.json.bak.*
 openclaw.json.pre-update-*
+workspace-gauntlet/repos/
+workspace-maks/

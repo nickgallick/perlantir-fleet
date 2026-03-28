@@ -33,9 +33,30 @@
 - Test agents in DB: `final-auth-test`, `Testagentarwna`
 - Connector docs don't show v0.1.1 badge
 
-### Current Tasks (as of 2026-03-28)
-- [ ] Make logo larger (Nick requested — Bouts)
-- [ ] Center "Ready to Compete?" hero section on desktop homepage (left-aligned, should be centered — Bouts)
+### Current Tasks (as of 2026-03-28 — updated 8:58 AM KL)
+- [ ] Brief Gauntlet on calibration runner + mutation contract (backend is ready for him)
+- [ ] Companion spec docs: BOUTS_TRANSPARENCY_POLICY_v1, BOUTS_INTEGRITY_AND_ENFORCEMENT_v1, BOUTS_POST_MATCH_BREAKDOWN_SPEC_v1, BOUTS_CHALLENGE_CALIBRATION_SPEC_v1 (Nick asked about these)
+- [ ] Nick's side: Stripe live keys + webhook, Iowa address, bouts.gg domain, ORACLE_WALLET_ADDRESS + BASE_RPC_URL
+
+## Latest Fixes (2026-03-28 ~8:58 AM KL)
+- ✅ Mobile nav fixed — InfoNav replaced with shared Header on /judging, /how-it-works, /philosophy, /fair-play, /status
+- ✅ Activation freeze snapshot — challenge_activation_snapshots table + function + DB trigger. Freezes prompt hash, test config, judge weights, CDI, enforcement thresholds at activation time.
+- ✅ Activation gate hardened — checks has_objective_tests, prompt, description, format, time_limit
+- ✅ Sample guard — no flagging <20 runs, no quarantine <40 runs
+- ✅ Quarantine alert includes challenge name, reason, metrics, admin link
+
+## Completed This Session (2026-03-28)
+- ✅ Full E2E live site test via Playwright
+- ✅ Fair Play page — rebuilt with 4-lane judging content (old 3-judge system removed)
+- ✅ How It Works — all stale "3-judge" / "3-Judge Panel" / "Claude+GPT-4o+Gemini" copy replaced with 4-lane language
+- ✅ Homepage — identity changed to "The Competitive Arena for Autonomous Agents", proof block added, weight class framing → performance-profile
+- ✅ Contest Rules Section 6 — reconciled with Judging page (4-lane bounded bands, exact formulas explicitly not published, links to /judging)
+- ✅ /philosophy — new Challenge Philosophy page (failure modes, Bouts answers, flagship families, thesis)
+- ✅ /docs/compete — new Competitor Guide (submission contract, telemetry schema, scoring principles, rules)
+- ✅ Docs hub — restructured with 4 cards, stale "kinetic combat" copy removed
+- ✅ Leaderboard empty state — "Be the first to compete" with CTA
+- ✅ Nav/footer — Philosophy added
+- ✅ SITE_CANON.md — created in workspace-forge as source of truth for all public copy
 
 ## Foundry — Phase 0 Status (as of 2026-03-28)
 All frontend/backend architecture complete. Docs in workspace-forge:
@@ -58,6 +79,18 @@ Phase 1 gate — remaining items on Chain:
 - [ ] Section 15 Q3, Q5, Q6, Q7, Q8 (Nick decisions)
 
 Nick's design plan: v0.dev for components → Figma for full designs → Maks builds
+
+## Session Context (2026-03-28 confirmed from full chat log PDF)
+The PDF Nick sent covers the full Mar 26–27 session (316 pages). Key confirmed facts:
+- All site content is intentional — 4-lane judging, how-it-works, judging transparency page, legal pages
+- "3-Judge Panel" label in how-it-works quick overview card IS genuinely stale (pre-Phase 1 copy that wasn't cleaned up)
+- FAQ answer "Three independent judges..." is also stale — predates Phase 1 rebuild
+- No fake data directive is firm — Nick was explicit
+- Wallet: profiles.coins (old) vs arena_wallets.balance (new/correct). credit_wallet RPC should handle future payouts but unconfirmed on real user flow
+- Stripe live keys + webhook still needed before real money flows
+- Iowa business address still placeholder in /legal/contest-rules
+- bouts.gg domain not yet connected
+- ORACLE_WALLET_ADDRESS, BASE_RPC_URL still needed from Chain for chain calls to activate
 
 ## Update This File
 After every significant session, update the "Current Tasks" and "Fixes Applied" sections so the next session starts with full context.

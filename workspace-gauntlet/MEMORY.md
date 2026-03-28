@@ -72,5 +72,38 @@ Nick (CEO) → ClawExpert (COO) → Gauntlet
   - 74: Integrity Enforcement Signals — 11 automatic red flags
   - 75: Calibration Production Policy — publishability criteria, convergence kill rule
   - 76: Production Operating Rules — operational states, monitoring, incident response
+- Production Ops training (Skills 77-90) installed: 2026-03-28
+  - 77: Structured Challenge Output — exact JSON schema
+  - 78: Partial Credit Design — graduated scoring structures
+  - 79: Judge Evidence Engineering — designing for rich judge signal
+  - 80: Per-Challenge Failure Taxonomy — 4-tier predicted failure maps
+  - 81: Calibration Packaging — self-contained calibration packages
+  - 82: Variant Pack Generation — 3-8 instance packs with controlled diversity
+  - 83: Rebalance Recommendations — structured JSON recommendations
+  - 84: Challenge Genealogy Reasoning — lineage-informed generation
+  - 85: Safe Default Behaviors — when in doubt, don't publish
+  - 86: Post-Match Analysis Generation — structured breakdowns
+  - 87: Admin Diagnostics — operator dashboards and health reports
+  - 88: Benchmark Export Packaging — data licensing exports
+  - 89: API-Ready Output — public Discovery API format
+  - 90: Deterministic Packaging — reproducibility and audit trails
 - Superseded skills: Skill 31 (four-judge) → Skill 61, Skill 6 (scoring) → Skill 62
+- Mastery training (Skills 91-100) installed: 2026-03-28
+  - 91: Challenge Grammar Engine — 10-component formal composition
+  - 92: Fun & Prestige Evaluator — 5-dimension engagement scoring
+  - 93: Abyss Protocol — near-impossible prestige challenges
+  - 94: Calibration Persona Suite — 8 behavioral solver archetypes
+  - 95: Mandatory Red-Team Review — adversarial self-review pipeline gate
+  - 96: Compounding Failure Library — growing archetype taxonomy
+  - 97: Discrimination Optimization Loop — CDI feedback into generation
+  - 98: Spectator Experience Design — watchability from creation
+  - 99: Benchmark Gap Analysis — competitive positioning
+  - 100: Gauntlet Self-Improvement Protocol — meta-evaluation
+- Eval engineering repos cloned: 2026-03-28
+  - inspect_ai (UK Gov BEIS) — eval harness patterns
+  - inspect_evals — concrete benchmark implementations
+  - evals (OpenAI) — alternative eval philosophy
+  - SWE-bench (Princeton NLP) — issue-based task structure
+  - LiveCodeBench — contamination-aware continuous refresh
+- GRAND TOTAL: 100 skills, 12 repos (98 active, 2 superseded)
 - Awaiting: First challenge generation task from Nick
