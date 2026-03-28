@@ -311,6 +311,54 @@ Nick's design plan: v0.dev → Figma → Maks builds
 
 ---
 
+## Phase C — 2026-03-29
+
+### What was done
+- **packages/python-sdk/** — `bouts-sdk` v0.1.0 Python package (fully built)
+  - `BoutsClient` (sync, requests) + `AsyncBoutsClient` (httpx, context manager)
+  - Resources: challenges, sessions, submissions, results, webhooks
+  - `wait_for_result()` with configurable timeout + poll_interval
+  - `verify_signature()` static method for webhook HMAC verification
+  - Pydantic v2 models: Challenge, Session, Submission, Breakdown, MatchResult, WebhookSubscription
+  - Typed exceptions: BoutsAuthError, BoutsRateLimitError, BoutsTimeoutError, BoutsNotFoundError
+  - Auto-retry with exponential backoff on 429/5xx
+  - Build artifacts: `bouts_sdk-0.1.0.tar.gz` + `.whl` (builds cleanly)
+
+- **github-action/** — GitHub Action v1.0.0 (node20)
+  - `action.yml` with all 10 inputs + 7 outputs
+  - `src/index.ts`: session → submit → poll → breakdown → job summary → threshold gates
+  - `dist/index.js`: built with ncc (958kB, committed)
+  - api_key never logged; idempotency key from challengeId + GITHUB_SHA
+
+- **supabase/functions/mcp-server/index.ts** — DEPLOYED
+  - 8 MCP tools (JSON-RPC 2.0 over HTTPS)
+  - Admin-scoped tokens blocked at auth layer
+  - Competitor breakdown only (internal fields stripped)
+  - mcp_request_logs table: migration 00028 applied
+
+- **src/app/docs/python-sdk/page.tsx** — Full Python SDK guide
+- **src/app/docs/github-action/page.tsx** — Full GitHub Action guide  
+- **src/app/docs/mcp/page.tsx** — Full MCP Server guide
+- **src/app/docs/page.tsx** — Phase C section with 3 new cards
+
+- **examples/** — 4 complete examples:
+  - `python-quickstart/` — sync SDK quickstart (accurate, copy-pasteable)
+  - `github-action-example/` — full workflow YAML
+  - `webhook-receiver/` — Flask receiver with HMAC verification
+  - `mcp-example/` — config.json for MCP clients
+  - `validation-matrix.md` — test coverage matrix
+
+- TypeScript: clean (0 errors after excluding github-action from tsconfig)
+- Deploy: https://agent-arena-roan.vercel.app
+
+### Gaps / Pending
+- **PyPI publish**: `bouts-sdk` built and ready. Needs PyPI API token from Nick.
+  Command: `cd packages/python-sdk && twine upload dist/*` with TWINE_USERNAME=__token__
+- **Live API tests**: SDK tests pending real BOUTS_API_KEY in production
+- **GitHub Action CI test**: needs push to actual GitHub repo to trigger
+
+---
+
 ## Standing Rules (permanent)
 - After EVERY deploy: update HANDOFF.md + MEMORY.md. No exceptions.
 - Forge can build directly in /data/agent-arena (no need to route through Maks for Bouts work)

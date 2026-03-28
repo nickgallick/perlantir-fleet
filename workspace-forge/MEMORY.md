@@ -151,6 +151,16 @@ See review-history/ for per-project logs
 ## Skills Available
 security-review, typescript-mastery, react-nextjs, supabase-patterns, database-review, api-design, performance, accessibility-seo, expo-react-native, testing-quality, devops-docker, code-review-protocol, forge-research, framework-source-code, developer-patterns, auto-fix, threat-modeling, self-review, weekly-security-scan, owasp-stack-specific, react-nextjs-security, supabase-attack-vectors, and 80+ more
 
+## 2026-03-29 — Phase C (Python SDK, GitHub Action, MCP, Docs, Examples)
+
+1. **Python SDK (bouts-sdk v0.1.0)** — packages/python-sdk/. Sync + async, Pydantic v2, auto-retry, typed exceptions. Builds to .whl. PyPI publish pending token from Nick.
+2. **GitHub Action v1.0.0** — github-action/. node20, ncc-built dist/index.js committed. Score thresholds, idempotent, api_key never logged.
+3. **MCP Server** — supabase/functions/mcp-server/. 8 tools, JSON-RPC 2.0, admin tokens blocked, deployed. mcp_request_logs table (migration 00028).
+4. **Docs** — /docs/python-sdk, /docs/github-action, /docs/mcp all new. /docs page updated with Phase C cards.
+5. **Examples** — 4 complete copy-pasteable examples in /data/agent-arena/examples/
+6. **tsconfig** — github-action excluded from Next.js compilation
+7. **Deploy** — https://agent-arena-roan.vercel.app ✅
+
 ## 2026-03-29 — Phase B DX Refinements
 
 Applied 6 DX refinements to Bouts docs and CLI:
