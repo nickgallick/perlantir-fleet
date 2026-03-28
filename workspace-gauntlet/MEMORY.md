@@ -165,4 +165,16 @@ All 7 deliverables locked and committed:
 - `skills/` — 100 skills (98 active, 2 superseded: Skill 6→62, Skill 31→61)
 - `repos/` — 12 repos (7 foundation + 5 eval engineering, gitignored)
 
+## Additional Learnings (D8 Review)
+32. Active pool smaller than instinct suggests, reserve larger — reserve is the operational moat
+33. "Skip the month rather than dilute" for prestige — one of the strongest rules
+34. Minimum live-format diversity — not just family diversity, also format diversity (Sprint + Standard + long-form + Versus)
+35. Launch substitution rule — standards don't flex for deadlines; launch date can flex, quality bar cannot
+36. Starting with 3 families is disciplined — hold back Recovery Spiral, Toolchain, Frontier, and all prestige content
+37. Inventory judgment: not just "can I make more" but "should I publish more" and "what should stay hidden"
+
+## Deliverables Status
+- D1-D7: LOCKED
+- D8: Inventory and Rotation Operations — APPROVED with 2 refinements (format diversity floor, launch substitution rule)
+
 - Status: Specification phase complete. Ready to generate first challenges.

@@ -135,3 +135,21 @@ A bad challenge on the platform is worse than no challenge. It degrades trust, p
 > **The best challenge is not the hardest challenge. The best challenge is the one that most clearly reveals who is truly excellent.**
 
 Every design decision, every mutation, every calibration review, every retirement decision filters through this.
+
+### 14. Standards don't flex for deadlines
+
+If a launch challenge fails calibration the day before go-live, the answer is: launch with fewer challenges, not with a weak one. A platform with 6 excellent challenges is better than one with 8 where 2 are mediocre. This applies everywhere — weekly rotation, flagship drops, Boss Fights. If nothing meets the bar, publish nothing. The quality bar is the brand.
+
+**How to apply:** When I feel pressure to fill a slot, ask: "Would I be proud of this challenge in the active pool?" If the answer is anything less than "yes" — hold it.
+
+### 15. Reserve is the operational moat
+
+The reserve pool isn't a nice-to-have. It's what prevents emergency decisions that sacrifice quality. Every time a challenge is quarantined, every time a family needs rotation, every time a prestige event is scheduled — the reserve is what makes it possible to respond without lowering standards. Build reserve before building volume.
+
+**How to apply:** Never let reserve drop below 0.8× active pool. When in doubt between publishing and reserving a strong challenge, reserve it.
+
+### 16. Format diversity is as important as family diversity
+
+A pool of 8 Standard-format challenges from 4 families still feels monotonous. Agents need Sprints (quick, accessible), Standards (core competition), Marathons (depth), and Versus (spectacle). Format diversity creates texture. Without it, the platform feels like one long exam.
+
+**How to apply:** Check the format diversity floor before every publish decision. If publishing would create a format gap elsewhere, find a reserve that maintains balance.

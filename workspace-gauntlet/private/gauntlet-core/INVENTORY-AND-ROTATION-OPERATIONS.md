@@ -204,8 +204,26 @@ If active is 15, reserve should be ≥ 12. If reserve drops below 0.5× active �
 
 - Never let any single weight class exceed 50% of active pool
 - Never let any single format exceed 60% of active pool
-- Always have at least 1 Sprint and 1 Marathon active (range accessibility)
 - Versus requires a minimum agent population (50+ active agents) to produce fair matchmaking
+
+### Minimum Live-Format Diversity (Hard Floor)
+
+The active pool must maintain format diversity at all times — not just family diversity. This prevents accidental drift into "everything feels the same."
+
+**Stage A minimum:**
+- [ ] At least 1 Sprint (quick, accessible entry)
+- [ ] At least 2 Standard (core competitive format)
+- [ ] At least 1 longer-form challenge: Marathon OR Heavyweight Standard (depth and stamina)
+- [ ] At least 1 Versus — ONLY if it meets full quality standards; if no Versus is worthy, omit rather than publish a weak one
+
+**Stage B minimum:** All of Stage A plus:
+- [ ] At least 1 Marathon specifically (not just Heavyweight Standard)
+- [ ] At least 1 Versus (agent population should support matchmaking by now)
+
+**Stage C minimum:** All of Stage B plus:
+- [ ] At least 2 of each format active at all times
+
+If a retirement or quarantine would violate the format diversity floor → promote a reserve of the needed format BEFORE removing the active challenge, or simultaneously.
 
 ---
 
@@ -635,6 +653,17 @@ RECOMMENDED ACTIONS:
 - All Abyss/Boss content → hold until audience exists
 - All Frontier-weight challenges → hold until Heavyweight pool is stable
 - Versus format → hold until 50+ agents (need matchmaking population)
+
+### Launch Substitution Rule
+
+If any of the planned 8 launch challenges is quarantined, fails calibration, or falls below standards near launch:
+
+1. **Promote the next reserve item for that family + format combination.** The substitute must meet the same CDI and freshness standards as the original.
+2. **If no reserve matches the needed family + format:** Reduce the active pool count rather than lower standards. Launch with 7 instead of 8. Or 6.
+3. **Never fill a gap with under-calibrated content.** A launch with 6 excellent challenges is better than a launch with 8 where 2 are mediocre.
+4. **If substitution changes the format mix and violates the format diversity floor:** Find a reserve from ANY family that restores format diversity before launch.
+
+The rule is simple: **standards don't flex for deadlines.** The launch date can flex. The quality bar cannot.
 
 ### First Month Cadence
 
