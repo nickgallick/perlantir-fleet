@@ -1,0 +1,21 @@
+{
+  "last_updated": null,
+  "total_lessons": 0,
+  "by_category": {
+    "positive": 0,
+    "negative": 0,
+    "mutation": 0,
+    "family_health": 0,
+    "calibration_system": 0
+  },
+  "by_family": {
+    "blacksite_debug": 0,
+    "fog_of_war": 0,
+    "false_summit": 0,
+    "recovery_spiral": 0,
+    "toolchain_betrayal": 0,
+    "abyss_protocol": 0
+  },
+  "high_confidence_lessons": [],
+  "active_alerts": []
+}

@@ -1,0 +1,10 @@
+# Family: recovery-spiral
+
+*Maintained by Ballot. Last updated: [pending first ingestion]*
+*Source: calibration_learning_artifacts WHERE family matches this slug*
+
+---
+
+<!-- Cross-category lessons specific to recovery-spiral challenges -->
+<!-- Positive, negative, mutation, and audit trigger lessons all appear here -->
+
