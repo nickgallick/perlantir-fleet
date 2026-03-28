@@ -15,19 +15,25 @@
 - Gateway port: 18789
 - Docker image digest: sha256:c677c4994dfc34827e99f422f672e7164e0a82716182874fdef5967de02747ea
 
-## Agents (9 total — 7 original + Chain + Counsel added 2026-03-26)
+## Agents (10 total — Gauntlet added 2026-03-27, routing fixed 2026-03-28)
 ## Model Change (2026-03-26)
-All 9 agents downgraded to Sonnet 4.6 per Nick's directive. Previous: MaksPM, Scout, Launch, Forge, Pixel, Chain, Counsel were on Opus 4.6.
+All agents on Sonnet 4.6 except Gauntlet (Opus 4.6 — NON-NEGOTIABLE per Nick).
 
-- main (Maks/⚡) — Sonnet 4.6, 33 skills, @OpenClawVPS2BOT — Builder
+- main (Maks/⚡) — Sonnet 4.6, @OpenClawVPS2BOT — Builder
 - pm (MaksPM/📋) — Sonnet 4.6, @VPSPMClawBot — Orchestrator
 - scout (Scout/🔍) — Sonnet 4.6, @ClawScout2Bot — Research
-- clawexpert (ClawExpert/🧠) — Sonnet 4.6, 26 skills, @TheOpenClawExpertBot — Ops/COO
+- clawexpert (ClawExpert/🧠) — Sonnet 4.6, @TheOpenClawExpertBot — Ops/COO
 - launch (Launch/🚀) — Sonnet 4.6, @PerlantirLaunchBot — Go-to-Market
 - forge (Forge/🔥) — Sonnet 4.6, @ForgeVPSBot — Code Review
 - pixel (Pixel/🎨) — Sonnet 4.6, @ThePixelCanvasBot — Design
-- chain (Chain/⛓️) — Sonnet 4.6, 116 skills, @TheChainVPSBot — Blockchain
-- counsel (Counsel/⚖️) — Sonnet 4.6, @TheGeneralCounselBot — Legal Intelligence (added 2026-03-26)
+- chain (Chain/⛓️) — Sonnet 4.6, @TheChainVPSBot — Blockchain
+- counsel (Counsel/⚖️) — Sonnet 4.6, @TheGeneralCounselBot — Legal Intelligence
+- gauntlet (Gauntlet/⚔️) — Opus 4.6, @TheGauntletVPSBot — Challenge Engine (routing fixed 2026-03-28)
+
+## CRITICAL: New Agent Routing Rule (learned 2026-03-28)
+Every new agent MUST have an explicit binding in openclaw.json bindings array:
+{ "agentId": "AGENT_ID", "match": { "channel": "telegram", "accountId": "ACCOUNT_KEY" } }
+Without this, ALL messages route to Maks (main/default agent). This is how all 10 current agents are wired.
 
 ## Claude Code
 - Installed **INSIDE the container**: `/data/.npm-global/bin/claude` (symlink to cli.js)
@@ -53,7 +59,23 @@ All 9 agents downgraded to Sonnet 4.6 per Nick's directive. Previous: MaksPM, Sc
 - Hooks token: hooks_R0ddvlV8VIER6QRhJ8KujsOdZfJG7HxM
 
 ## Key Events
-- 2026-03-22: Promoted to COO by Nick. Chain of command added to all 7 agents' SOUL.md files. Built coo-reference.md. Added Phase 4.7 (COO Agent Audit) to HEARTBEAT. Updated Pixel's SOUL.md to enforce Stitch as mandatory. Tasked Pixel with building 8 skills + full Agent Arena redesign through Stitch. Pending: review Pixel's skills + Agent Arena delivery.
+- 2026-03-22: Promoted to COO. Chain of command added to all agent SOUL.md files.
+- 2026-03-27: Gauntlet agent added (10th agent). Routing was broken — fixed 2026-03-28.
+- 2026-03-28: Bouts E2E Gate 3 PASSED (109 checks, 0 real failures). Launch activated. Gauntlet routing fixed (missing binding). Paperclip VPS2 scoped — waiting for Nick to provision. Ballot agent planned.
+
+## Bouts Status (2026-03-28)
+- Live: https://agent-arena-roan.vercel.app
+- ⚠️ BLOCKED: Migration 00024 partial — challenge_bundles table may not exist. Forge needs to re-call with correct Bearer header.
+- GAUNTLET_INTAKE_API_KEY: a86c6d887c15c5bf259d2f9bcfadddf9 (in Vercel)
+- Pending Nick: Stripe live keys, Iowa address, bouts.gg domain, ORACLE_WALLET_ADDRESS, BASE_RPC_URL
+- First Gauntlet batch ready to go: 2 Blacksite Debug + 2 False Summit + 1 Fog of War (once migration unblocked)
+
+## Paperclip Plan (2026-03-28)
+- VPS2 for Paperclip control plane (8GB/2vCPU, Debian 12, Hostinger)
+- Architecture: VPS1=OpenClaw execution, VPS2=Paperclip coordination
+- 4 core workflows: Gauntlet→Forge→Calibration(Ballot)→Operator approval
+- Ballot = new agent to add (calibration/learning feedback loop)
+- Status: Waiting on Nick to provision VPS2 and send IP
 
 ## Recent Session Logs
-See memory/2026-03-19.md and memory/2026-03-20.md for full session history
+See memory/2026-03-28.md for full 2026-03-28 session details
