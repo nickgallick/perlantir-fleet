@@ -33,9 +33,11 @@
 - Test agents in DB: `final-auth-test`, `Testagentarwna`
 - Connector docs don't show v0.1.1 badge
 
-### Current Tasks (as of 2026-03-28 — updated 12:13 PM KL)
-- [ ] Gauntlet's new role: refine tier profiles + mutation quality (infrastructure is done — Forge built it all)
-- [ ] Companion spec docs if Nick wants: BOUTS_TRANSPARENCY_POLICY_v1, BOUTS_INTEGRITY_AND_ENFORCEMENT_v1, BOUTS_POST_MATCH_BREAKDOWN_SPEC_v1, BOUTS_CHALLENGE_CALIBRATION_SPEC_v1
+### Current Tasks (as of 2026-03-28 — updated 10:55 PM KL)
+- [ ] **BLOCKED: Migration 00024 partially applied** — `add_pipeline_status` step failed with Supabase edge-fn 401 (Unauthorized). The one-time runner at `/api/internal/run-migration-024/route.ts` is deployed but migration needs re-triggering. The edge function `run-migration` auth check (`auth.includes(MIGRATION_SECRET)`) may not match what was passed. Re-call with correct `Bearer <SUPABASE_SERVICE_ROLE_KEY>` header.
+- [ ] `challenge_bundles` table does not exist in DB yet — all new intake/forge-review/inventory routes will 500 until migration is applied
+- [ ] After migration is confirmed live: delete `/src/app/api/internal/run-migration-024/route.ts` and redeploy
+- [ ] Gauntlet: refine calibration profiles + mutation quality (intake pipeline infrastructure now built)
 - [ ] Nick's side: Stripe live keys + webhook, Iowa address, bouts.gg domain, ORACLE_WALLET_ADDRESS + BASE_RPC_URL
 
 ## Full System Status (as of 12:13 PM KL)
@@ -58,6 +60,18 @@
 ✅ GitHub repo in sync (all commits pushed)
 ⏳ Gauntlet: refine calibration profiles + mutation quality
 ⏳ Nick: Stripe live keys + webhook, Iowa address, bouts.gg domain, ORACLE_WALLET_ADDRESS + BASE_RPC_URL
+
+## Latest Work (2026-03-28 ~10:55 PM KL) — Gauntlet Intake Pipeline
+Built complete challenge intake pipeline (Gauntlet → validation → Forge review → calibration → inventory → publish):
+- **Migration 00024** (`supabase/migrations/00024_challenge_intake_pipeline.sql`) — `challenge_bundles` table, `pipeline_status` column on challenges, `forge_review_notes`, calibration states, trigger functions. **⚠️ NOT fully applied — see Current Tasks**
+- `src/lib/intake/bundle-schema.ts` — Zod schema for GauntletBundle submission format
+- `src/lib/intake/bundle-validator.ts` — semantic validator (prompt quality, test cases, difficulty, time limits)
+- `src/lib/intake/inventory-advisor.ts` — inventory gap analysis (checks family/difficulty/type balance)
+- `src/app/api/challenges/intake/route.ts` — POST /api/challenges/intake — receives bundle, validates, creates challenge_bundle record
+- `src/app/api/admin/forge-review/route.ts` — GET list pending bundles, POST approve/reject with notes
+- `src/app/api/admin/inventory/route.ts` — GET inventory health, POST trigger calibration → promote to reserve
+- TypeScript: 0 errors (verified with `npx tsc --noEmit`)
+- Deploy: production build succeeded at `agent-arena-efnsrucol-nickmaksdigitals-projects.vercel.app`
 
 ## Latest Shipped (2026-03-28 ~11:12 AM KL)
 - ✅ Hybrid calibration system live — synthetic-runner, real-llm-runner, orchestrator, mutation-engine

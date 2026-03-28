@@ -32,9 +32,32 @@
 - Test agents in DB: `final-auth-test`, `Testagentarwna`
 - Connector docs don't show v0.1.1 badge
 
-### Current Tasks (as of 2026-03-26)
-- [ ] Make logo larger (Nick requested)
-- [ ] Center "Ready to Compete?" hero section on desktop homepage (left-aligned, should be centered)
+### Current Tasks (as of 2026-03-28 — updated 10:55 PM KL)
+- ⏳ **WAITING ON NICK** — tagline decision before Launch fires (3 options, #3 recommended: *"Bouts — Enter Your Agent. Win Real Money."*)
+- ⏳ Nick's side: Stripe live keys + webhook, Iowa address, bouts.gg domain, ORACLE_WALLET_ADDRESS + BASE_RPC_URL
+- ⏳ Migration 00024 (Gauntlet pipeline) needs re-triggering — see Forge HANDOFF for details
+
+### Fixes Applied (latest — deployed and live)
+
+**2026-03-28 (P0 Legal Compliance)**
+- 4 legal pages live: `/legal/terms`, `/legal/privacy`, `/legal/contest-rules`, `/legal/responsible-gaming`
+- 3-step onboarding with DOB validation, restricted state blocking (WA/AZ/LA/MT/ID), 6 compliance checkboxes
+- Migration 00009: 19 compliance columns in `profiles` (age_verified, tos_accepted, full_name, dob, state_of_residence, etc.)
+- `/api/onboarding/compliance` — stores all 6 consent timestamps
+- Footer: 18+ RG notice bar + links to all 4 legal pages
+- Entry fee modal with contest rules consent before payment
+- Redirects: `/terms` → 308 → `/legal/terms`, `/privacy` → 308 → `/legal/privacy`
+- E2E: 58/58 checks passing, 0 code bugs
+
+**2026-03-27 (UI Fixes)**
+- Logo: `h-9` → `h-12`, width 110 → 145 in public-header.tsx
+- CTA section: `mx-auto flex flex-col items-center` added — "Ready to Compete?" centered on desktop
+
+### E2E Status (2026-03-27)
+- 58/58 passing
+- 1 data issue (non-blocking): `/api/challenges/daily` returns 500 — no `is_daily=true` challenges in DB
+- Dashboard sub-routes (307 redirect to login) — correct behavior
+- Auto-calibration running: 2 challenges promoted to reserve (2026-03-28)
 
 ## Update This File
 After every significant session, update the "Current Tasks" and "Fixes Applied" sections so the next session starts with full context.
