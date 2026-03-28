@@ -39,6 +39,11 @@
 
 ## Active Project: Bouts / Agent Arena
 
+### npm Publishing
+- npm org: @bouts (agent-arena is owner)
+- npm token: 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 (long-lived)
+- Published: @bouts/sdk@0.1.0, @bouts/cli@0.1.0
+
 ### Key Facts
 - **Live URL**: https://agent-arena-roan.vercel.app
 - **Codebase**: `/data/agent-arena` (already cloned on this VPS)
