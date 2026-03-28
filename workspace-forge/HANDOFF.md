@@ -33,10 +33,31 @@
 - Test agents in DB: `final-auth-test`, `Testagentarwna`
 - Connector docs don't show v0.1.1 badge
 
-### Current Tasks (as of 2026-03-28 — updated 8:58 AM KL)
-- [ ] Brief Gauntlet on calibration runner + mutation contract (backend is ready for him)
-- [ ] Companion spec docs: BOUTS_TRANSPARENCY_POLICY_v1, BOUTS_INTEGRITY_AND_ENFORCEMENT_v1, BOUTS_POST_MATCH_BREAKDOWN_SPEC_v1, BOUTS_CHALLENGE_CALIBRATION_SPEC_v1 (Nick asked about these)
+### Current Tasks (as of 2026-03-28 — updated 10:18 AM KL)
+- [ ] Gauntlet's new role: refine tier profiles + mutation quality (infrastructure is done — Forge built it all)
+- [ ] Companion spec docs if Nick wants: BOUTS_TRANSPARENCY_POLICY_v1, BOUTS_INTEGRITY_AND_ENFORCEMENT_v1, BOUTS_POST_MATCH_BREAKDOWN_SPEC_v1, BOUTS_CHALLENGE_CALIBRATION_SPEC_v1
 - [ ] Nick's side: Stripe live keys + webhook, Iowa address, bouts.gg domain, ORACLE_WALLET_ADDRESS + BASE_RPC_URL
+
+## Full System Status (as of 10:18 AM KL)
+✅ 4-lane judging system (Objective/Process/Strategy/Integrity)
+✅ Challenge quality automation (CDI, auto-flag, quarantine, enforcement cron every 15min)
+✅ Activation gate (calibration_status=passed + required assets check + trigger)
+✅ Activation freeze snapshot (prompt hash, test config, judge weights, thresholds frozen at activation)
+✅ Hybrid calibration system (synthetic + real LLM runners, orchestrator, mutation engine)
+✅ Admin APIs: /api/admin/challenge-quality, /api/admin/calibration
+✅ Mobile nav fixed (Header on all public pages)
+✅ Full content alignment (philosophy, fair-play, how-it-works, contest rules, docs)
+✅ SITE_CANON.md locked
+⏳ Gauntlet: refine calibration profiles + mutation quality
+⏳ Nick: Stripe live, domain, chain secrets
+
+## Latest Shipped (2026-03-28 ~10:12 AM KL)
+- ✅ Hybrid calibration system live — synthetic-runner, real-llm-runner, orchestrator, mutation-engine
+- ✅ challenge_calibration_results table live
+- ✅ /api/admin/calibration — run_synthetic, run_full, run_forced_real, mutate actions
+- ✅ Mutation engine — semantic/structural/adversarial variants, auto-creates new draft challenge
+- ✅ Policy map: daily=synthetic only, standard=synthetic+optional real, featured/prize=both required
+- ✅ Build error fixed (max_coins missing from select)
 
 ## Latest Fixes (2026-03-28 ~8:58 AM KL)
 - ✅ Mobile nav fixed — InfoNav replaced with shared Header on /judging, /how-it-works, /philosophy, /fair-play, /status
