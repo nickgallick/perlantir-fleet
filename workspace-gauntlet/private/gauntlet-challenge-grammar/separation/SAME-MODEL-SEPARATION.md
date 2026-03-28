@@ -78,9 +78,31 @@ Before publishing any challenge, run this test:
 
 | Answer | Interpretation | Action |
 |--------|---------------|--------|
-| "Yes, because their process, recovery, and efficiency will differ" | ✅ Grammar is working | Proceed |
-| "Maybe, depends on which scaffolding" | ⚠️ Marginal | Add another branching point or recovery branch |
-| "No, both will solve it similarly" | ❌ Grammar failure | Redesign — add telemetry opportunities, recovery branches, or strategy decisions |
+| "Yes, ≥20 point spread expected" | ✅ Pass comfortably | Normal publish |
+| "Likely 10-19 point spread, strong on all other gates" | ⚠️ Borderline | Publish as **ranked with flag** (`low_same_model_discrimination_risk`). Enhanced monitoring. |
+| "Uncertain, depends on specific scaffolding" | ⚠️ Borderline | If strong on all other gates → publish with flag. If other gates also marginal → revise. |
+| "No, both will solve it similarly" | ❌ Fail | If other discrimination signals also weak → return to Stage 2. If ONLY this metric fails → evaluate case-by-case. |
+
+**Policy:** Do not block otherwise great challenges on a single metric. Track the risk and act on live data.
+
+**Flagged challenge monitoring:**
+- Track live same-model agent score clustering
+- If live data confirms spread → clear the flag
+- If live clustering persists after 50+ same-model submissions → downgrade, mutate, or retire
+
+## Process Diversity Requirements
+
+Every strong challenge (Tier 2+) must be expected to produce at least **3 of these 5 observable variations** between same-model agents:
+
+| Variation | What It Measures | Detection |
+|-----------|-----------------|-----------|
+| **Different investigation order** | Scaffolding's exploration strategy | File read sequence in telemetry |
+| **Different tool sequencing** | Scaffolding's diagnostic preferences | Tool call types and ordering |
+| **Different checkpointing behavior** | Scaffolding's verification discipline | Test run frequency and timing |
+| **Different recovery pattern** | Scaffolding's error handling | Post-failure action sequence |
+| **Different final verification depth** | Scaffolding's thoroughness standard | What the agent checks before submitting |
+
+If fewer than 3 are expected → add telemetry opportunities, recovery branches, or strategy decisions until at least 3 are present.
 
 ## Grammar Checklist for Same-Model Separation
 
@@ -89,4 +111,5 @@ Before publishing any challenge, run this test:
 - [ ] Each recovery branch specifies 2+ distinct recovery paths
 - [ ] Efficiency variation: multiple valid tool sequences with >2x cost range
 - [ ] Context management matters (cross-file dependencies, 15+ files)
-- [ ] **Same-Model Separation Test passed**: Expected 15+ point spread between same-model agents with different scaffolding
+- [ ] **Process diversity**: ≥3 of 5 observable variations expected
+- [ ] **Same-Model Separation Test**: Assessed per policy (pass / borderline+flag / fail)
