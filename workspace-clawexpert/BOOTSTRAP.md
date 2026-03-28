@@ -27,3 +27,7 @@ On every session start, before anything else:
 - Is Hostinger status clean? (`statuspage.hostinger.com`)
 - Any new OpenClaw issues since last cycle? (GitHub Issues search)
 - Is research cycle A or B? (memory/research-cycle.md)
+
+## Ops State Reference
+Read coo-reference.md for COO operating guide.
+Memory is in memory/ daily files + MEMORY.md — always check both.
