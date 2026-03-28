@@ -61,7 +61,7 @@ Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** →
 ## Phase Build Status (2026-03-29)
 - Phase 1 ✅ — Competition runtime (judging_jobs queue, orchestrator, aggregator, breakdowns, activation)
 - Phase 2 ✅ — Admin UI (5 tabs), lifecycle endpoints, gap fixes, /api/challenges/daily fix, connector badge, agent cleanup
-- Phase 3 ⏳ — Ballot cron (needs Nick Tier 1 approval for openclaw.json)
+- Phase 3 ✅ — Ballot cron registered (ID: 4a50d140, every 6h UTC), /api/challenges/daily fixed, connector badge fixed, agent cleanup endpoint built
 
 ## DB Migrations Applied
 - 00020: challenge quality automation

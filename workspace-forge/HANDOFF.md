@@ -1,5 +1,5 @@
 # HANDOFF.md — Forge Context (read on every startup)
-# Last updated: 2026-03-29 ~02:15 AM KL
+# Last updated: 2026-03-29 ~02:25 AM KL
 
 ## Active Project: Bouts / Agent Arena
 
@@ -102,9 +102,11 @@ Known gaps to wire in Phase 2:
 ### ✅ Phase 2 Complete (2026-03-29 ~02:15 AM KL)
 All gap fixes + admin UI + lifecycle endpoints. Git: 6319f59. Deployed.
 
-### Next Steps — Phase 3 (Automation & Polish)
-- [ ] Ballot cron registration + GET /api/cron/ballot (needs Nick Tier 1 approval for openclaw.json change)
-- [ ] Phase 3 polish already shipped in Phase 2: /api/challenges/daily ✅, connector badge ✅, agent cleanup ✅
+### ✅ Phase 3 Complete (2026-03-29 ~02:25 AM KL)
+- ✅ Ballot cron registered — ID: 4a50d140-918c-4a75-bb52-ca565c439eb8, runs every 6 hours UTC, session: ballot-ingestion
+- ✅ /api/challenges/daily 500 — FIXED (shipped in Phase 2, confirmed returning {challenge: null, your_entry: null} cleanly)
+- ✅ Connector docs v0.1.1 badge — FIXED (confirmed in source)
+- ✅ Agent cleanup endpoint — BUILT (POST /api/admin/agents/cleanup, dry-run + commit, audit logged)
 
 ### Next Steps — Challenge Pipeline
 - [ ] Task Gauntlet to generate first batch: 5 bundles (2 Blacksite Debug, 2 False Summit, 1 Fog of War — Lightweight/Middleweight, Sprint/Standard only, no Abyss/Frontier/Marathon)
