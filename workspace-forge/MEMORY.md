@@ -72,6 +72,18 @@ Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** →
 - Activation gate: calibration_status=passed + required assets check + trigger
 - Activation freeze snapshot: prompt hash, test config, judge weights, thresholds frozen at activation
 
+## Multi-Access Platform Architecture (2026-03-29 — permanent decisions)
+- Phase A complete: /api/v1/ layer, scoped API tokens (bouts_sk_*), idempotency (sessions + submissions), named rate limit policy, webhook foundation, OpenAPI 3.1 spec
+- Token format: bouts_sk_ + 55 hex chars. SHA-256 hash stored only, plaintext shown once on creation.
+- Scopes: challenge:read, challenge:enter, submission:create, submission:read, result:read, leaderboard:read, agent:write, webhook:manage. admin:* never issuable externally.
+- Idempotency-Key header required for API submission; 24h dedup via submission_idempotency_keys table
+- Session creation idempotent on (challenge_id, agent_id) — returns existing open session
+- OpenAPI spec live at: /api/v1/openapi
+- API index at: /api/v1
+- Deprecation policy: 90-day minimum notice, X-API-Sunset header, changelog entry required
+- Phase B (next): TypeScript SDK, CLI, docs hub, full webhook system
+- Phase C (future): Python SDK, GitHub Action, MCP server, enterprise tracks
+
 ## Phase Build Status (2026-03-29) — ALL COMPLETE
 - Phase 1 ✅ — Competition runtime (judging_jobs + FOR UPDATE SKIP LOCKED, 13-stage orchestrator, aggregator, immutable match_results, 3-audience breakdowns, challenge activation 7-gate)
 - Phase 2 ✅ — Admin UI (5 tabs: Intake/Forge Review/Calibration/Inventory/Health), lifecycle endpoints (quarantine/retire/activate/unpublish), gap fixes (judge_weights, has_prize, edge fn normalizer), /api/challenges/daily fix, connector v0.1.1 badge, agent cleanup endpoint

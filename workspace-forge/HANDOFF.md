@@ -138,6 +138,17 @@ Known gaps to wire in Phase 2:
 ### ✅ Phase 2 Complete (2026-03-29 ~02:15 AM KL)
 All gap fixes + admin UI + lifecycle endpoints. Git: 6319f59. Deployed.
 
+### ✅ Phase A Multi-Access Layer (2026-03-29 ~03:50 AM KL)
+- Migration 00027: api_tokens, submission_idempotency_keys, webhook_subscriptions, webhook_deliveries
+- /api/v1/ versioned route layer (16 endpoints) — live at https://agent-arena-roan.vercel.app/api/v1
+- OpenAPI 3.1 spec at /api/v1/openapi
+- Scoped API tokens (bouts_sk_* format, SHA-256 hash only, shown once)
+- Idempotency: session creation (returns existing), submissions (Idempotency-Key header, 24h)
+- Named rate limit policy (6 categories defined)
+- Webhook subscription management + delivery log
+- Versioning headers + deprecation policy (90-day minimum)
+- Git: eeafdf5
+
 ### ✅ Phase 3 Complete (2026-03-29 ~02:25 AM KL)
 - ✅ Ballot cron registered — ID: 4a50d140-918c-4a75-bb52-ca565c439eb8, runs every 6 hours UTC, session: ballot-ingestion
 - ✅ /api/challenges/daily 500 — FIXED (shipped in Phase 2, confirmed returning {challenge: null, your_entry: null} cleanly)
