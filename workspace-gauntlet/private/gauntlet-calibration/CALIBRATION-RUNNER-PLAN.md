@@ -24,7 +24,15 @@ Calibration is the ONLY path to publication. There is no "fast-track" that bypas
 
 ## 2. Tier Ladder
 
-Four calibration tiers simulate the range of agent quality in the real arena.
+Four competitive calibration tiers simulate the range of agent quality in the real arena, plus one internal validator that proves solvability.
+
+**Competitive tiers** (simulate real arena agents):
+- Naive → Standard → Strong → Elite
+
+**Internal validator** (proves the ceiling):
+- Reference Solver
+
+Elite is the actual discrimination target — the top of competitive play. Reference is the internal proof the challenge is solvable. They serve different roles and must not be conflated.
 
 ### Tier 1: Naive Agent
 
@@ -52,20 +60,33 @@ Four calibration tiers simulate the range of agent quality in the real arena.
 
 **Purpose:** Establishes the middle. The Standard agent should make meaningful progress but plateau before the hidden invariants.
 
-### Tier 3: Strong Agent (maps to "Elite" in earlier docs — renamed for clarity in 4-tier system)
+### Tier 3: Strong Agent
 
 | Attribute | Specification |
 |-----------|--------------|
 | **Prompting** | Advanced system prompt with structured approach: "You are a principal engineer. Before coding: read all relevant files, form hypotheses, plan your approach. After each change: run tests, verify, document. Consider edge cases, concurrency, security. Question whether the stated problem is the real problem." |
 | **Tool access** | Full tool suite with advanced patterns: multi-file search, grep, structured test running, diff analysis. |
-| **Iteration budget** | Maximum iterations (4-6 depending on challenge) |
+| **Iteration budget** | 3-4 iterations |
 | **Expected behavior** | Systematic investigation, finds most bugs/issues, dismisses most red herrings, writes some additional tests. May miss the most subtle hidden invariants. |
-| **Expected score band** | 55-80 across all challenge classes |
+| **Expected score band** | 50-72 across all challenge classes |
 | **Common failure mode** | Temporal Naivety (misses concurrency), Scope Explosion (over-refactors), Context Drift (loses thread in long sessions) |
 
-**Purpose:** Establishes the near-ceiling. Strong agents should solve most of the challenge but leave room for elite performance.
+**Purpose:** Establishes the strong-but-not-elite band. Strong agents should solve most of the challenge but leave visible room for elite performance.
 
-### Tier 4: Reference Agent
+### Tier 4: Elite Agent
+
+| Attribute | Specification |
+|-----------|--------------|
+| **Prompting** | Expert system prompt with adversarial thinking: "You are a staff+ engineer. Beyond the Strong agent prompt: actively question whether the stated problem is the real problem. Write adversarial tests. Consider what could still be wrong after tests pass. Document tradeoffs and remaining risks. Flag security or design concerns." |
+| **Tool access** | Full tool suite with advanced patterns. |
+| **Iteration budget** | Maximum iterations (4-6 depending on challenge) |
+| **Expected behavior** | Finds nearly all bugs/issues, dismisses all red herrings with evidence, writes adversarial tests, discovers hidden invariants, produces strong deliverables. May miss the most subtle edge of the challenge. |
+| **Expected score band** | 70-88 across all challenge classes |
+| **Common failure mode** | False Confidence Stop (stops 5 points short of ceiling), Scope Explosion on complex challenges |
+
+**Purpose:** The actual discrimination target — the top of competitive play. Elite performance is what the leaderboard rewards. The gap between Strong and Elite is where same-model separation is most visible.
+
+### Internal Validator: Reference Solver
 
 | Attribute | Specification |
 |-----------|--------------|
@@ -74,9 +95,9 @@ Four calibration tiers simulate the range of agent quality in the real arena.
 | **Iteration budget** | Maximum iterations |
 | **Expected behavior** | Executes the intended solution path. Validates that the challenge is solvable and the scoring works as designed. |
 | **Expected score band** | 85-98 across all challenge classes |
-| **Common failure mode** | None expected — if the Reference agent fails, the challenge is broken |
+| **Common failure mode** | None expected — if the Reference Solver fails, the challenge is broken |
 
-**Purpose:** Validates the ceiling. Proves the challenge is solvable and the scoring system works. If Reference < 85, the challenge does not proceed.
+**Purpose:** Internal ceiling validator ONLY. The Reference Solver is NOT a competitive tier — it does not represent a real arena agent because it has the solution approach. It exists to prove: (1) the challenge is solvable, (2) the scoring system works as designed, (3) the maximum score is reachable. If Reference < 85, the challenge does not proceed.
 
 ### Expected Score Bands by Challenge Class
 
@@ -84,10 +105,17 @@ Four calibration tiers simulate the range of agent quality in the real arena.
 |------|-----------|-----------|-------------|----------------|-----------|-------|
 | Naive | 8-22 | 5-18 | 25-42* | 10-20 | 15-38 | 5-15 |
 | Standard | 30-50 | 28-48 | 35-50 | 25-40 | 35-55 | 15-30 |
-| Strong | 55-75 | 58-78 | 55-72 | 50-70 | 55-72 | 35-55 |
+| Strong | 50-72 | 52-72 | 50-68 | 45-65 | 50-68 | 30-50 |
+| Elite | 68-85 | 70-85 | 65-82 | 62-80 | 65-82 | 48-68 |
 | Reference | 88-95 | 88-95 | 85-95 | 85-92 | 85-92 | 78-90 |
 
 *False Summit Naive is higher because visible tests pass before the agent does anything — partial credit for the existing passing state.
+
+**Key separation targets:**
+- Naive → Standard: 15-25 point gap (basic competence filter)
+- Standard → Strong: 15-25 point gap (investigation depth)
+- Strong → Elite: 12-18 point gap (adversarial thinking, hidden invariant discovery — this is the same-model separation zone)
+- Elite → Reference: 8-15 point gap (Reference has the answer key — this gap should always exist)
 
 ---
 
@@ -192,7 +220,15 @@ Every calibration run produces a structured report:
       },
       "standard": { "..." : "..." },
       "strong": { "..." : "..." },
-      "reference": { "..." : "..." }
+      "elite": { "..." : "..." },
+      "reference_solver": {
+        "composite": 91,
+        "lanes": {"objective": 95, "process": 88, "strategy": 90, "recovery": 82, "integrity": "+5"},
+        "dominant_failure_mode": "none",
+        "iterations_used": 5,
+        "time_elapsed_minutes": 38,
+        "note": "Internal validator — not a competitive tier"
+      }
     },
 
     "persona_results": {
@@ -275,10 +311,11 @@ Every calibration run produces a structured report:
 
 | Criterion | Threshold | Hard/Soft |
 |-----------|-----------|-----------|
-| Reference agent score | > 85 | **Hard** — no exceptions |
+| Reference Solver score | > 85 | **Hard** — no exceptions |
 | Naive agent score | 5-25 | **Hard** — > 30 means too easy |
 | Standard agent score | 25-55 | Soft — ±5 acceptable |
-| Strong agent score | 55-80 | Soft — ±5 acceptable |
+| Strong agent score | 50-72 | Soft — ±5 acceptable |
+| Elite agent score | 68-88 | Soft — ±5 acceptable |
 | Score spread (σ) | > 15 | **Hard** |
 | Tier separation (Spearman r) | > 0.7 | **Hard** |
 | CDI estimate | ≥ B-Tier (0.50) | **Hard** |
@@ -296,6 +333,7 @@ Every calibration run produces a structured report:
 | Engagement score | ≥ 3.0 | **Hard** |
 | Reveal quality | Clear insight + visible win reason + teachable breakdown | **Hard** |
 | Persona divergence | ≥ 4 personas run, meaningful spread | **Hard** |
+| **Same-model separation** | At least 1 adjacent same-model tier delta ≥ 12; no more than 1 adjacent delta < 8 | **Hard** |
 
 ### Boss Fight Challenges (all Featured criteria PLUS)
 
@@ -306,6 +344,7 @@ Every calibration run produces a structured report:
 | Engagement score | ≥ 4.0 | **Hard** |
 | Multi-lane spread | No lane > 50% of separation, ≥ 3 lanes with σ > 10 | **Hard** |
 | Spectator value | Reveal + tension + comeback potential all ≥ 4/5 | **Hard** |
+| **Same-model separation** | At least 1 adjacent same-model tier delta ≥ 12; no more than 1 adjacent delta < 8 | **Hard** |
 
 ### Abyss Challenges (all Boss criteria PLUS the Abyss Protocol gates)
 
@@ -318,6 +357,25 @@ Every calibration run produces a structured report:
 | Prestige badges | Configured and score-range tested | **Hard** |
 | All 8 personas | Required, all producing differentiated results | **Hard** |
 | Counsel review | Mandatory, no timeout | **Hard** |
+| **Same-model separation** | At least 1 adjacent same-model tier delta ≥ 12; no more than 1 adjacent delta < 8 | **Hard** |
+
+### Same-Model Separation Criteria (Elevated Track Detail)
+
+For Featured, Boss, and Abyss, same-model separation is a real gate, not just a monitoring flag.
+
+**Measurement:** Run calibration tiers using the same base model (e.g., all on Claude Sonnet 4.6) with different scaffolding configs matching the tier prompts. Compute the score delta between adjacent tiers.
+
+**Adjacent tier deltas** (same-model):
+| Pair | Minimum Delta |
+|------|--------------|
+| Naive → Standard | ≥ 8 (at least 1 pair must be ≥ 12) |
+| Standard → Strong | ≥ 8 (at least 1 pair must be ≥ 12) |
+| Strong → Elite | ≥ 8 (at least 1 pair must be ≥ 12) |
+
+**Rules:**
+- At least 1 adjacent delta must be ≥ 12 — proves the challenge can meaningfully separate same-model agents at some skill transition
+- No more than 1 adjacent delta may be < 8 — prevents compression zones where same-model agents cluster
+- If all 3 deltas are < 8: **hard fail** — the challenge compresses same-model agents at every level
 
 ---
 
@@ -525,6 +583,25 @@ FORCE re-run calibration when:
 - Persona configuration changed
 - Challenge escalated to a higher release state (Standard → Featured → Boss)
 
+### Calibration Invalidation Rules (MANDATORY)
+
+Old calibration must **never** survive meaningful scoring or challenge changes. The following changes **immediately invalidate** all cached calibration results, requiring full recalibration before the challenge can remain active or be published:
+
+| Change Type | Why It Invalidates | Recalibration Scope |
+|-------------|-------------------|-------------------|
+| **Hidden tests** (added, removed, or modified) | Directly changes Objective scores → all downstream metrics shift | Full recalibration (all tiers + mandatory personas) |
+| **Scoring weights** (format_weights changed) | Same raw scores produce different composites → CDI changes | Full recalibration |
+| **Briefing / prompt** (visible objective, stakeholder text, any briefing content) | Changes what the agent sees → changes behavior → changes all scores | Full recalibration |
+| **Difficulty profile** (any dimension changed) | Shifts the expected tier behavior and calibration baselines | Full recalibration |
+| **Mutation applied** (semantic, structural, adversarial, or dependency) | Surface changes may alter discrimination patterns | Full for semantic/dependency; reduced (2 tiers + 2 personas) for structural-only |
+| **Exploit / integrity logic** (sandbox rules, detection rules, integrity triggers) | Changes what gets penalized/rewarded → Integrity scores shift | Targeted recalibration on Integrity + Exploit Seeker persona |
+| **Judge prompt** (any judge lane prompt template changed) | Directly changes how judges score → all subjective scores shift | Full recalibration |
+| **Judge model version** (any model pinned version updated) | Model behavior may have changed → scores may drift | Full recalibration on affected lanes |
+
+**Rule:** If any of the above change and the challenge is already live, the challenge enters a `recalibration_pending` state. It remains active (scores still count) but is flagged for recalibration within 48 hours. If recalibration produces results that differ by > 10 points on any tier from the original calibration, the challenge is quarantined until the discrepancy is resolved.
+
+**No grandfather clause:** There is no "this challenge was calibrated under the old system and that's fine." Every challenge must be valid under the CURRENT scoring configuration.
+
 ### Budget Authorization
 
 | Calibration Type | Authorization Required |
@@ -614,7 +691,8 @@ Decision:
 Every published challenge has been pressure-tested to reliably separate:
 - **Weak vs Average** (Naive ≠ Standard)
 - **Average vs Strong** (Standard ≠ Strong)
-- **Strong vs Elite** (Strong ≠ Reference)
-- **Elite vs Elite on the same base model** (Speedrunner ≠ Careful Planner, same-model spread test)
+- **Strong vs Elite** (Strong ≠ Elite — the same-model separation zone)
+- **Elite vs Elite on the same base model** (Speedrunner ≠ Careful Planner, same-model tier deltas)
+- **Solvable** (Reference Solver > 85 — internal ceiling validation)
 
 That is the calibration gate. No challenge passes without proving discrimination. No intuition overrides data.
