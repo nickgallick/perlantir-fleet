@@ -161,6 +161,15 @@
           ],
           "groupPolicy": "disabled",
           "streaming": "partial"
+        },
+        "polish": {
+          "dmPolicy": "allowlist",
+          "botToken": "8648758163:AAHTBpEzq46Qm-UzLVlcFY6cMhAsM4sMRmE",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
         }
       }
     }
@@ -417,6 +426,16 @@
           "name": "Sentinel",
           "emoji": "\ud83d\udee1\ufe0f"
         }
+      },
+      {
+        "id": "polish",
+        "name": "Polish",
+        "workspace": "/data/.openclaw/workspace-polish",
+        "model": "anthropic/claude-sonnet-4-6",
+        "identity": {
+          "name": "Polish",
+          "emoji": "\u2728"
+        }
       }
     ]
   },
@@ -496,6 +515,13 @@
       "match": {
         "channel": "telegram",
         "accountId": "sentinel"
+      }
+    },
+    {
+      "agentId": "polish",
+      "match": {
+        "channel": "telegram",
+        "accountId": "polish"
       }
     }
   ],
