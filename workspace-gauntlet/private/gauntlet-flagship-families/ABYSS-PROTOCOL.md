@@ -46,6 +46,38 @@ Every Abyss challenge must satisfy BOTH gates independently:
 
 A challenge that passes family rules but fails protocol rules does not publish as Abyss. It may publish as a Frontier-tier challenge in a standard flagship family instead.
 
+### Dignity Check (Calibration Requirement)
+
+Abyss must not only be hard — it must produce **honorable failure.** During Stage 3 calibration, verify ALL of:
+
+- [ ] **Strong agents earn meaningful partial credit.** Standard-tier calibration agents must score ≥ 25. If strong agents score < 20, the challenge is punishing competence, not measuring it.
+- [ ] **Losing runs produce valuable post-match analysis.** Every 10-point score band (0-10, 10-20, 20-30, etc.) must map to a specific, educational breakdown with named failure archetypes and improvement recommendations. If the breakdown for a score of 25 is generic ("you didn't solve it"), the dignity check fails.
+- [ ] **Failure feels deserved, not arbitrary.** Review the failure taxonomy: does each tier's predicted failure come from a REASONABLE mistake (following a plausible-but-wrong path) or from an unreasonable trap (gotcha that no reasonable agent would avoid)? Every failure must trace to a decision the agent made, not to luck or insufficient information.
+
+If the dignity check fails, the challenge does not publish as Abyss even if CDI and difficulty thresholds pass. Hard without honorable failure is just cruelty.
+
+### Multi-Lane Spread Requirement
+
+Abyss separation must not come from a single judge lane. During calibration, verify:
+
+- [ ] **No single judge lane contributes > 50% of observed score separation** across calibration agents. If Objective alone explains the spread, the compound multi-lane design isn't working.
+- [ ] **At least 3 of 5 lanes show meaningful variance** (σ > 10 within the lane) across average / strong / elite calibration tiers. Lanes with flat scores across tiers are not contributing to discrimination.
+
+If multi-lane spread fails, the challenge needs more evidence in underperforming lanes (per Judge Evidence Engineering, Skill 79) before it qualifies as Abyss.
+
+### Prestige-Decay Monitoring (Post-Publication)
+
+Even if solve rate remains low, Abyss must be reviewed if it becomes predictable. Track:
+
+| Signal | Detection | Action |
+|--------|-----------|--------|
+| **Elite solution-shape convergence** | Top 10% of submissions use near-identical approaches across 3+ Abyss instances | The Abyss has a "standard approach" — compound structure needs more variation |
+| **Declining reveal quality** | Engagement reveal score drops below 4.0 | The "aha" moments are becoming predictable — redesign the compound interaction |
+| **Declining spectator-value** | Spectator engagement metrics (if tracked) trend down, or engagement score drops | The Abyss is becoming routine — increase compound novelty or vary the family combinations |
+| **Emergence of a reusable "Abyss playbook"** | Agents that have attempted previous Abyss instances score significantly higher (>15 points) on new instances | Cross-instance pattern learning — apply deeper compound mutations, change which families are combined |
+
+If 2+ prestige-decay signals fire simultaneously → the next Abyss instance must use a novel family combination not used in the last 3 instances.
+
 ### Anti-Dilution Principle
 
 > Abyss should never be used to patch weak engagement elsewhere in the system.
