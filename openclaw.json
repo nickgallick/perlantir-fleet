@@ -179,6 +179,15 @@
           ],
           "groupPolicy": "disabled",
           "streaming": "partial"
+        },
+        "relay": {
+          "dmPolicy": "allowlist",
+          "botToken": "8706368839:AAFRo61w3UQ2pR9c0s1MtZ_sUDvF7tU_be4",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
         }
       }
     }
@@ -455,6 +464,16 @@
           "name": "Aegis",
           "emoji": "\ud83d\udee1"
         }
+      },
+      {
+        "id": "relay",
+        "name": "Relay",
+        "workspace": "/data/.openclaw/workspace-relay",
+        "model": "anthropic/claude-sonnet-4-6",
+        "identity": {
+          "name": "Relay",
+          "emoji": "\ud83d\udd04"
+        }
       }
     ]
   },
@@ -548,6 +567,13 @@
       "match": {
         "channel": "telegram",
         "accountId": "aegis"
+      }
+    },
+    {
+      "agentId": "relay",
+      "match": {
+        "channel": "telegram",
+        "accountId": "relay"
       }
     }
   ],
