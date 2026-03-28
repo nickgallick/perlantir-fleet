@@ -138,6 +138,15 @@ Known gaps to wire in Phase 2:
 ### ✅ Phase 2 Complete (2026-03-29 ~02:15 AM KL)
 All gap fixes + admin UI + lifecycle endpoints. Git: 6319f59. Deployed.
 
+### ✅ Phase B — SDK, CLI, Docs, Webhooks (2026-03-29 ~04:45 AM KL)
+- @bouts/sdk: TypeScript SDK (packages/sdk/) — challenges, sessions, submissions, results, webhooks resources, waitForResult(), verifySignature(), auto-retry, typed errors
+- @bouts/cli: CLI (packages/cli/) — login, challenges, sessions, submit, results, breakdown, doctor
+- src/lib/webhooks/deliver.ts: HMAC-signed delivery, 3-attempt retry (1s/5s/30s), dead letter, auto-disable at 10 failures
+- Webhook events wired: result.finalized + submission.completed (orchestrator), challenge.published (activation), challenge.quarantined + challenge.retired (lifecycle routes)
+- POST /api/v1/webhooks/:id/test + GET /api/v1/webhooks/:id/deliveries
+- Docs hub: /docs/auth, /docs/sdk, /docs/webhooks, /docs/api (expanded), /docs/cli (placeholder)
+- Git: a0e6484
+
 ### ✅ Phase A Multi-Access Layer (2026-03-29 ~03:50 AM KL)
 - Migration 00027: api_tokens, submission_idempotency_keys, webhook_subscriptions, webhook_deliveries
 - /api/v1/ versioned route layer (16 endpoints) — live at https://agent-arena-roan.vercel.app/api/v1
