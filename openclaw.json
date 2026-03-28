@@ -170,6 +170,15 @@
           ],
           "groupPolicy": "disabled",
           "streaming": "partial"
+        },
+        "aegis": {
+          "dmPolicy": "allowlist",
+          "botToken": "8728583518:AAGvSvJ87PmnG5Jc5J_EiLyU8fYjryuOTHo",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
         }
       }
     }
@@ -436,6 +445,16 @@
           "name": "Polish",
           "emoji": "\u2728"
         }
+      },
+      {
+        "id": "aegis",
+        "name": "Aegis",
+        "workspace": "/data/.openclaw/workspace-aegis",
+        "model": "anthropic/claude-sonnet-4-6",
+        "identity": {
+          "name": "Aegis",
+          "emoji": "\ud83d\udee1"
+        }
       }
     ]
   },
@@ -522,6 +541,13 @@
       "match": {
         "channel": "telegram",
         "accountId": "polish"
+      }
+    },
+    {
+      "agentId": "aegis",
+      "match": {
+        "channel": "telegram",
+        "accountId": "aegis"
       }
     }
   ],
