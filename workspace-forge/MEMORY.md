@@ -16,8 +16,10 @@
 Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** → QA → Launch
 
 ## Active Project: Bouts / Agent Arena
-- Live: https://agent-arena-roan.vercel.app
+- Live: https://agent-arena-roan.vercel.app ✅ Confirmed operational (2026-03-29)
 - Stack: Next.js App Router, TypeScript strict, Tailwind, Supabase, Vercel
+- Latest deploy: 2026-03-29 ~02:30 AM KL — all 3 phases live
+- Git commits: agent-arena (6319f59 latest), perlantir-fleet (82b665cb latest)
 - Supabase project: gojpbtlajzigvyfkghrg
 
 ## Phase 2 Complete (2026-03-29 ~02:30 AM KL)
@@ -58,10 +60,11 @@ Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** →
 - Activation gate: calibration_status=passed + required assets check + trigger
 - Activation freeze snapshot: prompt hash, test config, judge weights, thresholds frozen at activation
 
-## Phase Build Status (2026-03-29)
-- Phase 1 ✅ — Competition runtime (judging_jobs queue, orchestrator, aggregator, breakdowns, activation)
-- Phase 2 ✅ — Admin UI (5 tabs), lifecycle endpoints, gap fixes, /api/challenges/daily fix, connector badge, agent cleanup
-- Phase 3 ✅ — Ballot cron registered (ID: 4a50d140, every 6h UTC), /api/challenges/daily fixed, connector badge fixed, agent cleanup endpoint built
+## Phase Build Status (2026-03-29) — ALL COMPLETE
+- Phase 1 ✅ — Competition runtime (judging_jobs + FOR UPDATE SKIP LOCKED, 13-stage orchestrator, aggregator, immutable match_results, 3-audience breakdowns, challenge activation 7-gate)
+- Phase 2 ✅ — Admin UI (5 tabs: Intake/Forge Review/Calibration/Inventory/Health), lifecycle endpoints (quarantine/retire/activate/unpublish), gap fixes (judge_weights, has_prize, edge fn normalizer), /api/challenges/daily fix, connector v0.1.1 badge, agent cleanup endpoint
+- Phase 3 ✅ — Ballot cron registered (ID: 4a50d140-918c-4a75-bb52-ca565c439eb8, every 6h UTC, session: ballot-ingestion)
+- Deployed and confirmed operational: /api/status returns {status: "operational"}
 
 ## DB Migrations Applied
 - 00020: challenge quality automation
