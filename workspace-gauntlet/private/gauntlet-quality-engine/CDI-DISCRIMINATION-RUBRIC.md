@@ -100,20 +100,33 @@ Bimodal penalty: −20 from raw score if Hartigan's dip test confirms bimodality
 
 ### Component D: Lane Diversity (Weight: 14%)
 
-**Definition:** Whether all judge lanes contribute to discrimination, not just Objective.
+**Definition:** Whether all 4 core scoring lanes contribute to discrimination, not just Objective.
 
-**Measurement:** Variance contribution per lane. Each lane's contribution to total score variance is computed. Ideal: roughly proportional to the lane's weight. Failure: one lane explains almost everything.
+**Lane model:** Bouts uses **4 core scoring lanes + 1 conditional Audit lane:**
+- **Core lanes (always active, always scored):** Objective, Process, Strategy, Integrity
+- **Conditional Audit lane:** Claude Opus, triggered automatically ONLY when Process and Strategy differ by > 15 points
 
-| Score | Largest lane contribution | Interpretation |
-|-------|--------------------------|---------------|
-| 100 | Largest lane < 35% of total variance | Balanced — all lanes matter |
+The Audit lane is:
+- ❌ NOT part of the default scoring path
+- ❌ NOT always active
+- ❌ NOT a normal primary lane
+- ✅ A dispute / divergence resolution mechanism
+- ✅ A confidence and arbitration tool for triggered cases only
+
+**CDI Lane Diversity is computed across the 4 core lanes ONLY.** Audit is used for dispute resolution, confidence adjustment, judge-agreement analysis, and final score arbitration — but it does not factor into the Lane Diversity component. Including Audit would distort challenge design incentives by rewarding challenges that trigger disputes.
+
+**Measurement:** Variance contribution per core lane. Each lane's contribution to total score variance is computed. Ideal: roughly proportional to the lane's weight. Failure: one lane explains almost everything.
+
+| Score | Largest core lane contribution | Interpretation |
+|-------|-------------------------------|---------------|
+| 100 | Largest lane < 35% of total variance | Balanced — all core lanes matter |
 | 80 | Largest lane 35-45% | Good — slight Objective lean (expected) |
 | 60 | Largest lane 45-55% | Adequate — one lane is dominant but others contribute |
 | 40 | Largest lane 55-65% | Weak — one lane is driving most separation |
 | 20 | Largest lane 65-80% | Poor — other lanes are mostly noise |
 | 0 | Largest lane > 80% | Failed — effectively a single-lane challenge |
 
-**Minimum lane contribution:** No lane (except Integrity, which is adjustment-based) may contribute < 5% of total variance. If a lane contributes 0% → the challenge has a design gap on that lane.
+**Minimum lane contribution:** No core lane (except Integrity, which is adjustment-based) may contribute < 5% of total variance. If a core lane contributes 0% → the challenge has a design gap on that lane.
 
 ### Component E: Persona Divergence (Weight: 10%)
 
@@ -221,7 +234,7 @@ Bimodal penalty: −20 from raw score if Hartigan's dip test confirms bimodality
 |-----------|-----------|--------|
 | **Elite ceiling too low** | Elite calibration agent scores < 60 | Cannot publish as ranked — challenge may be too hard or broken |
 | **Same-model clustering critical** | All 3 adjacent same-model tier deltas < 8 | Cannot publish as Featured/Boss/Abyss |
-| **Single-lane dominance extreme** | One lane contributes > 70% of total variance | Cannot publish — redesign judge evidence |
+| **Single core lane dominance extreme** | One of the 4 core lanes contributes > 70% of total variance | Cannot publish — redesign judge evidence |
 | **Public leak detected** | Layer A contamination confirmed | Immediate quarantine — no publication |
 | **Exploit success critical** | Exploit Seeker scores > 65 via gaming | Cannot publish — fix exploit defenses first |
 | **Top-band compression** | >50% of agents score within 10 points of each other | Cannot publish — challenge not discriminative |
@@ -348,17 +361,30 @@ Same-model discrimination feeds directly into Component C. A challenge with exce
 
 ## 9. Lane-Balance Rubric
 
+### Lane Model Recap
+
+**4 core scoring lanes + 1 conditional Audit lane:**
+
+| Lane | Type | Always Active | CDI Lane Diversity Role |
+|------|------|---------------|------------------------|
+| **Objective** | Core | ✅ Yes | ✅ Included in Lane Diversity |
+| **Process** | Core | ✅ Yes | ✅ Included in Lane Diversity |
+| **Strategy** | Core | ✅ Yes | ✅ Included in Lane Diversity |
+| **Integrity** | Core (asymmetric adjustment) | ✅ Yes | ✅ Included in Lane Diversity |
+| **Audit** | Conditional | ❌ Only when Process-Strategy gap > 15 | ❌ NOT included in Lane Diversity |
+
+**Audit lane purpose:** Dispute resolution, confidence adjustment, judge-agreement analysis, final score arbitration in triggered cases. It is Claude Opus, invoked automatically as a tiebreaker — not a normal scoring lane.
+
 ### What "Balanced" Means
 
-Lane balance does NOT mean equal weight. It means every lane contributes meaningfully to discrimination in proportion to its weight.
+Lane balance does NOT mean equal weight. It means every core lane contributes meaningfully to discrimination in proportion to its weight.
 
-| Lane | Expected Variance Contribution | Healthy Range |
-|------|-------------------------------|--------------|
+| Core Lane | Expected Variance Contribution | Healthy Range |
+|-----------|-------------------------------|--------------|
 | Objective | Proportional to weight (35-55%) | 25-50% of total variance |
 | Process | Proportional to weight (15-20%) | 10-25% of total variance |
 | Strategy | Proportional to weight (15-25%) | 10-30% of total variance |
-| Recovery | Proportional to weight (10-20%) | 5-25% of total variance |
-| Integrity | Small (adjustment-based) | 2-10% of total variance |
+| Integrity | Small (asymmetric adjustment) | 2-12% of total variance |
 
 ### What Imbalance Looks Like
 
@@ -367,8 +393,18 @@ Lane balance does NOT mean equal weight. It means every lane contributes meaning
 | **Objective dominance** | Objective contributes > 55% of variance | Component D score drops to 40-60 | Add more telemetry opportunities, strategy decisions, recovery branches |
 | **Strategy starvation** | Strategy contributes < 5% of variance | Component D score drops by 20 | Add required written deliverables, ambiguity, tradeoff decisions |
 | **Process invisibility** | Process contributes < 5% of variance | Component D score drops by 20 | Add more checkpoint opportunities, tool-use variation, exploration breadth |
-| **Recovery absence** | Recovery contributes 0% | Component D score drops by 15 | Add recovery branches — the challenge needs traps |
 | **Integrity silence** | Integrity never triggers (no bonuses, no penalties) | Component D score drops by 10 | Add exploit temptations and honesty opportunities |
+
+### What Audit Lane Contributes (Outside CDI Lane Diversity)
+
+While Audit is NOT part of Lane Diversity scoring, it serves critical functions:
+
+| Audit Function | When It Fires | CDI Impact (Indirect) |
+|---------------|--------------|----------------------|
+| **Dispute resolution** | Process-Strategy gap > 15 | Improves CDI confidence by resolving disagreements |
+| **Confidence adjustment** | Borderline calibration results | Prevents premature CDI grade assignment |
+| **Judge-agreement analysis** | Post-calibration review | Feeds judge calibration system (Skill 66), improving future lane scores |
+| **Final score arbitration** | Prize-critical matches | Ensures CDI-related rankings are defensible |
 
 ---
 
@@ -490,7 +526,7 @@ Every CDI measurement is stored as a snapshot:
       "tier_separation": {"score": 82, "spearman_r": 0.84, "weight": 0.20},
       "score_spread": {"score": 75, "sigma": 21.3, "bimodal": false, "weight": 0.12},
       "same_model_separation": {"score": 68, "ratio": 0.52, "adjacent_deltas": [14, 11, 9], "weight": 0.18},
-      "lane_diversity": {"score": 80, "largest_lane_contribution": 0.42, "starved_lanes": [], "weight": 0.14},
+      "lane_diversity": {"score": 80, "largest_core_lane_contribution": 0.42, "starved_core_lanes": [], "core_lanes_measured": ["objective", "process", "strategy", "integrity"], "audit_triggered": false, "weight": 0.14},
       "persona_divergence": {"score": 72, "speedrunner_planner_gap": 24, "secondary_gaps": [18, 12], "weight": 0.10},
       "anti_compression": {"score": 85, "checks_passed": 5, "checks_total": 5, "weight": 0.12},
       "exploit_resistance": {"score": 95, "exploit_seeker_score": 18, "exploits_detected": 0, "weight": 0.08},

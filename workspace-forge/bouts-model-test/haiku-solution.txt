@@ -1,0 +1,237 @@
+# Payment Flow Debug — Complete Analysis & Fix
+
+## 1. IDENTIFIED BUGS (All 7)
+
+| # | Bug | Impact | Severity |
+|---|-----|--------|----------|
+| **1** | Race condition on balance check | Multiple concurrent requests both see sufficient funds; both charge card | CRITICAL |
+| **2** | Non-atomic check-then-act | Charge succeeds but balance update fails → inconsistent state | CRITICAL |
+| **3** | Global mutable state (no per-user tracking) | All users share one balance; not isolated | CRITICAL |
+| **4** | No error handling | chargeCard failures silent; balance deducted on charge failure | CRITICAL |
+| **5** | No input validation | Negative/zero amounts, invalid currency, missing userId accepted | HIGH |
+| **6** | Missing audit trail | No transaction history; impossible to debug or comply with regulations | HIGH |
+| **7** | Currency parameter ignored | Accepted but unused; can't validate exchange rates or currency-specific logic | MEDIUM |
+
+---
+
+## 2. FIXED IMPLEMENTATION
+
+```javascript
+// payment-processor.js — FIXED IMPLEMENTATION
+
+import { z } from 'zod';
+
+// BUG-5 FIX: Comprehensive input validation schema
+const PaymentSchema = z.object({
+  userId: z.string().uuid('Invalid user ID'),
+  amount: z.number().positive('Amount must be positive').finite('Amount must be a number'),
+  currency: z.enum(['USD', 'EUR', 'GBP', 'CAD']).default('USD'),
+});
+
+// BUG-6 FIX: Structured audit trail types
+interface Transaction {
+  transactionId: string;
+  userId: string;
+  amount: number;
+  currency: string;
+  status: 'pending' | 'success' | 'failed';
+  timestamp: Date;
+  chargeResult?: boolean;
+  error?: string;
+}
+
+interface UserBalance {
+  userId: string;
+  balanceInCents: number;
+  currency: string;
+  lastUpdated: Date;
+}
+
+// BUG-3 FIX: Per-user balance tracking instead of global state
+const userBalances: Map<string, UserBalance> = new Map();
+// BUG-6 FIX: Audit log
+const transactionLog: Transaction[] = [];
+// BUG-1 FIX: Per-user locks for concurrency safety
+const pendingLocks: Map<string, Promise<void>> = new Map();
+
+async function processPayment(
+  userId: string,
+  amount: number,
+  currency: string
+): Promise<{ success: boolean; transactionId: string; error?: string }> {
+  
+  // BUG-5 FIX: Validate all inputs
+  let validatedRequest;
+  try {
+    validatedRequest = PaymentSchema.parse({ userId, amount, currency });
+  } catch (error) {
+    const transactionId = generateTransactionId();
+    logTransaction({
+      transactionId, userId, amount, currency, status: 'failed', timestamp: new Date(),
+      error: `Validation failed: ${error instanceof z.ZodError ? error.errors[0].message : String(error)}`,
+    });
+    return { success: false, transactionId, error: 'Invalid input' };
+  }
+
+  const transactionId = generateTransactionId();
+  
+  // BUG-1 FIX: Acquire per-userId mutex lock
+  await acquireLock(userId);
+  
+  try {
+    return await atomicTransaction(
+      validatedRequest.userId,
+      validatedRequest.amount,
+      validatedRequest.currency,
+      transactionId
+    );
+  } catch (error) {
+    // BUG-4 FIX: Catch and log all errors
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    logTransaction({
+      transactionId, userId, amount, currency, status: 'failed',
+      timestamp: new Date(), error: errorMessage,
+    });
+    return { success: false, transactionId, error: errorMessage };
+  } finally {
+    releaseLock(userId);
+  }
+}
+
+// BUG-2 FIX: Atomic transaction — all operations succeed or all rollback
+async function atomicTransaction(
+  userId: string,
+  amountInCents: number,
+  currency: string,
+  transactionId: string
+): Promise<{ success: boolean; transactionId: string; error?: string }> {
+  
+  // BUG-3 FIX: Per-user balance check
+  const currentBalance = userBalances.get(userId);
+  if (!currentBalance) throw new Error(`User ${userId} has no account`);
+
+  // BUG-7 FIX: Validate and use currency
+  if (currentBalance.currency !== currency) {
+    throw new Error(`Currency mismatch: user has ${currentBalance.currency}, requested ${currency}`);
+  }
+
+  if (currentBalance.balanceInCents < amountInCents) {
+    logTransaction({
+      transactionId, userId, amount: amountInCents, currency,
+      status: 'failed', timestamp: new Date(), error: 'Insufficient balance',
+    });
+    return { success: false, transactionId, error: 'Insufficient balance' };
+  }
+
+  // BUG-4 FIX: Wrap card charge in try-catch; only update balance on success
+  let chargeSuccess = false;
+  try {
+    chargeSuccess = await chargeCardWithRetry(userId, amountInCents, currency);
+  } catch (error) {
+    logTransaction({
+      transactionId, userId, amount: amountInCents, currency,
+      status: 'failed', timestamp: new Date(), chargeResult: false,
+      error: `Card charge failed: ${error instanceof Error ? error.message : String(error)}`,
+    });
+    return { success: false, transactionId, error: 'Card charge failed' };
+  }
+
+  if (!chargeSuccess) {
+    logTransaction({
+      transactionId, userId, amount: amountInCents, currency,
+      status: 'failed', timestamp: new Date(), chargeResult: false,
+      error: 'Card charge returned false',
+    });
+    return { success: false, transactionId, error: 'Card charge failed' };
+  }
+
+  // Only update balance after confirmed charge
+  currentBalance.balanceInCents -= amountInCents;
+  currentBalance.lastUpdated = new Date();
+
+  // BUG-6 FIX: Log success to audit trail
+  logTransaction({
+    transactionId, userId, amount: amountInCents, currency,
+    status: 'success', timestamp: new Date(), chargeResult: true,
+  });
+
+  return { success: true, transactionId };
+}
+
+// BUG-1 FIX: Per-user mutex implementation
+async function acquireLock(userId: string): Promise<void> {
+  while (pendingLocks.has(userId)) {
+    await pendingLocks.get(userId);
+  }
+  let releaseFn: () => void;
+  const lockPromise = new Promise<void>((resolve) => { releaseFn = resolve; });
+  pendingLocks.set(userId, lockPromise);
+  (pendingLocks.get(userId) as any)._release = releaseFn!;
+}
+
+function releaseLock(userId: string): void {
+  const lockPromise = pendingLocks.get(userId);
+  if (lockPromise && '_release' in lockPromise) {
+    (lockPromise as any)._release();
+  }
+  pendingLocks.delete(userId);
+}
+
+// BUG-4 FIX: Error handling with retry
+async function chargeCardWithRetry(
+  userId: string, amountInCents: number, currency: string, maxRetries: number = 3
+): Promise<boolean> {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      return await chargeCard(userId, amountInCents, currency);
+    } catch (error) {
+      if (attempt === maxRetries) throw error;
+      await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt - 1) * 100));
+    }
+  }
+  return false;
+}
+
+async function chargeCard(userId: string, amountInCents: number, currency: string): Promise<boolean> {
+  await new Promise(resolve => setTimeout(resolve, 100));
+  const success = Math.random() > 0.05;
+  if (!success) throw new Error('Card declined');
+  return true;
+}
+
+// BUG-6 FIX: Audit trail helpers
+function logTransaction(transaction: Transaction): void {
+  transactionLog.push(transaction);
+}
+
+function getTransactionHistory(userId: string): Transaction[] {
+  return transactionLog.filter(tx => tx.userId === userId);
+}
+
+function generateTransactionId(): string {
+  return `txn_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+}
+
+// BUG-3 FIX: Per-user balance initialization
+function initializeUserBalance(userId: string, initialBalanceInCents: number, currency: string = 'USD'): void {
+  userBalances.set(userId, { userId, balanceInCents: initialBalanceInCents, currency, lastUpdated: new Date() });
+}
+
+export { processPayment, initializeUserBalance, getTransactionHistory };
+```
+
+## 3. Why Each Fix Matters
+
+**BUG-1 (Race condition):** Without a lock, concurrent requests both see available balance and both charge. The mutex ensures only one payment processes at a time per user.
+
+**BUG-2 (Non-atomic):** The lock + two-phase pattern (check → charge → update) ensures consistency. If the charge fails, balance is never decremented.
+
+**BUG-3 (Global state):** Shared balance means UserA's payment affects UserB's limit. Per-user balance maps provide proper isolation.
+
+**BUG-4 (No error handling):** Silent chargeCard failures would lose money or produce phantom successes. Try-catch with retry and structured error returns gives callers actionable information.
+
+**BUG-5 (No input validation):** Negative amounts exploit `balance >= amount` to inject credits. Zod schema blocks invalid amounts, currency codes, and user IDs before any state is touched.
+
+**BUG-6 (No audit trail):** A `console.log` disappears. The transaction log provides an immutable record for compliance, fraud investigation, and debugging.
+
+**BUG-7 (Currency ignored):** Processing USD amounts against a EUR account silently creates FX errors. Currency validation ensures the payment denomination matches the account.

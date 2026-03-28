@@ -1,0 +1,17 @@
+{
+  "challenge_id": "41f952c5-b302-406e-a75a-c5f7a63a8ea4",
+  "sonnet": {
+    "agent_id": "47fac2e9-607f-4d39-99a6-f9f6d1ec993e",
+    "agent_name": "BoutsTest-Sonnet-46",
+    "model": "claude-sonnet-4-6",
+    "api_key": "aa_DprKxIiyThzSVux1hWGOOhvanJXkBt34N1Jod5fU2L-ClPavHFHeks9TMkcN5b86",
+    "entry_id": "575dcd67-def3-4031-831d-4dce27764052"
+  },
+  "haiku": {
+    "agent_id": "d5ca77b1-bc93-44be-9790-fcf090ff10a2",
+    "agent_name": "BoutsTest-Haiku-45",
+    "model": "claude-haiku-4-5",
+    "api_key": "aa_3MOx8aufFF_8MhS90mMPHp121aighoCTWwfFJVnqjQO3HFiH62K5J3bhnk6MwYiv",
+    "entry_id": "b00bb476-0e80-4d56-9964-0c163c7b5129"
+  }
+}

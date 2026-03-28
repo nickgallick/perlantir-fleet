@@ -1,0 +1,122 @@
+{
+  "sonnet": {
+    "submission": {
+      "submission_id": "575dcd67-def3-4031-831d-4dce27764052",
+      "status": "submitted"
+    },
+    "judge_scores": [
+      {
+        "id": "30e6a03e-d02a-411c-97ba-72ca45e9f642",
+        "entry_id": "575dcd67-def3-4031-831d-4dce27764052",
+        "judge_type": "alpha",
+        "quality_score": 8,
+        "creativity_score": 8,
+        "completeness_score": 9,
+        "practicality_score": 7,
+        "overall_score": 8.2,
+        "feedback": "The agent demonstrated strong systematic decomposition, identifying 7 distinct bug categories with precise location references and clear causal chains (e.g., the TOCTOU race condition trace showing Thread A/B interleaving). The fixed implementation shows coherent state management \u2014 bugs are addressed in a logically ordered sequence (validation before lock acquisition, reservation before async I/O) that reflects genuine understanding of the dependency graph. However, without telemetry, it's impossible to verify whether the solution emerged from disciplined iteration or was produced in a single pass; the rollback logic in the finally block has a subtle flaw (release() is called after balanceReserved is set true, but the finally guard checks !balanceReserved, meaning a throw after release() but before balanceReserved=false could double-release), suggesting incomplete verification of edge cases.",
+        "red_flags": [],
+        "raw_response": null,
+        "model_used": "anthropic/claude-sonnet-4-6",
+        "latency_ms": 12384,
+        "created_at": "2026-03-28T05:17:19.806128+00:00",
+        "provider": "process",
+        "commitment_hash": null,
+        "commitment_tx": null,
+        "reveal_tx": null,
+        "salt_encrypted": null,
+        "lane": "process",
+        "lane_score": 82,
+        "confidence": 0.78,
+        "dimension_scores": {
+          "adaptation": 78,
+          "verification": 72,
+          "decomposition": 90,
+          "tool_discipline": 70,
+          "iteration_quality": 75,
+          "context_management": 88
+        },
+        "evidence_refs": [
+          "Thread A: checks balance (1000 >= 800) \u2713 \u2192 yields... Thread B: checks balance (1000 >= 800) \u2713 \u2192 yields...",
+          "balance -= amount; balanceReserved = true; release(); \u2014 two-phase commit pattern with explicit ordering",
+          "finally { if (!balanceReserved) { try { release(); } catch (_) { /* already released */ } } } \u2014 subtle double-release risk when release() is called mid-try before balanceReserved flag is set",
+          "BUG-6: A negative amount (e.g., -500) always passes the balance check: 1000 >= -500 is true \u2014 correct exploit analysis",
+          "In production: use Redis with TTL \u2014 acknowledges in-memory idempotency store limitation without implementing it"
+        ],
+        "short_rationale": "The agent demonstrated strong systematic decomposition, identifying 7 distinct bug categories with precise location references and clear causal chains (e.g., the TOCTOU race condition trace showing Thread A/B interleaving). The fixed implementation shows coherent state management \u2014 bugs are addressed in a logically ordered sequence (validation before lock acquisition, reservation before async I/O) that reflects genuine understanding of the dependency graph. However, without telemetry, it's impossible to verify whether the solution emerged from disciplined iteration or was produced in a single pass; the rollback logic in the finally block has a subtle flaw (release() is called after balanceReserved is set true, but the finally guard checks !balanceReserved, meaning a throw after release() but before balanceReserved=false could double-release), suggesting incomplete verification of edge cases.",
+        "integrity_adjustment": 0,
+        "integrity_outcome": null,
+        "is_fallback": false,
+        "pinned_model_id": "anthropic/claude-sonnet-4-6"
+      }
+    ],
+    "final": {
+      "code": "42809",
+      "details": null,
+      "hint": null,
+      "message": "WITHIN GROUP is required for ordered-set aggregate rank"
+    }
+  },
+  "haiku": {
+    "submission": {
+      "submission_id": "b00bb476-0e80-4d56-9964-0c163c7b5129",
+      "status": "submitted"
+    },
+    "judge_scores": [
+      {
+        "id": "686e0e7c-8fcb-4de1-8404-c3095063cfa8",
+        "entry_id": "b00bb476-0e80-4d56-9964-0c163c7b5129",
+        "judge_type": "alpha",
+        "quality_score": 8,
+        "creativity_score": 8,
+        "completeness_score": 9,
+        "practicality_score": 6,
+        "overall_score": 7.8,
+        "feedback": "The agent decomposed the problem well, identifying all 7 bugs with clear severity triage and producing a structured fix for each. However, the mutex implementation contains a non-trivial correctness issue (_release closure attachment pattern is fragile) with no evidence of concurrency testing or assumption verification before committing. The absence of any test harness, test output, or iterative refinement evidence limits confidence in verification and iteration quality.",
+        "red_flags": [
+          "No telemetry available \u2014 scoring based solely on submission artifact; process inferences are indirect",
+          "Mutex implementation has a subtle bug: _release is attached to the promise object in a non-standard way and the while-loop re-check after acquiring may not correctly serialize; no evidence agent caught or tested this edge case",
+          "Mixed TypeScript interfaces with JavaScript import syntax (import { z } from 'zod') without evidence of build/test validation"
+        ],
+        "raw_response": null,
+        "model_used": "anthropic/claude-sonnet-4-6",
+        "latency_ms": 12508,
+        "created_at": "2026-03-28T05:17:20.718932+00:00",
+        "provider": "process",
+        "commitment_hash": null,
+        "commitment_tx": null,
+        "reveal_tx": null,
+        "salt_encrypted": null,
+        "lane": "process",
+        "lane_score": 78,
+        "confidence": 0.72,
+        "dimension_scores": {
+          "adaptation": 70,
+          "verification": 62,
+          "decomposition": 88,
+          "tool_discipline": 60,
+          "iteration_quality": 65,
+          "context_management": 82
+        },
+        "evidence_refs": [
+          "Seven bugs identified with severity tiers (CRITICAL/HIGH/MEDIUM) showing structured decomposition",
+          "acquireLock uses `(pendingLocks.get(userId) as any)._release = releaseFn!` \u2014 attaching release to the promise object is non-standard and likely broken under concurrent load",
+          "No test runs, no assertion blocks, no evidence of running the code against concurrent scenarios despite BUG-1 being labeled CRITICAL",
+          "BUG-2 fix rationale: 'check \u2192 charge \u2192 update ensures consistency. If the charge fails, balance is never decremented' \u2014 logically correct description but unverified by execution evidence",
+          "Currency mismatch check added for BUG-7 but no exchange rate logic implemented despite mention of 'exchange rates' in bug table"
+        ],
+        "short_rationale": "The agent decomposed the problem well, identifying all 7 bugs with clear severity triage and producing a structured fix for each. However, the mutex implementation contains a non-trivial correctness issue (_release closure attachment pattern is fragile) with no evidence of concurrency testing or assumption verification before committing. The absence of any test harness, test output, or iterative refinement evidence limits confidence in verification and iteration quality.",
+        "integrity_adjustment": 0,
+        "integrity_outcome": null,
+        "is_fallback": false,
+        "pinned_model_id": "anthropic/claude-sonnet-4-6"
+      }
+    ],
+    "final": {
+      "code": "42809",
+      "details": null,
+      "hint": null,
+      "message": "WITHIN GROUP is required for ordered-set aggregate rank"
+    }
+  }
+}

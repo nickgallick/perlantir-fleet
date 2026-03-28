@@ -1,0 +1,262 @@
+# Debug the Payment Flow — Complete Analysis & Fix
+
+---
+
+## Part 1: The 7 Bugs Identified
+
+### BUG-1: Race Condition (TOCTOU — Time-of-Check-Time-of-Use)
+**Location:** Lines `if (balance >= amount)` → `await chargeCard()` → `balance = balance - amount`
+
+The balance is **checked**, then the code `await`s for 100ms (yielding execution to the event loop), then the balance is **decremented**. Two concurrent requests can both pass the check with the same balance before either one decrements it — resulting in double-spending from an account that only has funds for one charge.
+
+```
+Thread A: checks balance (1000 >= 800) ✓ → yields...
+Thread B: checks balance (1000 >= 800) ✓ → yields...
+Thread A: charges card, balance = 200
+Thread B: charges card, balance = -600  ← OVERDRAFT
+```
+
+---
+
+### BUG-2: No Idempotency — Duplicate Charges
+**Location:** Function has no idempotency key mechanism
+
+If a client retries due to a network timeout, or a user double-submits, `processPayment` will happily charge the card again. There is no deduplication mechanism to detect and safely return a cached result for an already-processed request. This is how real-world double-billing happens.
+
+---
+
+### BUG-3: No Error Handling
+**Location:** `await chargeCard(amount)` — no try/catch
+
+If `chargeCard` throws (gateway timeout, card declined, network failure), the unhandled rejection propagates up. The caller receives a crash, not a structured error. Worse: if the balance were decremented *before* the charge (a common pattern), the funds would be lost. Even as-written, the caller has no way to distinguish "insufficient funds" from "gateway exploded."
+
+---
+
+### BUG-4: Missing Audit Trail
+**Location:** `console.log(\`Charged ${amount}\`)`
+
+A single `console.log` is not an audit trail. There is no record of: **who** initiated the payment (`userId` is accepted but never logged), **when** it happened, **what currency**, **what the outcome was**, the **transaction ID**, or **failure reasons**. In any regulated financial context, this is a compliance violation. In any production system, it makes debugging incidents impossible.
+
+---
+
+### BUG-5: Currency Not Validated
+**Location:** `currency` parameter accepted, then completely ignored
+
+The `currency` parameter is declared but never used or validated. Any string (`"MONOPOLY"`, `null`, `undefined`) is silently accepted. The charge is processed in an unknown denomination. This can lead to FX errors, wrong-currency charges, or gateway rejections that could have been caught client-side.
+
+---
+
+### BUG-6: Negative Balances / No Input Validation
+**Location:** `if (balance >= amount)` — no amount validation
+
+A negative amount (e.g., `-500`) **always passes** the balance check: `1000 >= -500` is `true`. The "charge" then runs, and `balance = balance - (-500)` **increases** the balance by 500 — effectively a free credit injection. Zero amounts are also processed. Non-numeric inputs cause silent `NaN` propagation. This is an exploitable logic flaw.
+
+---
+
+### BUG-7: Non-Atomic Transactions
+**Location:** The entire `processPayment` function body
+
+The balance check, card charge, and balance update are three separate operations with `await` gaps between them. They are not wrapped in any transactional boundary. If the process crashes between the charge and the balance update, the card is charged but the balance remains unchanged (double-jeopardy on retry). There is no rollback mechanism.
+
+---
+
+## Part 2: Complete Fixed Implementation
+
+```javascript
+// payment-processor.js — FIXED IMPLEMENTATION
+'use strict';
+
+const crypto = require('crypto');
+
+// BUG-1 FIX: Race Condition + BUG-7 FIX: Non-Atomic Transactions
+// A Mutex serializes concurrent processPayment calls.
+class Mutex {
+  constructor() {
+    this._locked = false;
+    this._queue = [];
+  }
+
+  acquire() {
+    return new Promise((resolve) => {
+      const tryAcquire = () => {
+        if (!this._locked) {
+          this._locked = true;
+          resolve(() => this._release());
+        } else {
+          this._queue.push(tryAcquire);
+        }
+      };
+      tryAcquire();
+    });
+  }
+
+  _release() {
+    this._locked = false;
+    if (this._queue.length > 0) {
+      const next = this._queue.shift();
+      next();
+    }
+  }
+}
+
+// BUG-5 FIX: Currency Not Validated — explicit ISO 4217 allowlist
+const SUPPORTED_CURRENCIES = new Set(['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'JPY']);
+
+// BUG-2 FIX: Duplicate Charges — idempotency store
+// In production: use Redis with TTL
+const idempotencyStore = new Map();
+
+// BUG-4 FIX: Missing Audit Trail — structured audit log
+const auditLog = [];
+
+function writeAuditEntry(entry) {
+  const record = {
+    auditId:    crypto.randomUUID(),
+    recordedAt: new Date().toISOString(),
+    ...entry,
+  };
+  auditLog.push(record);
+  console.log('[AUDIT]', JSON.stringify(record));
+  return record;
+}
+
+let balance = 1000;
+const paymentMutex = new Mutex();
+
+async function processPayment(userId, amount, currency, idempotencyKey) {
+  const requestedAt = new Date().toISOString();
+
+  // BUG-5 FIX: Validate currency before touching any state
+  const normalisedCurrency = (currency ?? '').toString().toUpperCase().trim();
+  if (!SUPPORTED_CURRENCIES.has(normalisedCurrency)) {
+    const reason = `Unsupported currency: "${currency}". Accepted: ${[...SUPPORTED_CURRENCIES].join(', ')}`;
+    writeAuditEntry({ userId, amount, currency, status: 'REJECTED', reason, idempotencyKey, requestedAt });
+    return { success: false, error: reason };
+  }
+
+  // BUG-6 FIX: Validate amount — block negatives, zero, non-numeric
+  if (amount === null || amount === undefined || typeof amount !== 'number' ||
+      !Number.isFinite(amount) || amount <= 0) {
+    const reason = `Invalid amount: ${amount}. Must be a finite positive number.`;
+    writeAuditEntry({ userId, amount, currency: normalisedCurrency, status: 'REJECTED', reason, idempotencyKey, requestedAt });
+    return { success: false, error: reason };
+  }
+
+  // BUG-2 FIX: Check idempotency key — return cached result for retries
+  if (idempotencyKey) {
+    const cached = idempotencyStore.get(idempotencyKey);
+    if (cached) {
+      writeAuditEntry({
+        userId, amount, currency: normalisedCurrency,
+        status: 'DUPLICATE_SKIPPED', idempotencyKey, requestedAt,
+        originalTransactionId: cached.transactionId,
+      });
+      return cached.result;
+    }
+  }
+
+  // BUG-1 FIX: Acquire mutex — only one payment runs the critical section at a time
+  const release = await paymentMutex.acquire();
+  let balanceReserved = false;
+
+  try {
+    // Re-check balance INSIDE the lock (may have changed while waiting)
+    if (balance < amount) {
+      writeAuditEntry({
+        userId, amount, currency: normalisedCurrency,
+        status: 'INSUFFICIENT_FUNDS', balance, idempotencyKey, requestedAt,
+      });
+      return { success: false, error: 'Insufficient balance' };
+    }
+
+    // BUG-7 FIX: Reserve funds while holding lock (two-phase commit pattern)
+    // Deduct before async I/O so concurrent callers see updated balance
+    balance -= amount;
+    balanceReserved = true;
+
+    // Release lock after reservation — other payments can proceed
+    release();
+
+    // BUG-3 FIX: Error handling — catch charge failures and rollback
+    let chargeResult;
+    try {
+      chargeResult = await chargeCard(amount, normalisedCurrency, userId);
+    } catch (chargeError) {
+      // Rollback: funds were never externally moved
+      balance += amount;
+      balanceReserved = false;
+
+      const reason = `Card charge failed: ${chargeError.message}`;
+      writeAuditEntry({
+        userId, amount, currency: normalisedCurrency,
+        status: 'CHARGE_FAILED', reason, idempotencyKey, requestedAt,
+      });
+      return { success: false, error: reason };
+    }
+
+    // BUG-4 FIX: Structured audit trail with full context
+    writeAuditEntry({
+      userId,
+      amount,
+      currency:         normalisedCurrency,
+      status:           'SUCCESS',
+      transactionId:    chargeResult.transactionId,
+      remainingBalance: balance,
+      idempotencyKey,
+      requestedAt,
+    });
+
+    const result = {
+      success:          true,
+      transactionId:    chargeResult.transactionId,
+      amount,
+      currency:         normalisedCurrency,
+      remainingBalance: balance,
+    };
+
+    if (idempotencyKey) {
+      idempotencyStore.set(idempotencyKey, { transactionId: chargeResult.transactionId, result });
+    }
+
+    return result;
+
+  } finally {
+    // Guarantee lock release on unexpected throws
+    if (!balanceReserved) {
+      try { release(); } catch (_) { /* already released */ }
+    }
+  }
+}
+
+async function chargeCard(amount, currency, userId) {
+  await new Promise((resolve) => setTimeout(resolve, 100));
+  // In production: call Stripe/Braintree/Adyen — throw on gateway error
+  return {
+    transactionId:    crypto.randomUUID(),
+    amount,
+    currency,
+    userId,
+    gatewayTimestamp: new Date().toISOString(),
+  };
+}
+
+// Helpers
+function getAuditLog() { return [...auditLog]; }
+function getCurrentBalance() { return balance; }
+
+module.exports = { processPayment, getAuditLog, getCurrentBalance };
+```
+
+---
+
+## Part 3: Why Each Fix Matters
+
+| # | Bug | Production Impact | Fix |
+|---|-----|-------------------|-----|
+| 1 | Race condition | Double-spending, overdrafts under load | Mutex serialises per-payment critical section |
+| 2 | No idempotency | Duplicate charges on network retry | Idempotency key deduplication with cached response |
+| 3 | No error handling | Silent failures, lost funds on gateway errors | try/catch with structured error return + rollback |
+| 4 | No audit trail | Compliance violation, impossible incident debugging | Structured audit log with every event and outcome |
+| 5 | Currency ignored | Wrong-currency charges, FX confusion | ISO 4217 allowlist validation before any processing |
+| 6 | No input validation | Balance inflation via negative amounts | Explicit positive-finite-number validation |
+| 7 | Non-atomic transactions | Inconsistent state on crash between charge and deduct | Reserve-before-release two-phase pattern with rollback |
