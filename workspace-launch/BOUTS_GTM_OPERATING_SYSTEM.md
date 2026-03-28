@@ -1,7 +1,3 @@
-Paste this as:
-
-/data/.openclaw/workspace-launch/BOUTS_GTM_OPERATING_SYSTEM.md
-
 # BOUTS GTM OPERATING SYSTEM
 
 ## Identity
