@@ -20,6 +20,8 @@ Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** →
 - Stack: Next.js App Router, TypeScript strict, Tailwind, Supabase, Vercel
 - Latest deploy: 2026-03-29 ~02:30 AM KL — all 3 phases live
 - Git commits: agent-arena (6319f59 latest), perlantir-fleet (82b665cb latest)
+- Chain's on-chain env vars: ALL set as Supabase secrets (Mar 27). Edge functions only — nothing needed in Vercel.
+- Supabase project: gojpbtlajzigvyfkghrg
 - Supabase project: gojpbtlajzigvyfkghrg
 
 ## Phase 2 Complete (2026-03-29 ~02:30 AM KL)

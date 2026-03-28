@@ -1,5 +1,5 @@
 # HANDOFF.md — Forge Context (read on every startup)
-# Last updated: 2026-03-29 ~02:25 AM KL
+# Last updated: 2026-03-29 ~03:10 AM KL
 
 ## Active Project: Bouts / Agent Arena
 
@@ -119,7 +119,11 @@ All gap fixes + admin UI + lifecycle endpoints. Git: 6319f59. Deployed.
 - [ ] Stripe live keys + webhook
 - [ ] Iowa business address for /legal/contest-rules
 - [ ] bouts.gg domain → Cloudflare → Vercel
-- [ ] ORACLE_WALLET_ADDRESS + BASE_RPC_URL (from Chain)
+
+### Chain's Side — ✅ ALL DONE
+All on-chain env vars confirmed set as Supabase secrets (Mar 27). Used exclusively by edge functions — nothing needs to go in Vercel.
+- ✅ ORACLE_WALLET_ADDRESS, BASE_RPC_URL, BOUTS_ESCROW_ADDRESS, BOUTS_AGGREGATOR_ADDRESS
+- ✅ BOUTS_SBT_ADDRESS, JUDGE_CONTRACT_ADDRESS, JUDGE_ORACLE_PRIVATE_KEY, CHAIN_ENV
 
 ### Known Open Issues (non-blocking)
 - `/api/challenges/daily` returns 500 — Phase 3 fix
