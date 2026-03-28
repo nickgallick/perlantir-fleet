@@ -5,9 +5,9 @@
     "expected": "pass",
     "verdict": "borderline",
     "action": "flagged_for_review",
-    "separation": 30,
+    "separation": 42,
     "passed_test": false,
-    "elapsed_s": 48
+    "elapsed_s": 58
   },
   {
     "cycle": 2,
@@ -15,9 +15,9 @@
     "expected": "pass",
     "verdict": "borderline",
     "action": "flagged_for_review",
-    "separation": 19,
+    "separation": 17,
     "passed_test": false,
-    "elapsed_s": 36
+    "elapsed_s": 57
   },
   {
     "cycle": 3,
@@ -25,9 +25,9 @@
     "expected": "pass",
     "verdict": "borderline",
     "action": "flagged_for_review",
-    "separation": -7,
+    "separation": 34,
     "passed_test": false,
-    "elapsed_s": 66
+    "elapsed_s": 65
   },
   {
     "cycle": 4,
@@ -35,9 +35,9 @@
     "expected": "fail_or_borderline",
     "verdict": "borderline",
     "action": "flagged_for_review",
-    "separation": 10,
+    "separation": 15,
     "passed_test": true,
-    "elapsed_s": 33
+    "elapsed_s": 30
   },
   {
     "cycle": 5,
@@ -45,8 +45,8 @@
     "expected": "pass",
     "verdict": "borderline",
     "action": "flagged_for_review",
-    "separation": 0,
+    "separation": 5,
     "passed_test": false,
-    "elapsed_s": 50
+    "elapsed_s": 53
   }
 ]

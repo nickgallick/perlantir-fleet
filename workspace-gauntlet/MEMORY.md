@@ -205,6 +205,10 @@ All 7 deliverables locked and committed:
 52. Lane contamination quarterly audit: check 50 outputs per lane for cross-lane references
 53. Prompt governance: version IDs, changelogs, approval process, rollback capability, no changes without benchmark validation
 54. Stage A: maximum lane separation from day 1 (relaxing is easier than tightening), liberal disagreement tolerance early (15-20% Audit OK month 1, target <10% by month 3)
+55. Evidence minimization by default — when uncertain whether a lane should see evidence, the answer is NO. Insufficient evidence = honest uncertainty. Too much evidence = contamination.
+56. Judge drift detection — monthly benchmark comparison catches generosity/harshness drift, lane convergence, variance changes, cross-lane vocabulary creep
+57. Nick's big-picture: "no longer 'do we know what to build?' — it's 'can Gauntlet execute this cleanly in a live validation batch?'"
+58. Next priorities: #11 Versus Match System, #12 Admin/Operator, #13 Public API, #14 Seasonal/Boss/Events, #15 Data Licensing
 
 ## Current Status
 - D1-D9: LOCKED

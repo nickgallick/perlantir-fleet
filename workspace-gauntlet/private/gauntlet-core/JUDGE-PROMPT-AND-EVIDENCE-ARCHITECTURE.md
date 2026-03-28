@@ -430,6 +430,20 @@ Integrity evaluates SPECIFIC, EVIDENCED behaviors — not general impressions. E
 
 No lane sees another lane's output during its scoring pass. This is enforced programmatically — the Orchestrator constructs evidence packages for each lane without cross-lane contamination.
 
+### Evidence Minimization by Default
+
+> **When uncertain about whether a lane should see a piece of evidence, the answer is NO.**
+
+A common failure mode in multi-judge systems is gradually letting every judge see too much "for convenience." That slowly collapses lane identity until every lane evaluates the same thing. Evidence minimization prevents this.
+
+**Rules:**
+1. Every new evidence field must justify why it belongs in **exactly one lane**. If justification references two lanes → it needs bounded summary form for the secondary lane, not raw access.
+2. If evidence could fit multiple lanes, it needs **explicit approval** (architecture review, not casual addition) and must be delivered in bounded summary form to the secondary lane.
+3. The Orchestrator's default is to **exclude** evidence from a lane unless the Evidence Map explicitly includes it. No implicit "this seems useful, add it."
+4. **Quarterly evidence audit:** Review all evidence packages. Has any lane's package grown beyond its original scope? If yes → prune back to the Evidence Map contract.
+
+The principle: **a lane with insufficient evidence produces uncertain scores (honest). A lane with too much evidence produces contaminated scores (dishonest).** Uncertainty is preferable to contamination.
+
 ---
 
 ## 12. Audit Trigger Rules
@@ -762,6 +776,41 @@ Maintain a set of 20+ benchmark submissions with known-correct per-lane scores:
 | Judge model version update | Full benchmark suite |
 | Disagreement metrics cross warning threshold | Targeted validation on affected lanes |
 | Quarterly schedule | Full benchmark suite (routine) |
+| Judge drift detection alert | Targeted validation on drifting lane |
+
+### Judge Drift Detection
+
+Judge drift is when a lane's scoring behavior changes over time without an intentional prompt change. This can happen because model behavior shifts between versions, because evidence packages evolve, or because rubric interpretation drifts.
+
+**Detection method:** Monthly, run the fixed benchmark set through the current prompt version and compare scores against the baseline (scores from when the prompt was first deployed).
+
+| Drift Signal | Detection | Threshold | Action |
+|-------------|-----------|-----------|--------|
+| **Generosity/harshness drift** | Lane's average score on benchmark set shifts from baseline | Δ > 5 points average | Investigate — was this intentional? If not → recalibrate. |
+| **Lane convergence drift** | Correlation between two lanes increases beyond expected range | Correlation increase > 0.15 from baseline | Investigate — one lane may be evaluating the other lane's domain. Tighten evidence boundaries. |
+| **Variance drift** | Lane's score spread on benchmark set changes | σ change > 20% from baseline | Investigate — lane may have become more or less discriminative. |
+| **Cross-lane behavior** | Lane's rationale starts using language characteristic of another lane | Automated rationale scan detects cross-lane vocabulary | Investigate — evidence contamination may have crept in. Review evidence packages. |
+
+**Monthly drift report:**
+```
+JUDGE DRIFT CHECK — {Month}
+===========================
+Benchmark set: 20 cases, scored by all lanes
+
+LANE BASELINES vs CURRENT:
+  Objective: N/A (deterministic — no drift possible)
+  Process:   Baseline avg 54.2, Current avg 56.8 (Δ +2.6) ✅
+  Strategy:  Baseline avg 51.7, Current avg 49.1 (Δ -2.6) ✅
+  Integrity: Baseline avg +1.8, Current avg +2.1 (Δ +0.3) ✅
+
+CROSS-LANE CORRELATION:
+  Process-Strategy: Baseline 0.31, Current 0.34 ✅
+  Process-Objective: Baseline 0.42, Current 0.44 ✅
+
+DRIFT ALERTS: None
+
+STATUS: Healthy — no drift detected
+```
 
 ---
 
