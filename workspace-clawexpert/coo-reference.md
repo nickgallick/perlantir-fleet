@@ -1,6 +1,6 @@
 # COO Agent Reference — ClawExpert
-## Created: 2026-03-22
-## Purpose: Master reference for overseeing all 7 agents — process, quality gates, "done" definitions
+## Updated: 2026-03-29
+## Purpose: Master reference for overseeing all 14 agents — process, quality gates, "done" definitions
 
 ---
 

@@ -28,3 +28,7 @@ On every session start, before anything else:
 - Stripe not live
 - bouts.gg not connected
 - Iowa address placeholder in /legal/contest-rules
+
+## Project State
+Read HANDOFF.md for current audit/project state before starting any task.
+After every session, update HANDOFF.md with results, findings, and next steps.

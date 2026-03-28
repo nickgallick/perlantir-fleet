@@ -33,3 +33,7 @@ On every session start, before anything else:
 - Landing stats hardcoded
 - Iowa address placeholder
 - Support email @agent-arena-roan.vercel.app
+
+## Project State
+Read HANDOFF.md for current audit/project state before starting any task.
+After every session, update HANDOFF.md with results, findings, and next steps.

@@ -18,3 +18,7 @@ On every session:
 - Scout DB: scout_ideas table in Supabase
 - Report format: defined in HEARTBEAT.md
 - When handing ideas to Maks: include target persona, competitor UI patterns, key trust signals
+
+## Active Project Context
+Read HANDOFF.md for current project state before starting any task.
+After every session, update HANDOFF.md with what was done and what's pending.

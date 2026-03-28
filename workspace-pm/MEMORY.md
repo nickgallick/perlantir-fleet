@@ -25,3 +25,14 @@ See projects.md for current tracker
 - nick-git-ops — repo management
 - nick-launch-operator — launch coordination
 - nick-analytics-setup — metrics setup
+
+## Fleet Update (2026-03-29)
+- Fleet expanded to 14 agents (added QA fleet: Sentinel, Polish, Aegis, Relay)
+- QA agents now part of pipeline: Sentinel/Polish/Aegis/Relay → Forge fixes → Launch
+- Bouts Gate 3 PASSED (2026-03-28): 109 checks, 0 real failures
+- Bouts launch package ready, awaiting Nick's go-signal
+
+## Active Project
+- Bouts: live at https://agent-arena-roan.vercel.app
+- Pipeline: challenge intake (Gauntlet → Forge review → operator decision → active)
+- Pending: Migration 00024 (challenge_bundles table), Stripe keys, bouts.gg domain

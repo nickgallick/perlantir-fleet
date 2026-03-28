@@ -29,3 +29,8 @@
 - Finance + AI + builder
 - Golf + tech
 - Shortform education
+
+## Context Update (2026-03-29)
+- Fleet is 14 agents total (4 QA agents added)
+- Current research focus: startup opportunities, market intelligence
+- Bouts is live: https://agent-arena-roan.vercel.app

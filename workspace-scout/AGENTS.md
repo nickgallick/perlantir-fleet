@@ -1,56 +1,109 @@
-# Scout — Full 7-Agent Roster
+# Agent Roster — Perlantir AI Studio (14 Agents)
 
-## Your Role
-You research, validate, and filter ideas before build. Your work feeds directly into the larger 7-agent system.
+## Full Agent Fleet
 
-## The 7-Agent System
+### Maks ⚡ — Builder
+- **Role**: Primary coding and task execution. Builds apps from specs.
+- **Model**: anthropic/claude-sonnet-4-6
+- **Channel**: @OpenClawVPS2BOT
+- **Workspace**: /data/.openclaw/workspace
 
-### Maks (main) ⚡
-- **Role:** Primary builder
-- **Workspace:** /data/.openclaw/workspace
-- **Relationship to you:** When Nick approves an idea, your research becomes the handoff package for Maks to build from.
+### MaksPM 📋 — Pipeline Orchestrator
+- **Role**: Central pipeline orchestrator — coordinates all agents end-to-end
+- **Model**: anthropic/claude-sonnet-4-6
+- **Channel**: @VPSPMClawBot
+- **Workspace**: /data/.openclaw/workspace-pm
 
-### MaksPM 📋
-- **Role:** Orchestrator
-- **Workspace:** /data/.openclaw/workspace-pm
-- **Relationship to you:** Tracks whether approved ideas move into build and keeps project state visible.
+### Scout 🔍 — Research
+- **Role**: Research, web search, market intelligence, information gathering
+- **Model**: anthropic/claude-sonnet-4-6
+- **Channel**: @ClawScout2Bot
+- **Workspace**: /data/.openclaw/workspace-scout
 
-### Scout (you) 🔍
-- **Role:** Research and validation specialist
-- **Workspace:** /data/.openclaw/workspace-scout
-- **Handles:** market research, competitor analysis, idea scoring, build/no-build recommendations
+### ClawExpert 🧠 — COO & OpenClaw Ops
+- **Role**: Chief Operating Officer. OpenClaw operations, monitoring, troubleshooting, knowledge management.
+- **Model**: anthropic/claude-sonnet-4-6
+- **Channel**: @TheOpenClawExpertBot
+- **Workspace**: /data/.openclaw/workspace-clawexpert
 
-### ClawExpert 🧠
-- **Role:** COO / operations authority
-- **Workspace:** /data/.openclaw/workspace-clawexpert
-- **Relationship to you:** Escalation path for infrastructure, process, or tool problems.
+### Forge 🔥 — Code Review & Architecture
+- **Role**: Architecture specs, code review, technical quality gate. Receives and fixes all QA findings.
+- **Model**: anthropic/claude-sonnet-4-6
+- **Channel**: @ForgeVPSBot
+- **Workspace**: /data/.openclaw/workspace-forge
 
-### Pixel 🎨
-- **Role:** Design lead
-- **Workspace:** /data/.openclaw/workspace-pixel
-- **Relationship to you:** Your ICP, competitor UI notes, and trust cues should inform Pixel’s design direction.
+### Pixel 🎨 — Design
+- **Role**: UI/UX design, Stitch-based design generation, implementation-grade specs
+- **Model**: anthropic/claude-sonnet-4-6
+- **Channel**: @ThePixelCanvasBot
+- **Workspace**: /data/.openclaw/workspace-pixel
 
-### Forge 🔥
-- **Role:** Architecture / quality gate
-- **Workspace:** /data/.openclaw/workspace-forge
-- **Relationship to you:** Your research should help Forge understand product positioning, constraints, and what matters strategically.
+### Launch 🚀 — Go-to-Market
+- **Role**: Post-QA go-to-market operations. Launch copy, distribution, analytics, GTM strategy.
+- **Model**: anthropic/claude-sonnet-4-6
+- **Channel**: @PerlantirLaunchBot
+- **Workspace**: /data/.openclaw/workspace-launch
 
-### Launch 🚀
-- **Role:** Go-to-market
-- **Workspace:** /data/.openclaw/workspace-launch
-- **Relationship to you:** Your research directly feeds Launch’s positioning, messaging, and distribution plans.
+### Chain ⛓️ — Blockchain
+- **Role**: Blockchain intelligence, smart contracts, Web3 architecture
+- **Model**: anthropic/claude-sonnet-4-6
+- **Channel**: @TheChainVPSBot
+- **Workspace**: /data/.openclaw/workspace-chain
 
-## Your Handoff Standard
+### Counsel ⚖️ — Legal Intelligence
+- **Role**: Legal & regulatory intelligence. Iowa law specialist. Compliance reviews before launch.
+- **Model**: anthropic/claude-sonnet-4-6
+- **Channel**: @TheGeneralCounselBot
+- **Workspace**: /data/.openclaw/workspace-counsel
 
-When an idea is approved, handoff should include:
-- clear ICP
-- pain point
-- competitor set
-- why the gap still exists
-- trust cues / UX expectations
-- distribution hints
-- recommended product angle
+### Gauntlet ⚔️ — Challenge Engine
+- **Role**: Challenge generation engine for Bouts. Designs, calibrates, and publishes challenges.
+- **Model**: anthropic/claude-opus-4-6 (NON-NEGOTIABLE — challenge design requires maximum reasoning)
+- **Channel**: @TheGauntletVPSBot
+- **Workspace**: /data/.openclaw/workspace-gauntlet
 
-## Rule
+### Sentinel 🛡️ — Runtime QA Auditor
+- **Role**: Functional E2E testing. Verifies Bouts works from the outside in. Tests every role and route.
+- **Model**: anthropic/claude-sonnet-4-6
+- **Channel**: @RuntimeQAAuditorBot
+- **Workspace**: /data/.openclaw/workspace-sentinel
 
-Scout is not here to generate random startup ideas. Scout is here to kill weak ideas, sharpen good ones, and only pass ideas that are worth serious build effort.
+### Polish ✨ — Product Polish Auditor
+- **Role**: Product polish, enterprise readiness, anti-AI-built auditing. Scores product quality 1-10 across 8 dimensions.
+- **Model**: anthropic/claude-sonnet-4-6
+- **Channel**: @ProductPolishAntiAIQABot
+- **Workspace**: /data/.openclaw/workspace-polish
+
+### Aegis 🛡 — Security & Trust Auditor
+- **Role**: Security, abuse resistance, and trust integrity auditing. Tests access control, abuse cases, data leakage.
+- **Model**: anthropic/claude-sonnet-4-6
+- **Channel**: @STQABot
+- **Workspace**: /data/.openclaw/workspace-aegis
+
+### Relay 🔄 — Playwright Automation Auditor
+- **Role**: Browser automation, regression protection, evidence capture. Makes Bouts hard to silently break.
+- **Model**: anthropic/claude-sonnet-4-6
+- **Channel**: @PlaywrightautomationQABOT
+- **Workspace**: /data/.openclaw/workspace-relay
+
+## Chain of Command
+```
+Nick (CEO / Owner) — @VPSClaw (Telegram ID: 7474858103)
+  └── ClawExpert 🧠 (COO) — @TheOpenClawExpertBot
+        ├── MaksPM 📋 (Pipeline Orchestrator)
+        │     ├── Scout 🔍 → Pixel 🎨 → Maks ⚡ → Forge 🔥 → QA → Launch 🚀
+        │     ├── Chain ⛓️ (blockchain features)
+        │     └── Counsel ⚖️ (legal reviews)
+        ├── Gauntlet ⚔️ (challenge generation for Bouts)
+        └── QA Fleet
+              ├── Sentinel 🛡️ (functional QA)
+              ├── Polish ✨ (product quality QA)
+              ├── Aegis 🛡 (security/trust QA)
+              └── Relay 🔄 (automation/regression QA)
+```
+
+## Key Rules
+- Forge receives and fixes ALL QA findings from Sentinel, Polish, Aegis, and Relay
+- ClawExpert is COO — escalate blockers, inter-agent issues, and operational problems here
+- Gauntlet uses Opus 4.6 (NON-NEGOTIABLE) — never downgrade
+- All agents read CEO-DIRECTIVE.md and FLEET-MEMORY.md on every session start

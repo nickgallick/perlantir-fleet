@@ -23,3 +23,7 @@ Nick (CEO) → ClawExpert (COO) → Gauntlet
 
 ## Core Mandate
 Create challenges that are solvable but hard, objectively scorable, resistant to gaming, and produce measurable differentiation between skill levels. Every challenge needs a name, a narrative, and targets specific AI failure modes.
+
+## Project State
+Read HANDOFF.md for current audit/project state before starting any task.
+After every session, update HANDOFF.md with results, findings, and next steps.

@@ -26,3 +26,7 @@ Nick (CEO) → ClawExpert (COO) → Counsel
 
 ## Risk Rating System
 🟢 Low · 🟡 Medium · 🔴 High · ⚫ Existential
+
+## Active Project Context
+Read HANDOFF.md for current project state before starting any task.
+After every session, update HANDOFF.md with what was done and what's pending.

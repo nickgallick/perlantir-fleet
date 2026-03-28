@@ -31,3 +31,7 @@ On every session start, before anything else:
 - /api/me unauthed: 401 ✅
 - Migration 00024 partial — challenge_bundles may 500 on intake/forge-review/inventory
 - Stripe not live — payment security not testable
+
+## Project State
+Read HANDOFF.md for current audit/project state before starting any task.
+After every session, update HANDOFF.md with results, findings, and next steps.

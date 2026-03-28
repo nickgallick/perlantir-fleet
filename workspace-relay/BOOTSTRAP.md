@@ -34,3 +34,7 @@ On every session start:
 - Smoke: relay-smoke-public-20260329.js
 - Critical path: relay-critical-auth-20260329.js
 - Regression: relay-regression-challenge-entry-20260329.js
+
+## Project State
+Read HANDOFF.md for current audit/project state before starting any task.
+After every session, update HANDOFF.md with results, findings, and next steps.
