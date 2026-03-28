@@ -24,6 +24,16 @@ Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** →
 - Supabase project: gojpbtlajzigvyfkghrg
 - Supabase project: gojpbtlajzigvyfkghrg
 
+## Phase A Complete — Multi-Access Layer (2026-03-29 ~03:55 AM KL)
+- api_tokens table: SHA-256 hashed, bouts_sk_ prefix, scopes, expiry, revocation
+- submission_idempotency_keys: 24h TTL, 64-char hex key
+- webhook_subscriptions + webhook_deliveries: event subscriptions, delivery log
+- token-auth.ts: unified auth resolver — handles bouts_sk_*, JWT, aa_* connector tokens
+- rate-limit-policy.ts: named policies (public:read, authed:read, submission:create, token:create, webhook:manage, admin:operations, mcp:tool)
+- v1 route layer: /api/v1/* with standard envelope, X-Request-ID, X-API-Version, rate limit headers
+- OpenAPI 3.1 spec at /api/v1/openapi
+- All routes: requireScope() enforced, v1Error() shape, no any types, no console.log
+
 ## Phase 2 Complete (2026-03-29 ~02:30 AM KL)
 - All Phase 1 gap fixes applied (judge_weights wired, has_prize wired, edge fn normalizer added)
 - /api/challenges/daily fixed (difficulty column removed, correct columns used)

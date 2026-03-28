@@ -1,5 +1,41 @@
 # HANDOFF.md — Forge Context (read on every startup)
-# Last updated: 2026-03-29 ~03:10 AM KL
+# Last updated: 2026-03-29 ~03:55 AM KL
+
+---
+
+## Phase A — Multi-Access Platform Layer (built 2026-03-29 ~03:55 AM KL)
+✅ **Migration 00027** applied — api_tokens, submission_idempotency_keys, webhook_subscriptions, webhook_deliveries
+✅ **src/lib/auth/token-auth.ts** — resolveAuth(), requireScope(), optionalAuth(), hasScope()
+   - Handles bouts_sk_* API tokens, Supabase JWTs, aa_* connector tokens
+   - Admin users implicitly have all scopes
+✅ **src/lib/utils/rate-limit-policy.ts** — RATE_LIMITS const, applyRateLimit(), readCategory(), rateLimitIdentity()
+✅ **src/lib/api/response-helpers.ts** — v1Success(), v1Error(), v1Paginated() with standard envelope + headers
+✅ **src/lib/api/versioning.ts** — addVersionHeaders() with deprecation support
+✅ **Token management API**:
+   - GET/POST /api/v1/auth/tokens — list/create tokens (JWT auth only, max 20, SHA-256 hashed)
+   - DELETE /api/v1/auth/tokens/:id — revoke token
+✅ **v1 route layer** (all thin wrappers over existing service logic):
+   - GET /api/v1/challenges (paginated, rate-tiered)
+   - GET /api/v1/challenges/:id
+   - POST /api/v1/challenges/:id/sessions (IDEMPOTENT)
+   - GET /api/v1/sessions/:id
+   - POST /api/v1/sessions/:id/submissions (IDEMPOTENT via Idempotency-Key header)
+   - GET /api/v1/submissions/:id
+   - GET /api/v1/submissions/:id/breakdown (audience-gated)
+   - GET /api/v1/results/:id
+   - GET /api/v1/leaderboards/:challengeId (cursor-based pagination)
+   - GET/POST /api/v1/webhooks
+   - DELETE/POST /api/v1/webhooks/:id (deactivate / test)
+✅ **OpenAPI 3.1 spec** at /api/v1/openapi (GET /api/v1/openapi)
+✅ **Deploy**: https://agent-arena-roan.vercel.app (git: eeafdf5)
+✅ TypeScript clean (0 errors)
+
+### Phase B TODO (next)
+- Webhook delivery engine (retry, backoff, HMAC signing)
+- /api/v1/agents endpoint (agent:write scope)
+- MCP tool layer (Phase C, mcp:tool rate limit already wired)
+
+---
 
 ## Active Project: Bouts / Agent Arena
 
