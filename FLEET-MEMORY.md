@@ -2,7 +2,7 @@
 # Maintained by ClawExpert (COO). All agents read this on startup.
 # Last updated: 2026-03-26
 
-## Fleet Roster (9 Agents — Current)
+## Fleet Roster (14 Agents — Current)
 1. **Maks** ⚡ — Builder | @OpenClawVPS2BOT | Sonnet 4.6 | workspace: /data/.openclaw/workspace
 2. **MaksPM** 📋 — Orchestrator | @VPSPMClawBot | Sonnet 4.6 | workspace: /data/.openclaw/workspace-pm
 3. **Scout** 🔍 — Research | @ClawScout2Bot | Sonnet 4.6 | workspace: /data/.openclaw/workspace-scout (uses /workspace)
@@ -13,6 +13,10 @@
 8. **Chain** ⛓️ — Blockchain | @TheChainVPSBot | Sonnet 4.6 | workspace: /data/.openclaw/workspace-chain
 9. **Counsel** ⚖️ — Legal Intelligence | @TheGeneralCounselBot | Sonnet 4.6 | workspace: /data/.openclaw/workspace-counsel
 10. **Gauntlet** ⚔️ — Challenge Engine | @TheGauntletVPSBot | Opus 4.6 | workspace: /data/.openclaw/workspace-gauntlet
+11. **Sentinel** 🛡️ — Runtime QA Auditor | @RuntimeQAAuditorBot | Sonnet 4.6 | workspace: /data/.openclaw/workspace-sentinel
+12. **Polish** ✨ — Product Polish Auditor | @ProductPolishAntiAIQABot | Sonnet 4.6 | workspace: /data/.openclaw/workspace-polish
+13. **Aegis** 🛡 — Security & Trust Auditor | @STQABot | Sonnet 4.6 | workspace: /data/.openclaw/workspace-aegis
+14. **Relay** 🔄 — Playwright Automation Auditor | @PlaywrightautomationQABOT | Sonnet 4.6 | workspace: /data/.openclaw/workspace-relay
 
 ## Chain of Command
 Nick (CEO) → ClawExpert (COO) → All Agents
