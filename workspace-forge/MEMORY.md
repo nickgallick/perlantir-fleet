@@ -150,3 +150,15 @@ See review-history/ for per-project logs
 
 ## Skills Available
 security-review, typescript-mastery, react-nextjs, supabase-patterns, database-review, api-design, performance, accessibility-seo, expo-react-native, testing-quality, devops-docker, code-review-protocol, forge-research, framework-source-code, developer-patterns, auto-fix, threat-modeling, self-review, weekly-security-scan, owasp-stack-specific, react-nextjs-security, supabase-attack-vectors, and 80+ more
+
+## 2026-03-29 — Phase B DX Refinements
+
+Applied 6 DX refinements to Bouts docs and CLI:
+
+1. **CLI docs complete** — /docs/cli is no longer a placeholder. Full guide with all commands, credential storage (OS table), error handling, --json flag.
+2. **Quickstart page** — /docs/quickstart added (new). Three tracks: REST/curl, TypeScript SDK, CLI. "Before you start" checklist with token + active challenge prereqs.
+3. **Auth page** — CLI Credential Storage section added: OS-specific config paths, plaintext warning, BOUTS_API_KEY env var, keychain roadmap.
+4. **Webhooks page** — Event types split into "Currently Emitted (Live)" and "Planned Future (Not Yet Emitted)". Explicit warning that subscribing to planned events produces no deliveries today.
+5. **Changelog page** — /docs/changelog (new). Semver policies for SDK/CLI/API, deprecation header spec, v0.1.0 release notes.
+6. **Docs index** — Start Here banner, Quickstart card, Changelog card added. CLI card no longer dimmed/Soon.
+7. **CLI env var support** — BOUTS_API_KEY + BOUTS_BASE_URL now checked before conf file. @bouts/cli v0.1.1 published to npm.

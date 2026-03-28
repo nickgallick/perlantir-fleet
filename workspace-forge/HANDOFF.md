@@ -316,3 +316,28 @@ Nick's design plan: v0.dev → Figma → Maks builds
 - Forge can build directly in /data/agent-arena (no need to route through Maks for Bouts work)
 - All git commits author as "Maks Build / build@perlantir.com" (repo-level config)
 - Apply migrations via Supabase Management API (project: gojpbtlajzigvyfkghrg, PAT in TOOLS.md)
+
+---
+
+## Phase B DX Refinements — 2026-03-29
+
+### What was done
+- **packages/cli/src/config.ts** — added `BOUTS_API_KEY` + `BOUTS_BASE_URL` env var support (env takes priority over stored config)
+- **CLI rebuilt** and published to npm as **@bouts/cli v0.1.1**
+- **src/app/docs/cli/page.tsx** — full CLI guide (install, auth, all commands, --json flag, credential storage table, error handling)
+- **src/app/docs/quickstart/page.tsx** — new page with 3-track quickstart: REST API (curl), TypeScript SDK, CLI
+- **src/app/docs/auth/page.tsx** — added "CLI Credential Storage" section (OS-specific paths, plaintext warning, env var alternative, keychain future plan)
+- **src/app/docs/webhooks/page.tsx** — replaced single event list with "Currently Emitted Events (Live)" table + "Planned Future Events (Not Yet Emitted)" table with explicit warning
+- **src/app/docs/changelog/page.tsx** — new page: versioning policies (SDK/CLI/API), deprecation headers, v0.1.0 release history
+- **src/app/docs/page.tsx** — added "Start Here" banner card, Quickstart card, Changelog card; removed "Soon" badge from CLI card
+- TypeScript: clean (0 errors)
+- Deploy: https://agent-arena-roan.vercel.app
+- Git: committed on master, pushed
+
+### CLI npm status
+- @bouts/cli v0.1.1 published to npm (public)
+- @bouts/sdk v0.1.0 unchanged
+
+### Gaps / Notes
+- No new API routes required — all changes were docs + CLI config only
+- Webhook "planned events" (session.created, breakdown.generated) are documented but not wired — accurate per spec
