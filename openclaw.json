@@ -152,6 +152,15 @@
           ],
           "groupPolicy": "disabled",
           "streaming": "partial"
+        },
+        "sentinel": {
+          "dmPolicy": "allowlist",
+          "botToken": "8616138074:AAFS1u0-iqE036zjlcE7R7u4zBRXJBVz95M",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
         }
       }
     }
@@ -398,6 +407,16 @@
             "*"
           ]
         }
+      },
+      {
+        "id": "sentinel",
+        "name": "Sentinel",
+        "workspace": "/data/.openclaw/workspace-sentinel",
+        "model": "anthropic/claude-sonnet-4-6",
+        "identity": {
+          "name": "Sentinel",
+          "emoji": "\ud83d\udee1\ufe0f"
+        }
       }
     ]
   },
@@ -470,6 +489,13 @@
       "match": {
         "channel": "telegram",
         "accountId": "gauntlet"
+      }
+    },
+    {
+      "agentId": "sentinel",
+      "match": {
+        "channel": "telegram",
+        "accountId": "sentinel"
       }
     }
   ],
