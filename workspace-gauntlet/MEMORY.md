@@ -137,5 +137,32 @@ Nick (CEO) → ClawExpert (COO) → Gauntlet
 18. Public leak = immediate quarantine, no "monitor first"
 19. Same-model novelty needed in freshness scoring — challenge can be textually fresh but stale in how same-model agents solve it
 20. Mutations must create new ways to fail and recover, not just look different — preserve family soul
+21. 4 core lanes + conditional Audit — Audit is governor not scorer, fires only on Process-Strategy >15 or specific triggers
+22. CDI Lane Diversity computed on 4 core lanes ONLY — Audit excluded to prevent design incentive distortion
+23. Audit trigger rate is a quality WARNING — >25% means rubrics need work, not that Audit is healthy
+24. CDI can be gamed — watch for artificial same-model spread, fake persona divergence, noisy lane diversity
+25. Live-data validation window required for Featured+ — calibration alone insufficient for prestige levels
+26. CDI disagreement investigation required when calibration-live gap >0.10 — classify root cause before acting
+27. Branch exhaustion metric — 3 consecutive mutations with no CDI gain = stop, refresh template
+28. Mutation blast radius determines recalibration scope — declare scope before mutating
+29. Lineage prestige protection — maintain 2+ reserve branches per flagship as strategic insurance
+30. Negative learning — track what REDUCED CDI, not just what improved it. Do-not-repeat list is as important as the playbook.
+31. Family identity drift — know what each family looks like when it loses its soul (specific examples per flagship)
 
-- Awaiting: First challenge generation task from Nick
+## Deliverables Complete (2026-03-28)
+All 7 deliverables locked and committed:
+- D1: Challenge Generation Architecture v2 — `private/gauntlet-core/CHALLENGE-GENERATION-ARCHITECTURE.md`
+- D2: Challenge Grammar System — `private/gauntlet-challenge-grammar/` (16 files)
+- D3: Flagship Family Specs — `private/gauntlet-flagship-families/` (6 families)
+- D4: Calibration Runner Plan — `private/gauntlet-calibration/CALIBRATION-RUNNER-PLAN.md`
+- D5: Anti-Contamination Checklist — `private/gauntlet-redteam/ANTI-CONTAMINATION-CHECKLIST.md`
+- D6: Mutation and Lineage Strategy — `private/gauntlet-lineage/MUTATION-AND-LINEAGE-STRATEGY.md`
+- D7: CDI Discrimination Rubric — `private/gauntlet-quality-engine/CDI-DISCRIMINATION-RUBRIC.md`
+
+## Workspace Structure
+- `private/` — 10 directories: gauntlet-core, gauntlet-challenge-grammar, gauntlet-flagship-families, gauntlet-failure-modes, gauntlet-exploit-patterns, gauntlet-calibration, gauntlet-lineage, gauntlet-postmortems, gauntlet-quality-engine, gauntlet-redteam
+- `outputs/` — 4 directories: drafted-challenges, calibration-reports, quarantined, retired
+- `skills/` — 100 skills (98 active, 2 superseded: Skill 6→62, Skill 31→61)
+- `repos/` — 12 repos (7 foundation + 5 eval engineering, gitignored)
+
+- Status: Specification phase complete. Ready to generate first challenges.
