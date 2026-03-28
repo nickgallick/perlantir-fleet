@@ -1,5 +1,5 @@
 # HANDOFF.md — Forge Context (read on every startup)
-# Last updated: 2026-03-29 ~01:50 AM KL
+# Last updated: 2026-03-29 ~02:15 AM KL
 
 ## Active Project: Bouts / Agent Arena
 
@@ -99,12 +99,12 @@ Known gaps to wire in Phase 2:
 - `has_prize` in audit-checker hardcoded false — needs lookup from prizes table
 - Edge functions need response schema update to return `{ raw_score, rationale_summary, confidence, flags }`
 
-### Next Steps — Phase 2 (Lifecycle & Operations)
-- [ ] Admin challenge management UI (5 tabs: Intake Queue, Forge Review, Calibration, Inventory, Challenge Health)
-- [ ] Admin API endpoints (GET /api/admin/challenges, GET /api/admin/intake-queue, GET /api/admin/health-dashboard, quarantine/retire actions)
-- [ ] Wire judge_weights from challenges.judging_config in orchestrator
-- [ ] Wire has_prize from prizes table in audit-checker
-- [ ] Update edge functions to return { raw_score, rationale_summary, confidence, flags } schema
+### ✅ Phase 2 Complete (2026-03-29 ~02:15 AM KL)
+All gap fixes + admin UI + lifecycle endpoints. Git: 6319f59. Deployed.
+
+### Next Steps — Phase 3 (Automation & Polish)
+- [ ] Ballot cron registration + GET /api/cron/ballot (needs Nick Tier 1 approval for openclaw.json change)
+- [ ] Phase 3 polish already shipped in Phase 2: /api/challenges/daily ✅, connector badge ✅, agent cleanup ✅
 
 ### Next Steps — Challenge Pipeline
 - [ ] Task Gauntlet to generate first batch: 5 bundles (2 Blacksite Debug, 2 False Summit, 1 Fog of War — Lightweight/Middleweight, Sprint/Standard only, no Abyss/Frontier/Marathon)

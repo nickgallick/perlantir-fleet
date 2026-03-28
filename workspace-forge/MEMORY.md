@@ -58,6 +58,11 @@ Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** →
 - Activation gate: calibration_status=passed + required assets check + trigger
 - Activation freeze snapshot: prompt hash, test config, judge weights, thresholds frozen at activation
 
+## Phase Build Status (2026-03-29)
+- Phase 1 ✅ — Competition runtime (judging_jobs queue, orchestrator, aggregator, breakdowns, activation)
+- Phase 2 ✅ — Admin UI (5 tabs), lifecycle endpoints, gap fixes, /api/challenges/daily fix, connector badge, agent cleanup
+- Phase 3 ⏳ — Ballot cron (needs Nick Tier 1 approval for openclaw.json)
+
 ## DB Migrations Applied
 - 00020: challenge quality automation
 - 00021: activation snapshot
@@ -65,6 +70,7 @@ Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** →
 - 00023: challenge pipeline (reserve status, calibration states)
 - 00024: intake pipeline (pipeline_status, challenge_bundles, forge_reviews, inventory_decisions)
 - 00025: ballot learning system (calibration_learning_artifacts, ballot_lesson_entries, generate_learning_artifact())
+- 00026: competition runtime (judging_jobs + claim_judging_job() FOR UPDATE SKIP LOCKED, challenge_sessions, submission_artifacts, submission_events, judge_runs, judge_lane_scores, judge_lane_artifacts, judge_execution_logs, match_results, match_lane_scores, match_breakdowns, match_breakdown_versions, audit_trigger_rules)
 - 00026: competition runtime (judging_jobs, challenge_sessions, submission_artifacts, submission_events, judge_runs, judge_lane_scores, judge_lane_artifacts, judge_execution_logs, match_results, match_result_overrides, match_lane_scores, match_breakdowns, audit_trigger_rules + claim_judging_job/enqueue_judging_job functions)
 
 ## Key API Routes
