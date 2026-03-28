@@ -10,30 +10,41 @@
 ## System
 - OpenClaw version: 2026.3.24
 - VPS: 72.61.127.59 (Hostinger)
-- Skills: 51 skills active across Foundation, Elite, and Operational training sets
+- Skills: 100 skills (98 active, 2 superseded) across 8 training sets
+- Repos: 12 (7 foundation + 5 eval engineering)
 
 ## Bouts Platform Context
 - Live URL: https://agent-arena-roan.vercel.app
 - Stack: Next.js App Router, TypeScript, Tailwind, Supabase, Vercel
 - Supabase project: gojpbtlajzigvyfkghrg
-- Product: AI agent competition platform — agents submit solutions to coding challenges, judged by 4-judge system
+- Product: AI agent competition platform — agents submit solutions to coding challenges
+- Scoring: 4 core lanes (Objective, Process, Strategy, Integrity) + conditional Audit lane
+- 6 flagship families: Blacksite Debug, Fog of War, False Summit, Recovery Spiral, Toolchain Betrayal, Abyss Protocol
 
 ## Core Responsibilities
-1. Design engineering crucibles that expose real AI failure modes
-2. Calibrate difficulty profiles across 8 dimensions
-3. Build reproducible scoring rubrics (4-judge system)
-4. Ensure challenges resist gaming and produce score spread
-5. Coordinate with Forge (test suite review), Chain (blockchain challenges), Counsel (legal/IP)
+1. Design engineering crucibles that expose real AI failure modes — optimize for DISCRIMINATION, not difficulty
+2. Calibrate difficulty profiles across 8 dimensions using 5-tier calibration + 8 behavioral personas
+3. Build reproducible scoring rubrics (4 core lanes + conditional Audit)
+4. Ensure challenges resist gaming, contamination, and produce meaningful score spread (CDI)
+5. Manage challenge inventory, rotation, mutation, and lifecycle
+6. Coordinate with Forge (test suite review), Chain (blockchain challenges), Counsel (legal/IP)
 
 ## Chain of Command
 Nick (CEO) → ClawExpert (COO) → Gauntlet
 
 ## Key Files
-- SOUL.md — full identity, philosophy, challenge taxonomy, generation pipeline
-- skills/ — 51 domain skills covering all aspects of challenge design
-- skills/challenge-generation-pipeline-v2/ — primary generation workflow
-- skills/four-judge-stack/ — scoring system details
-- skills/three-flagship-families/ — Blacksite Debug, Fog of War, False Summit
+- SOUL.md — full identity, philosophy, challenge taxonomy
+- skills/ — 100 skills across 8 training sets
+- private/ — 10 directories: core knowledge base (7 deliverables + operational docs)
+- private/gauntlet-core/LESSONS-LEARNED.md — 16 internalized design instincts
+- private/gauntlet-core/CHALLENGE-GENERATION-ARCHITECTURE.md — 5-stage pipeline
+- private/gauntlet-challenge-grammar/ — 10-component composition system
+- private/gauntlet-flagship-families/ — 6 family specs
+- private/gauntlet-calibration/CALIBRATION-RUNNER-PLAN.md — calibration gate
+- private/gauntlet-redteam/ANTI-CONTAMINATION-CHECKLIST.md — 26-check contamination defense
+- private/gauntlet-lineage/MUTATION-AND-LINEAGE-STRATEGY.md — mutation + lineage
+- private/gauntlet-quality-engine/CDI-DISCRIMINATION-RUBRIC.md — CDI scoring system
+- private/gauntlet-core/INVENTORY-AND-ROTATION-OPERATIONS.md — inventory management
 
 ## Status
 - Agent setup complete: 2026-03-27
@@ -108,13 +119,14 @@ Nick (CEO) → ClawExpert (COO) → Gauntlet
 - GRAND TOTAL: 100 skills, 12 repos (98 active, 2 superseded)
 
 ## Deliverables Progress (2026-03-28)
-- D1: Challenge Generation Architecture v2 — APPROVED with 13 refinements
-- D2: Challenge Grammar System — APPROVED with 7 refinements
-- D3: Flagship Family Specs (6 families) — APPROVED with Abyss family+protocol distinction
-- D4: Calibration Runner Plan — APPROVED with Elite/Reference split, same-model gates, invalidation rules
-- D5: Anti-Contamination Checklist — APPROVED with 2 pending refinements
-- D6: Mutation and Lineage Strategy — IN PROGRESS
-- D7: CDI Discrimination Rubric — PENDING
+- D1: Challenge Generation Architecture v2 — LOCKED (13 refinements)
+- D2: Challenge Grammar System — LOCKED (7 refinements)
+- D3: Flagship Family Specs (6 families) — LOCKED (Abyss family+protocol distinction, dignity check, multi-lane spread, prestige-decay)
+- D4: Calibration Runner Plan — LOCKED (Elite/Reference split, same-model gates, invalidation rules)
+- D5: Anti-Contamination Checklist — LOCKED (same-model novelty in freshness, hard quarantine rule)
+- D6: Mutation and Lineage Strategy — LOCKED (exhaustion metric, blast radius, prestige reserve, negative learning, drift examples)
+- D7: CDI Discrimination Rubric — LOCKED (attack surface, live validation, disagreement investigation, Audit governance)
+- D8: Inventory and Rotation Operations — LOCKED (format diversity floor, launch substitution rule)
 
 ## Key Learnings from Nick's Feedback (Critical for Challenge Generation)
 1. DISCRIMINATION OVER DIFFICULTY — every component exists to widen score spread, not to be "hard"
@@ -173,8 +185,8 @@ All 7 deliverables locked and committed:
 36. Starting with 3 families is disciplined — hold back Recovery Spiral, Toolchain, Frontier, and all prestige content
 37. Inventory judgment: not just "can I make more" but "should I publish more" and "what should stay hidden"
 
-## Deliverables Status
-- D1-D7: LOCKED
-- D8: Inventory and Rotation Operations — APPROVED with 2 refinements (format diversity floor, launch substitution rule)
-
-- Status: Specification phase complete. Ready to generate first challenges.
+## Current Status
+- All 8 deliverables LOCKED
+- Specification phase complete
+- Ready to generate first challenges
+- Next: first 8 challenges from 3 families (Blacksite, Fog of War, False Summit) per D8 starting policy

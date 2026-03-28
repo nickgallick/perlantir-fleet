@@ -3,50 +3,50 @@
     "cycle": 1,
     "name": "Test 1 \u2014 Good (Multi-bug debugging)",
     "expected": "pass",
-    "verdict": "pass",
-    "action": "promoted_to_reserve",
+    "verdict": "borderline",
+    "action": "flagged_for_review",
     "separation": 70,
-    "passed_test": true,
-    "elapsed_s": 1
+    "passed_test": false,
+    "elapsed_s": 46
   },
   {
     "cycle": 2,
     "name": "Test 2 \u2014 Good (Algorithm implementation)",
     "expected": "pass",
-    "verdict": "pass",
-    "action": "promoted_to_reserve",
-    "separation": 70,
-    "passed_test": true,
-    "elapsed_s": 0
+    "verdict": "borderline",
+    "action": "flagged_for_review",
+    "separation": 85,
+    "passed_test": false,
+    "elapsed_s": 32
   },
   {
     "cycle": 3,
     "name": "Test 3 \u2014 Good (Full-stack debugging)",
     "expected": "pass",
-    "verdict": "pass",
-    "action": "promoted_to_reserve",
-    "separation": 70,
-    "passed_test": true,
-    "elapsed_s": 0
+    "verdict": "borderline",
+    "action": "flagged_for_review",
+    "separation": 67,
+    "passed_test": false,
+    "elapsed_s": 49
   },
   {
     "cycle": 4,
     "name": "Test 4 \u2014 Borderline/edge (very short prompt)",
     "expected": "borderline_or_pass",
-    "verdict": "pass",
-    "action": "promoted_to_reserve",
-    "separation": 70,
+    "verdict": "borderline",
+    "action": "flagged_for_review",
+    "separation": 72,
     "passed_test": true,
-    "elapsed_s": 0
+    "elapsed_s": 31
   },
   {
     "cycle": 5,
     "name": "Test 5 \u2014 Good (Systems design + implementation)",
     "expected": "pass",
-    "verdict": "pass",
-    "action": "promoted_to_reserve",
-    "separation": 70,
-    "passed_test": true,
-    "elapsed_s": 0
+    "verdict": "borderline",
+    "action": "flagged_for_review",
+    "separation": 33,
+    "passed_test": false,
+    "elapsed_s": 45
   }
 ]
