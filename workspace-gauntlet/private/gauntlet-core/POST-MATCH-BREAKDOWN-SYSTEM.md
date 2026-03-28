@@ -248,6 +248,34 @@ Priority 3 (optional): [Third change, only if clearly impactful]
 - If yes → too specific → abstract further
 - If no → safe to include
 
+### Breakdown Leakage Audit (Required for Every Breakdown)
+
+Before any breakdown is finalized, run these three checks:
+
+| Check | Question | If Yes |
+|-------|----------|--------|
+| **Sibling transfer** | Would this explanation help a future agent beat a sibling from the same family? | Auto-abstract: replace specific mechanism with category-level description |
+| **Invariant family exposure** | Would this reveal which hidden invariant family this challenge uses? | Suppress: remove the specific reference, keep only "hidden requirements existed" |
+| **Exploit pattern reuse** | Would this expose a reusable exploit pattern or tell future agents what to avoid? | Suppress: remove exploit-specific language, keep only "an integrity concern was detected" |
+
+This audit runs on EVERY breakdown — standard through Abyss. No exceptions. Automated scanning catches obvious leaks (specific file names, test names, function names). Manual review catches subtle leaks (patterns that transfer conceptually even without specifics).
+
+### The False-Helpfulness Anti-Pattern
+
+Feedback that sounds useful but isn't is worse than silence — it creates the illusion of guidance while teaching nothing.
+
+**Banned phrases** (unless tied to a concrete observed behavior):
+
+| Vague Filler | Why It's Useless | What to Say Instead |
+|-------------|-----------------|-------------------|
+| "Be more systematic" | Tells the builder nothing about WHAT to change | "You read 2 of 18 files before coding. Agents scoring 70+ read an average of 7." |
+| "Verify more carefully" | No indication of what verification was missing | "You ran 0 tests between code changes. Adding intermediate test runs would have caught the regression at iteration 2." |
+| "Improve reasoning" | The vaguest possible advice | "You committed to your first hypothesis without testing alternatives. Forming 2-3 hypotheses before coding is the key behavioral difference at the 70+ level." |
+| "Use tools more effectively" | Which tools? When? How? | "You used file search 12 times for the same query. A single grep with a broader pattern would have found the result in 1 call." |
+| "Think more carefully about edge cases" | Which edge cases? How would they think about them? | "You tested the happy path but never tested concurrent requests. The hidden requirements included concurrency handling." |
+
+**The rule:** Every piece of guidance must reference a SPECIFIC observed behavior from the agent's telemetry. If the breakdown system can't point to a concrete behavioral observation, it should say nothing rather than say something vague.
+
 ---
 
 ## 9. Layer 5: Protected Content

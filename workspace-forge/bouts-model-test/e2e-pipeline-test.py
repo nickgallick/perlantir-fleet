@@ -81,34 +81,41 @@ Deliver: all 5 bugs identified with explanations + complete fixed implementation
         }
     },
     {
-        "name": "Test 2 — Good (Algorithm implementation)",
+        "name": "Test 2 — Good (Algorithm w/ hard constraints)",
         "expected": "pass",
         "challenge": {
-            "title": f"Pipeline-Test: LRU Cache Implementation [{uuid.uuid4().hex[:6]}]",
-            "description": "Implement a correct, performant LRU Cache",
-            "prompt": """Implement a Least Recently Used (LRU) Cache with O(1) get and put operations.
+            "title": f"Pipeline-Test: Serialize and Deserialize Binary Tree [{uuid.uuid4().hex[:6]}]",
+            "description": "Implement codec for binary tree serialization",
+            "prompt": """Design an algorithm to serialize and deserialize a binary tree. Serialization must preserve the full tree structure so it can be exactly reconstructed.
 
-Requirements:
-- LRUCache(capacity: number) — initialize with positive capacity
-- get(key: number): number — return value if exists, -1 if not
-- put(key: number, value: number): void — insert or update key. If capacity exceeded, evict least recently used.
+```typescript
+class TreeNode {
+  val: number;
+  left: TreeNode | null;
+  right: TreeNode | null;
+  constructor(val?: number, left?: TreeNode | null, right?: TreeNode | null) {
+    this.val = val ?? 0;
+    this.left = left ?? null;
+    this.right = right ?? null;
+  }
+}
 
-Constraints:
-- get and put must both be O(1)
-- 1 <= capacity <= 3000
-- 0 <= key, value <= 10^4
-- Up to 2 * 10^5 calls to get/put
+// Implement these:
+function serialize(root: TreeNode | null): string { ... }
+function deserialize(data: string): TreeNode | null { ... }
+```
 
-Edge cases to handle:
-- put on existing key updates value AND moves to most-recently-used
-- capacity=1 edge case
-- get after eviction returns -1
+Hard constraints:
+- Must handle: null nodes, negative values, single node, empty tree, skewed trees (all left or all right), duplicate values
+- serialize(deserialize(serialize(root))) must equal serialize(root) — idempotent round-trip
+- No eval() or JSON.parse on untrusted input (security constraint)
+- O(n) time and space complexity
 
-Include: implementation + explanation of data structure choice + time/space complexity analysis.""",
+Include: both functions + explanation of encoding scheme + why it handles all edge cases + complexity analysis.""",
             "category": "algorithms",
             "format": "standard",
             "challenge_type": "standard",
-            "time_limit_minutes": 45,
+            "time_limit_minutes": 60,
         }
     },
     {
@@ -161,59 +168,69 @@ Deliver: bug analysis + complete fixed server + brief test showing each fix work
         }
     },
     {
-        "name": "Test 4 — Borderline/edge (very short prompt)",
-        "expected": "borderline_or_pass",  # short but not trivial
+        "name": "Test 4 — Should fail (trivially easy)",
+        "expected": "fail_or_borderline",  # too easy — all tiers score similarly high
         "challenge": {
-            "title": f"Pipeline-Test: Reverse a Linked List [{uuid.uuid4().hex[:6]}]",
-            "description": "Reverse a singly linked list",
-            "prompt": """Implement a function to reverse a singly linked list.
-
-Given the head of a singly linked list, reverse it and return the new head.
-
-Example: 1->2->3->4->5 becomes 5->4->3->2->1
-
-Provide both iterative and recursive solutions. Explain the tradeoffs.""",
-            "category": "algorithms",
+            "title": f"Pipeline-Test: FizzBuzz [{uuid.uuid4().hex[:6]}]",
+            "description": "Classic FizzBuzz",
+            "prompt": """Write a function that prints numbers from 1 to 100. For multiples of 3 print 'Fizz', for multiples of 5 print 'Buzz', for multiples of both print 'FizzBuzz'.""",
+            "category": "general",
             "format": "sprint",
             "challenge_type": "daily",
-            "time_limit_minutes": 20,
+            "time_limit_minutes": 10,
         }
     },
     {
-        "name": "Test 5 — Good (Systems design + implementation)",
+        "name": "Test 5 — Good (debugging with clear success criteria)",
         "expected": "pass",
         "challenge": {
-            "title": f"Pipeline-Test: Build a Rate Limiter [{uuid.uuid4().hex[:6]}]",
-            "description": "Implement a sliding window rate limiter",
-            "prompt": """Implement a sliding window rate limiter that:
-- Allows N requests per window (e.g. 100 req/min)
-- Uses sliding window algorithm (not fixed window — no boundary burst)
-- Thread-safe for concurrent requests
-- Returns: { allowed: boolean, remaining: number, resetMs: number }
-- Memory efficient — cleans up expired entries
+            "title": f"Pipeline-Test: Fix the Event Emitter [{uuid.uuid4().hex[:6]}]",
+            "description": "Debug a broken event emitter implementation",
+            "prompt": """An EventEmitter implementation has 4 bugs causing memory leaks, listener ordering issues, and error propagation failures. Identify all 4 bugs and deliver a fixed implementation.
 
-```typescript
-// rate-limiter.ts — implement this interface
-interface RateLimiter {
-  check(clientId: string, limit: number, windowMs: number): {
-    allowed: boolean;
-    remaining: number;
-    resetMs: number;
-  };
+```javascript
+// event-emitter.js — BROKEN
+class EventEmitter {
+  constructor() {
+    this.events = {};
+  }
+
+  on(event, listener) {
+    this.events[event].push(listener);
+    return this;
+  }
+
+  off(event, listener) {
+    this.events[event] = this.events[event].filter(l => l !== listener);
+    return this;
+  }
+
+  emit(event, ...args) {
+    this.events[event].forEach(listener => listener(...args));
+    return this;
+  }
+
+  once(event, listener) {
+    const wrapper = (...args) => {
+      listener(...args);
+      this.off(event, listener);
+    };
+    return this.on(event, wrapper);
+  }
 }
 ```
 
-Requirements:
-- Sliding window (not token bucket, not fixed window)
-- O(1) amortized per check
-- Works correctly under concurrent load (no race conditions)
-- Test with: burst pattern, steady pattern, boundary case (exactly at limit)
+Bug list:
+1. `on()` crashes if event has no listeners yet — `this.events[event]` is undefined
+2. `emit()` crashes if no listeners registered for event — same undefined issue
+3. `once()` memory leak — `off(event, listener)` tries to remove original listener but wrapper was registered; wrapper is never removed
+4. `emit()` doesn't handle listener errors — one throwing listener silently stops all subsequent listeners
 
-Deliver: implementation + tests + explanation of why sliding window beats fixed window for burst prevention.""",
-            "category": "systems",
-            "format": "standard",
-            "challenge_type": "standard",
-            "time_limit_minutes": 60,
+Deliver: all 4 bugs explained + complete fixed implementation + brief test for each fix.""",
+            "category": "debugging",
+            "format": "sprint",
+            "challenge_type": "daily",
+            "time_limit_minutes": 45,
         }
     },
 ]
@@ -358,6 +375,7 @@ def main():
         test_passed = (
             (test["expected"] == "pass" and action == "promoted_to_reserve") or
             (test["expected"] == "borderline_or_pass" and action in ("promoted_to_reserve", "flagged_for_review")) or
+            (test["expected"] == "fail_or_borderline" and action in ("deleted", "flagged_for_review")) or
             (test["expected"] == "fail" and action == "deleted")
         )
 
