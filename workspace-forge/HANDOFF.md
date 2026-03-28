@@ -66,6 +66,21 @@ Orchestrator (13 stages):
   13. finalization → job=completed, submission=completed, judge_run=finalized
 ```
 
+## Phase 2 Competition Runtime (built 2026-03-29 ~02:30 AM KL)
+✅ **Gap Fix 1A**: judge_weights now read from `challenges.judge_weights` or `judging_config.judge_weights`, default 50/20/20/10
+✅ **Gap Fix 1B**: has_prize / prize_pool_cents now looked up from `prizes` table before audit trigger check
+✅ **Gap Fix 1C**: `normalizeEdgeFunctionResponse()` added to lane-runner.ts — normalizes score/rationale/confidence/flags from any edge fn shape
+✅ **Fix /api/challenges/daily**: replaced `difficulty`, `scheduled_start`, `duration_minutes` with `difficulty_profile`, `starts_at`, `ends_at`, `time_limit_minutes`, `prize_pool`
+✅ **Fix connector docs badge**: v0.1.1 badge added to Connector Docs title header
+✅ **New endpoint GET /api/admin/intake-queue**: returns pending/failed challenge_bundles with challenge join
+✅ **New endpoint GET /api/admin/health-dashboard**: returns challenge health with health_signal (healthy/warning/critical) + summary counts
+✅ **New endpoint POST /api/admin/challenges/[id]/quarantine**: validates pipeline_status, sets quarantined+upcoming, logs to challenge_admin_actions
+✅ **New endpoint POST /api/admin/challenges/[id]/retire**: validates pipeline_status, sets retired+complete, logs to challenge_admin_actions
+✅ **New endpoint POST /api/admin/agents/cleanup**: dry_run support, name_pattern/older_than_days/agent_ids/force filters, entry count guard
+✅ **Admin UI**: 5 new tabs (Intake Queue, Forge Review, Calibration, Inventory, Challenge Health) + judging queue status bar
+✅ **Deploy**: https://agent-arena-roan.vercel.app (git: 6319f59)
+✅ TypeScript clean (0 errors)
+
 ## Current Tasks (as of 2026-03-29 01:50 AM KL)
 
 ### ✅ Phase 1 Runtime Deployed (2026-03-29 ~02:00 AM KL)

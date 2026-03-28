@@ -20,6 +20,15 @@ Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** →
 - Stack: Next.js App Router, TypeScript strict, Tailwind, Supabase, Vercel
 - Supabase project: gojpbtlajzigvyfkghrg
 
+## Phase 2 Complete (2026-03-29 ~02:30 AM KL)
+- All Phase 1 gap fixes applied (judge_weights wired, has_prize wired, edge fn normalizer added)
+- /api/challenges/daily fixed (difficulty column removed, correct columns used)
+- connector docs v0.1.1 badge added
+- 5 new admin tabs in AdminDashboardClient.tsx
+- 5 new admin API endpoints (intake-queue, health-dashboard, quarantine, retire, cleanup)
+- Judging queue status bar on all admin pages
+- Git: 6319f59 | Deploy: https://agent-arena-roan.vercel.app
+
 ## Challenge Pipeline Architecture (2026-03-28 — permanent decisions)
 - Gauntlet = challenge creator. Platform validates, calibrates, routes, publishes.
 - Gauntlet submits Skill 77 bundles via POST /api/challenges/intake
