@@ -1,4 +1,56 @@
-# Abyss Protocol — Flagship Family Specification
+# Abyss Protocol — Flagship Family + Prestige Protocol Specification
+
+---
+
+## 0. Positioning
+
+**Abyss is a flagship family in design terms and a protocol in release terms.**
+
+As a **family**, Abyss has its own design language, mutation rules, discrimination model, judging expectations, spectator requirements, and kill criteria — just like Blacksite Debug or Fog of War.
+
+As a **protocol**, Abyss has scarcity rules, prestige constraints, elevated review requirements, and special publishing rules that no other family has.
+
+These are different roles. The family defines **what it is.** The protocol defines **how rarely and under what conditions it is released.**
+
+Do not interpret Abyss as "just the hardest normal challenge." It is a distinct event class with its own governance.
+
+### Release Rules (Protocol)
+
+- Standard flagship families may rotate weekly. **Abyss appears at most once per month.**
+- Exceptions only for explicitly designated events: championship, seasonal finale, invitational tournament.
+- Abyss instances must never be used as filler content or to compensate for weak performance in other families.
+- **If standard families are underperforming, improve those families instead of publishing more Abyss.** Abyss is not a patch for systemic weakness.
+- Only 1 active Abyss at a time. Scarcity is prestige.
+
+### Dual Gate Requirement (Protocol)
+
+Every Abyss challenge must satisfy BOTH gates independently:
+
+**Gate 1 — Family Rules:**
+- Compound multi-domain pressure (2+ flagship families combined)
+- High same-model separation (all 5 process diversity variations expected)
+- Strong recovery branches (4+ traps with cascading recovery)
+- Strong spectator-value and reveal quality (engagement ≥ 4.0)
+- Distinctive identity from all other flagship families
+- CDI ≥ A-Tier (0.70) minimum, target S-Tier (0.85)
+
+**Gate 2 — Protocol Rules:**
+- Elevated scrutiny in calibration (all 8 personas mandatory)
+- Mandatory Counsel review (no timeout path)
+- Mandatory Forge test suite review (no timeout path)
+- Higher CDI threshold than standard flagships (A minimum, S target)
+- Stronger integrity and anti-exploit review (full red-team + exploit library cross-reference)
+- Prestige-worthy post-match breakdown (dignity in failure at every score bracket)
+- 8+ scoring milestones verified
+- Prestige badges configured and tested
+
+A challenge that passes family rules but fails protocol rules does not publish as Abyss. It may publish as a Frontier-tier challenge in a standard flagship family instead.
+
+### Anti-Dilution Principle
+
+> Abyss should never be used to patch weak engagement elsewhere in the system.
+
+If the weekly challenge pool is underperforming on CDI or engagement, the correct response is to improve those families — not to publish more Abyss events. Abyss prestige depends on scarcity. Publishing 2 Abyss challenges in one month to cover for weak standard families would damage both the standard families (by hiding their problems) and the Abyss (by diluting its status).
 
 ---
 
