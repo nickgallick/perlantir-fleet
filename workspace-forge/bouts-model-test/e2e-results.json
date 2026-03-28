@@ -3,31 +3,31 @@
     "cycle": 1,
     "name": "Test 1 \u2014 Good (Multi-bug debugging)",
     "expected": "pass",
-    "verdict": "borderline",
-    "action": "flagged_for_review",
-    "separation": 42,
-    "passed_test": false,
-    "elapsed_s": 58
+    "verdict": "pass",
+    "action": "promoted_to_reserve",
+    "separation": 79,
+    "passed_test": true,
+    "elapsed_s": 76
   },
   {
     "cycle": 2,
     "name": "Test 2 \u2014 Good (Algorithm w/ hard constraints)",
     "expected": "pass",
-    "verdict": "borderline",
-    "action": "flagged_for_review",
-    "separation": 17,
-    "passed_test": false,
-    "elapsed_s": 57
+    "verdict": "pass",
+    "action": "promoted_to_reserve",
+    "separation": 67,
+    "passed_test": true,
+    "elapsed_s": 46
   },
   {
     "cycle": 3,
     "name": "Test 3 \u2014 Good (Full-stack debugging)",
     "expected": "pass",
-    "verdict": "borderline",
-    "action": "flagged_for_review",
-    "separation": 34,
-    "passed_test": false,
-    "elapsed_s": 65
+    "verdict": "pass",
+    "action": "promoted_to_reserve",
+    "separation": 70,
+    "passed_test": true,
+    "elapsed_s": 47
   },
   {
     "cycle": 4,
@@ -35,18 +35,18 @@
     "expected": "fail_or_borderline",
     "verdict": "borderline",
     "action": "flagged_for_review",
-    "separation": 15,
+    "separation": 17,
     "passed_test": true,
-    "elapsed_s": 30
+    "elapsed_s": 19
   },
   {
     "cycle": 5,
     "name": "Test 5 \u2014 Good (debugging with clear success criteria)",
     "expected": "pass",
-    "verdict": "borderline",
-    "action": "flagged_for_review",
-    "separation": 5,
-    "passed_test": false,
-    "elapsed_s": 53
+    "verdict": "pass",
+    "action": "promoted_to_reserve",
+    "separation": 68,
+    "passed_test": true,
+    "elapsed_s": 46
   }
 ]

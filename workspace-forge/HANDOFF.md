@@ -1,5 +1,5 @@
 # HANDOFF.md — Forge Context (read on every startup)
-# Last updated: 2026-03-29 ~00:32 AM KL
+# Last updated: 2026-03-29 ~01:50 AM KL
 
 ## Active Project: Bouts / Agent Arena
 
@@ -23,14 +23,80 @@
 
 ---
 
-## Current Tasks (as of 2026-03-29 00:32 AM KL)
+## Phase 1 Competition Runtime (built 2026-03-29 ~01:50 AM KL)
+✅ **Migration 00026** — 12 new tables: judging_jobs, challenge_sessions, submission_artifacts, submission_events, judge_runs, judge_lane_scores, judge_lane_artifacts, judge_execution_logs, match_results, match_result_overrides, match_lane_scores, match_breakdowns, audit_trigger_rules
+✅ **DB functions**: claim_judging_job() (FOR UPDATE SKIP LOCKED), enqueue_judging_job() (idempotent)
+✅ **4 default audit trigger rules** seeded
+✅ **src/lib/submissions/**: validate-submission, artifact-store (SHA-256 hashing), event-logger (append-only, never throws), version-snapshot (frozen config state)
+✅ **src/lib/judging/**: evidence-packager (strict lane isolation), lane-runner (30s timeout, 2 attempts, fallback model), idempotency, aggregator (weighted scoring, exploit detection, confidence), audit-checker (configurable rules engine), orchestrator (13-stage, idempotent, traceable)
+✅ **src/lib/breakdowns/**: generator (3-audience breakdowns), leakage-auditor, template-engine (5 outcome types × 6 families)
+✅ **src/lib/challenges/**: activation (7-gate validation + atomic activate), discovery (enterable check)
+✅ **API routes**: POST /api/challenges/[id]/sessions, GET /api/challenge-sessions/[id], GET /api/challenge-submissions/[id], GET /api/submissions/[id]/breakdown (audience-aware), POST /api/internal/judge-submission (service key auth), GET /api/cron/process-judging-jobs, POST /api/admin/challenges/[id]/activate, POST /api/admin/challenges/[id]/unpublish, GET /api/admin/judging-queue
+✅ **Updated /api/connector/submit** — now validates, hashes, stores artifact, enqueues judging job, logs events
+✅ **Cron registered**: bouts-judging-processor, every 2min, ID: 4e028b13-dad0-4b36-a7f7-32dd5fdfd950
+✅ **Deploy**: https://agent-arena-roan.vercel.app (git: 45380fc)
+✅ TypeScript clean (0 errors)
+
+### Judging Flow (end-to-end)
+```
+Agent submits → POST /api/connector/submit
+  → validateSubmission() checks: active, size, session, no dupe
+  → storeArtifact() SHA-256 hashes content → submission_artifacts
+  → logSubmissionEvent('received')
+  → captureVersionSnapshot() freezes config state
+  → enqueue_judging_job() RPC → judging_jobs table
+  → logSubmissionEvent('queued')
+  → submission_status = 'queued'
+
+Cron (every 2min) → GET /api/cron/process-judging-jobs
+  → claim_judging_job() FOR UPDATE SKIP LOCKED (concurrency-safe)
+  → POST /api/internal/judge-submission (fire-and-forget)
+
+Orchestrator (13 stages):
+  1. submission_received → job status=running
+  2. submission_prevalidation → re-check challenge active
+  3. objective_evaluation → objective-judge edge fn → judge_lane_scores
+  4. evidence_package_assembly → 3 parallel packages (no cross-lane leakage)
+  5+6+7. lane_judging → Promise.all(process, strategy, integrity) → lane scores
+  8. audit_trigger_check → evaluates configurable rules
+  9. audit_lane_judging → conditional (only if triggered)
+  10. aggregation → weighted score, exploit detection, confidence
+  11. result_persistence → match_results + match_lane_scores (immutable)
+  12. breakdown_generation → 3 audience breakdowns + leakage audit
+  13. finalization → job=completed, submission=completed, judge_run=finalized
+```
+
+## Current Tasks (as of 2026-03-29 01:50 AM KL)
+
+### ✅ Phase 1 Runtime Deployed (2026-03-29 ~02:00 AM KL)
+**26 files. Migration 00026 applied. TypeScript clean. Deployed. Cron registered.**
+
+Files built:
+- `src/lib/submissions/` — validate-submission, artifact-store (SHA-256 immutable), event-logger, version-snapshot
+- `src/lib/judging/` — orchestrator (13 stages), evidence-packager (strict lane isolation), lane-runner (30s timeout/2 retries/fallback), idempotency, aggregator, audit-checker (configurable rules)
+- `src/lib/breakdowns/` — generator (3 audience views), leakage-auditor, template-engine (5 outcomes × 6 families)
+- `src/lib/challenges/` — activation (7-gate), discovery
+- 9 new API routes + updated /api/connector/submit
+- OpenClaw cron `4e028b13-dad0-4b36-a7f7-32dd5fdfd950` (every 2min) for judging job processor
+
+Known gaps to wire in Phase 2:
+- `judge_weights` in orchestrator currently hardcoded 25/25/25/25 — needs wiring from challenges.judging_config once populated
+- `has_prize` in audit-checker hardcoded false — needs lookup from prizes table
+- Edge functions need response schema update to return `{ raw_score, rationale_summary, confidence, flags }`
+
+### Next Steps — Phase 2 (Lifecycle & Operations)
+- [ ] Admin challenge management UI (5 tabs: Intake Queue, Forge Review, Calibration, Inventory, Challenge Health)
+- [ ] Admin API endpoints (GET /api/admin/challenges, GET /api/admin/intake-queue, GET /api/admin/health-dashboard, quarantine/retire actions)
+- [ ] Wire judge_weights from challenges.judging_config in orchestrator
+- [ ] Wire has_prize from prizes table in audit-checker
+- [ ] Update edge functions to return { raw_score, rationale_summary, confidence, flags } schema
 
 ### Next Steps — Challenge Pipeline
 - [ ] Task Gauntlet to generate first batch: 5 bundles (2 Blacksite Debug, 2 False Summit, 1 Fog of War — Lightweight/Middleweight, Sprint/Standard only, no Abyss/Frontier/Marathon)
 - [ ] Gauntlet submits via POST /api/challenges/intake (Bearer: 1b12f7484f1d283543c98ae1ecbd1c358d68f68b5e896dac2b9bca92e91c1f8e)
 - [ ] Forge reviews each bundle via /api/admin/forge-review
 - [ ] Calibration runs automatically after Forge approval
-- [ ] Nick makes inventory decisions via /api/admin/inventory (publish_now / hold_reserve / etc.)
+- [ ] Nick makes inventory decisions via /api/admin/inventory
 
 ### Nick's Side (still pending)
 - [ ] Stripe live keys + webhook
@@ -39,9 +105,8 @@
 - [ ] ORACLE_WALLET_ADDRESS + BASE_RPC_URL (from Chain)
 
 ### Known Open Issues (non-blocking)
-- `/api/challenges/daily` returns 500 — DB schema issue, handled gracefully
-- Landing stats hardcoded in `src/app/page.tsx` lines 50-59
-- Test agents in DB: `final-auth-test`, `Testagentarwna`
+- `/api/challenges/daily` returns 500 — Phase 3 fix
+- Test agents in DB: `final-auth-test`, `Testagentarwna` — Phase 3 cleanup endpoint
 
 ---
 
@@ -127,6 +192,12 @@ active → quarantined | retired | archived
 | Forge review API | src/app/api/admin/forge-review/route.ts |
 | Inventory API | src/app/api/admin/inventory/route.ts |
 | Ballot API | src/app/api/admin/ballot/route.ts |
+| Competition runtime libs | src/lib/submissions/, src/lib/judging/, src/lib/breakdowns/, src/lib/challenges/ |
+| Judging orchestrator | src/lib/judging/orchestrator.ts |
+| Submit (updated) | src/app/api/connector/submit/route.ts |
+| Judging cron | src/app/api/cron/process-judging-jobs/route.ts |
+| Internal judge trigger | src/app/api/internal/judge-submission/route.ts |
+| Admin judging queue | src/app/api/admin/judging-queue/route.ts |
 | Ballot workspace | /data/.openclaw/workspace-ballot/ |
 | Ballot ingestion script | /data/.openclaw/workspace-ballot/scripts/ingest-artifacts.ts |
 | Gauntlet lesson files | /data/.openclaw/workspace-gauntlet/private/gauntlet-lessons/ |

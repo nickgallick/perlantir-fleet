@@ -56,6 +56,7 @@ Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** →
 - 00023: challenge pipeline (reserve status, calibration states)
 - 00024: intake pipeline (pipeline_status, challenge_bundles, forge_reviews, inventory_decisions)
 - 00025: ballot learning system (calibration_learning_artifacts, ballot_lesson_entries, generate_learning_artifact())
+- 00026: competition runtime (judging_jobs, challenge_sessions, submission_artifacts, submission_events, judge_runs, judge_lane_scores, judge_lane_artifacts, judge_execution_logs, match_results, match_result_overrides, match_lane_scores, match_breakdowns, audit_trigger_rules + claim_judging_job/enqueue_judging_job functions)
 
 ## Key API Routes
 | Route | Purpose |
@@ -66,6 +67,25 @@ Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** →
 | GET/POST /api/admin/ballot | Ballot stats + manual run |
 | GET/POST /api/admin/calibration | Run calibration on a challenge |
 | GET/POST /api/admin/challenge-quality | CDI + quality enforcement |
+| POST /api/challenges/[id]/sessions | Create challenge session (version snapshot frozen) |
+| GET /api/challenge-sessions/[id] | Session status + submission count |
+| GET /api/challenge-submissions/[id] | Submission status + event log |
+| GET /api/submissions/[id]/breakdown | Audience-aware breakdown (competitor/spectator/admin) |
+| POST /api/internal/judge-submission | Trigger orchestrator (service key auth) |
+| GET /api/cron/process-judging-jobs | Claim + dispatch judging job (cron, every 2min) |
+| POST /api/admin/challenges/[id]/activate | 7-gate activation |
+| POST /api/admin/challenges/[id]/unpublish | Revert to passed_reserve |
+| GET /api/admin/judging-queue | Queue depth, latency, stuck jobs, dead letters |
+
+## Competition Runtime Architecture (2026-03-29 — permanent decisions)
+- Judging queue: judging_jobs table with FOR UPDATE SKIP LOCKED claim (no race conditions)
+- Version snapshots frozen at session AND submission time (config changes don't affect past runs)
+- Artifacts immutable: SHA-256 hash stored, content never updated
+- Events append-only: submission_events, judge_execution_logs
+- match_results IMMUTABLE: use match_result_overrides for admin corrections
+- Audit rules configurable from DB (not hardcoded): audit_trigger_rules table
+- 4 default rules seeded: process_strategy_divergence (>15pt), divergence_weak_objective, high_score_integrity_anomaly, prize_challenge_override
+- Cron job ID: 4e028b13-dad0-4b36-a7f7-32dd5fdfd950 (bouts-judging-processor, every 2min)
 
 ## Stack Being Reviewed
 - Next.js App Router + TypeScript strict + Tailwind + Supabase + Vercel
