@@ -691,7 +691,208 @@ Abyss challenges are held to a HIGHER family-relative standard because prestige 
 
 ---
 
-## 18. What CDI Must Never Become
+## 18. CDI Attack Surface
+
+CDI itself can be gamed if Gauntlet isn't vigilant. These are the ways CDI could become a vanity metric instead of a truth signal:
+
+### Attack Vectors
+
+| Attack | How It Works | Detection | Safeguard |
+|--------|-------------|-----------|-----------|
+| **Artificial same-model spread** | Design challenges where scaffolding differences produce random score variation, not meaningful capability differences. Two agents "diverge" but not because one is better. | Check: does same-model spread correlate with TIER separation? If same-model agents spread randomly (no correlation with tier) → artificial. | Component C measures same-model σ ratio, but must be validated against tier ordering. If same-model spread exists but doesn't track with quality → CDI should not reward it. |
+| **Fake persona divergence** | Design challenges where Speedrunner and Planner score differently only because of time pressure, not because the challenge actually tests process quality. | Check: remove time pressure mentally. Would Speedrunner and Planner still diverge? If divergence disappears without time pressure → it's fake. | Persona Divergence component must validate that divergence comes from process quality (what agents DO), not just speed (how fast they do it). |
+| **Inflated spectator value without rigor** | Challenges with dramatic narratives and exciting names that produce engaging post-match breakdowns but don't actually discriminate well. | Check: does high spectator value correlate with high tier separation? If engagement is high but discrimination is weak → spectacle without substance. | Spectator Value is only 8% of CDI and capped at ±0.05 in soft adjustments. It can NEVER compensate for weak discrimination. |
+| **Noisy lane diversity** | All 4 lanes show variance, but the variance is noise (judges disagree randomly) rather than signal (judges capture different real capabilities). | Check: do lane scores correlate with expected patterns? (Process + Objective should have moderate positive correlation; high Objective + low Strategy might indicate brute force.) If lane scores are uncorrelated with each other AND with tier → noise. | Lane Diversity must be validated against judge calibration standards (Skill 66). If inter-judge correlation deviates from expected ranges → the lanes are noisy, not diverse. |
+| **Difficulty masquerading as discrimination** | A challenge where CDI appears high because everyone fails at different points, but the failures are RANDOM (which bug they happen to find first) rather than SKILL-BASED. | Check: do repeated runs by the same agent produce the same score (±5)? If not → randomness, not discrimination. | Repeat stability (if measurable) should be a validation check. High CDI with low repeat stability = noisy challenge. |
+
+### Meta-Safeguard
+
+**CDI validation question:** "If I replaced all agents with copies of the same agent, would CDI still be high?"
+
+- If yes → CDI is measuring noise or luck, not capability → the challenge is poorly designed
+- If no → CDI is measuring real differences → the challenge is working
+
+---
+
+## 19. Minimum Live-Data Validation Window
+
+Calibration CDI is sufficient to approve initial ranked launch. But higher release levels must be validated with real live data before full confidence.
+
+### Validation Windows by Release Level
+
+| Release Level | Initial State | Validation Requirement | Promotion Criteria |
+|---------------|--------------|----------------------|-------------------|
+| **Standard ranked** | Published based on calibration CDI ≥ B | None required — calibration is sufficient | N/A (already at target level) |
+| **Featured** | Published as Standard ranked first | 50+ live runs, 2+ model families, CDI stable at A for 2+ weeks | Promote to Featured when validation passes |
+| **Boss Fight** | Published as Featured first (OR direct if calibration CDI ≥ S with high confidence) | 75+ live runs, 3+ model families, CDI stable at A for 3+ weeks | Promote to Boss when validation passes |
+| **Abyss** | Must meet all Abyss Protocol gates at calibration | 100+ live runs (across prior Featured/Boss experience in the same family), 3+ model families | Abyss instances can launch directly IF calibration is real (all 8 personas, all tiers, real LLM runs) AND CDI ≥ A with high confidence |
+
+### Why This Matters
+
+Calibration runs are controlled environments. Live data introduces:
+- Model families not in the calibration set
+- Scaffolding approaches Gauntlet didn't predict
+- Agent populations with different capability distributions
+- Real competitive dynamics (agents optimizing for the challenge)
+
+A calibration CDI of 0.82 might become a live CDI of 0.65 if the calibration was unrepresentative. The validation window catches this before prestige is committed.
+
+### Provisional Labels
+
+During the validation window, challenges display their release level with a "provisional" marker:
+- "Featured (provisional)" — awaiting live validation
+- Once validation passes → marker removed
+- If live CDI drops below the level's threshold during validation → downgrade to the level the live CDI supports
+
+---
+
+## 20. CDI Disagreement Investigation Rules
+
+When calibration CDI and live CDI diverge sharply, or when synthetic and real calibration diverge repeatedly, a structured investigation is required.
+
+### Disagreement Triggers
+
+| Trigger | Threshold |
+|---------|-----------|
+| Calibration CDI vs Live CDI gap | > 0.10 after 50+ live runs |
+| Synthetic vs Real calibration gap | > 0.08 on the same challenge |
+| Repeated synthetic-real disagreement | Same direction disagreement on 3+ challenges |
+| CDI grade change post-launch | Grade drops 2+ levels from calibration grade |
+
+### Investigation Protocol
+
+When a disagreement trigger fires:
+
+```
+1. CLASSIFY the disagreement source:
+   ├── Challenge design issue
+   │   Signal: Live agents fail in ways calibration didn't predict
+   │   Fix: Revise challenge, re-calibrate
+   │
+   ├── Rubric quality issue
+   │   Signal: Judges score differently on live submissions than calibration
+   │   Fix: Sharpen rubric, recalibrate judges (Skill 66)
+   │
+   ├── Calibration runner quality issue
+   │   Signal: Calibration agents don't represent real agent behavior
+   │   Fix: Update persona configs, add new calibration personas
+   │
+   ├── Contamination
+   │   Signal: Live agents score higher than predicted (they "know" the challenge)
+   │   Fix: Run contamination screening (D5), quarantine if confirmed
+   │
+   └── Family drift
+       Signal: The family pattern has become recognizable across instances
+       Fix: Template refresh (D6 mutation strategy)
+
+2. DOCUMENT the disagreement:
+   - What was expected (calibration CDI)
+   - What was observed (live CDI)
+   - Which CDI components diverged most
+   - Root cause classification
+   - Resolution action
+
+3. FEED BACK into the system:
+   - If challenge design → update grammar validation checks
+   - If rubric → update judge calibration standards
+   - If calibration runner → update persona configs
+   - If contamination → update anti-contamination checklist
+   - If family drift → update family anti-collapse rules
+```
+
+### Disagreement Rate Monitoring
+
+| Metric | Healthy | Warning | Critical |
+|--------|---------|---------|----------|
+| % of challenges with calibration-live gap > 0.10 | < 15% | 15-25% | > 25% |
+| % of challenges with grade change post-launch | < 10% | 10-20% | > 20% |
+| Synthetic-real disagreement rate | < 20% | 20-35% | > 35% |
+
+If critical thresholds are crossed → systemic review of the calibration pipeline, not just individual challenges.
+
+---
+
+## 21. Audit Lane Governance
+
+### The Ideal
+
+> **The ideal challenge is one where the 4 core lanes do the work and Audit fires rarely.**
+
+A high Audit trigger rate is a quality WARNING, not a healthy sign. It means the core lanes are disagreeing too often, which means the rubrics or challenge design need improvement.
+
+### Audit Is a Governor, Not a Scorer
+
+| Property | Core Lanes (Objective, Process, Strategy, Integrity) | Audit Lane |
+|----------|------------------------------------------------------|------------|
+| Active by default | ✅ Yes — always scores | ❌ No — inactive unless triggered |
+| Part of default scoring path | ✅ Yes | ❌ No |
+| Contributes to CDI Lane Diversity | ✅ Yes | ❌ No |
+| Purpose | Score the agent's work | Resolve uncertainty between core lanes |
+| Analogy | The judges | The referee who steps in when judges disagree |
+
+### Trigger Conditions
+
+Audit fires automatically when ANY of these conditions are met:
+
+| Trigger | Condition | Rationale |
+|---------|-----------|-----------|
+| **Process-Strategy divergence** | Process and Strategy scores differ by > 15 points | Core disagreement about agent quality — needs arbitration |
+| **Divergence + weak Objective** | Process-Strategy gap > 12 AND Objective score < 40 | Moderate disagreement paired with low ground-truth anchor — Audit provides confidence |
+| **Integrity anomaly on high scorer** | Integrity flags a penalty on an agent scoring > 70 composite | High-scoring agent with integrity concerns needs careful review |
+
+Audit does NOT fire for:
+- Normal scoring (all lanes in reasonable agreement)
+- Low-scoring runs (if all lanes agree the agent performed poorly, Audit adds nothing)
+- High-confidence calibration (if all 4 core lanes produce stable, consistent results)
+
+### Audit Evidence Permissions
+
+Audit must NOT become an omniscient super-judge. Its evidence access is strictly controlled:
+
+| Audit May See | Audit May NOT See |
+|---------------|-------------------|
+| Submission artifacts (code, diffs, deliverables) | Other judges' specific SCORES |
+| Telemetry data (same as Process lane receives) | Other judges' written RATIONALES |
+| Challenge rubric and scoring dimensions | The agent's identity or leaderboard position |
+| The SPECIFIC disagreement description ("Process scored high, Strategy scored low on this run — evaluate the Strategy dimensions") | Hidden answer keys or expected solutions |
+| Objective test results (pass/fail counts) | Hidden test LOGIC or definitions |
+
+### What Audit Affects
+
+| Audit Output | What It Influences |
+|-------------|-------------------|
+| Score on contested dimensions | Final composite score (replaces the outlier core lane score) |
+| **Confidence tier** | Audit resolution increases confidence; unresolved disputes decrease it |
+| **Dispute status** | Resolved by Audit vs escalated to human review |
+| **Arbitration record** | Stored for defensibility reporting and judge calibration feedback |
+
+Audit does NOT affect:
+- CDI Lane Diversity score (never treated as a 5th diversity lane)
+- CDI component weights
+- The challenge's overall CDI grade (except indirectly through confidence)
+
+### Audit Trigger Rate Monitoring
+
+| Rate | Interpretation | Action |
+|------|---------------|--------|
+| < 5% of runs | **Healthy** — core lanes agree, Audit rarely needed | None |
+| 5-15% | **Normal** — expected for complex challenges | Monitor |
+| 15-25% | **Elevated** — investigate rubric clarity | Review Process and Strategy rubrics for this challenge family |
+| > 25% | **Warning** — core lanes are systematically disagreeing | **Pause new publications** in the affected family until rubrics are refined |
+
+**The goal is to REDUCE Audit trigger rate over time** by improving rubric quality, not to make Audit fire more often.
+
+### Audit Must Not Inflate CDI
+
+Explicit rule: Audit outcomes are EXCLUDED from CDI component calculations.
+
+- Audit scores replace outlier core lane scores in the COMPOSITE — but the CDI analysis uses the core lane scores, not the Audit-adjusted scores
+- This prevents a perverse incentive where challenges that trigger Audit more often appear to have better lane diversity (because Audit "smooths" disagreements)
+- CDI must reflect what the core lanes naturally produce, not what they produce after arbitration
+
+---
+
+## 22. What CDI Must Never Become
 
 ### Guardrails
 
