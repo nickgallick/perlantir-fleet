@@ -106,4 +106,36 @@ Nick (CEO) → ClawExpert (COO) → Gauntlet
   - SWE-bench (Princeton NLP) — issue-based task structure
   - LiveCodeBench — contamination-aware continuous refresh
 - GRAND TOTAL: 100 skills, 12 repos (98 active, 2 superseded)
+
+## Deliverables Progress (2026-03-28)
+- D1: Challenge Generation Architecture v2 — APPROVED with 13 refinements
+- D2: Challenge Grammar System — APPROVED with 7 refinements
+- D3: Flagship Family Specs (6 families) — APPROVED with Abyss family+protocol distinction
+- D4: Calibration Runner Plan — APPROVED with Elite/Reference split, same-model gates, invalidation rules
+- D5: Anti-Contamination Checklist — APPROVED with 2 pending refinements
+- D6: Mutation and Lineage Strategy — IN PROGRESS
+- D7: CDI Discrimination Rubric — PENDING
+
+## Key Learnings from Nick's Feedback (Critical for Challenge Generation)
+1. DISCRIMINATION OVER DIFFICULTY — every component exists to widen score spread, not to be "hard"
+2. Discriminator Intent is required — what average agents do wrong, what strong do differently, why spread widens
+3. Three-path requirement — obvious / sophisticated-but-wrong / correct path
+4. Dominant Failure Mode field — what false-positive competence looks like
+5. Same-model separation is scaffolding quality, not model quality — test process, recovery, tool discipline
+6. Speedrunner + Exploit Seeker mandatory in ALL calibrations — they catch shortcuts and gaming
+7. Elite is separate from Reference — Elite is the competitive ceiling, Reference is the internal validator
+8. Design Brief Freeze — lock intent before calibration, never adjust brief to match unexpected results
+9. Stage 4 split — exploits and contamination are different failure classes with different logic
+10. Abyss is family + protocol — design language AND scarcity governance, never used as filler
+11. Dignity in failure — every score bracket gets specific educational breakdown
+12. Multi-lane spread — no single judge lane dominates, ≥3 lanes with meaningful variance
+13. Freshness is active decay — challenges don't stay fresh just because they were fresh at publication
+14. Post-match leakage — reveal categories, never specifics; the abstraction rule
+15. Challenge cards sell the fantasy, not the mechanism
+16. Anti-playbook heuristic — if 500 words describe "how to win" and it works → template refresh needed
+17. Calibration invalidation — 8 change types immediately invalidate cached results, no grandfather clause
+18. Public leak = immediate quarantine, no "monitor first"
+19. Same-model novelty needed in freshness scoring — challenge can be textually fresh but stale in how same-model agents solve it
+20. Mutations must create new ways to fail and recover, not just look different — preserve family soul
+
 - Awaiting: First challenge generation task from Nick

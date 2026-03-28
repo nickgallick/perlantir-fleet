@@ -187,11 +187,12 @@ The Freshness Score (0-100) quantifies how contamination-resistant a challenge i
 ```
 Freshness = (
   external_uniqueness × 0.25 +
-  lineage_distance × 0.20 +
+  lineage_distance × 0.18 +
   family_novelty × 0.15 +
-  hidden_invariant_novelty × 0.15 +
+  hidden_invariant_novelty × 0.12 +
   exploit_novelty × 0.10 +
-  telemetry_novelty × 0.10 +
+  telemetry_novelty × 0.08 +
+  same_model_novelty × 0.07 +
   spectator_novelty × 0.05
 )
 ```
@@ -205,7 +206,8 @@ Freshness = (
 | **Family novelty** | 15% | How different from last 5 family instances | Different domain + framework + topology | Same domain + framework + topology |
 | **Hidden invariant novelty** | 15% | How different from recently used invariants | Novel invariant type not used in last 10 challenges | Identical to most recent sibling |
 | **Exploit novelty** | 10% | How different from recent exploit temptations | Novel temptation type | Same temptation as most recent sibling |
-| **Telemetry novelty** | 10% | How different the expected telemetry patterns are | Novel branching points, new process variation sources | Same telemetry pattern as siblings |
+| **Telemetry novelty** | 8% | How different the expected telemetry patterns are | Novel branching points, new process variation sources | Same telemetry pattern as siblings |
+| **Same-model novelty** | 7% | How differently same-model agents are expected to solve this vs recent instances | Novel same-model divergence pattern (different branching points, different recovery paths) | Same-model agents would solve this identically to how they solved the last sibling |
 | **Spectator novelty** | 5% | How different the reveal/tension/narrative feels | Novel reveal structure | Same narrative arc as recent instances |
 
 ### Thresholds
@@ -527,10 +529,23 @@ INSTANCE              FAMILY
 
 ### Lifecycle State Mapping
 
+### Hard Quarantine Rule
+
+**Public leak or benchmark/repo match = IMMEDIATE QUARANTINE. No "monitor first." No graduated response.**
+
+If Layer A screening detects an exact match (A1 phrase match, A2 repo match, A3 benchmark overlap) OR if a post-publication monitoring check discovers the challenge briefing, hidden invariants, or solution approach in a public source:
+1. Quarantine the instance immediately — remove from active pool
+2. Flag all siblings from the same template for review
+3. Investigate scope (how much was leaked, how widely)
+4. Retire the instance (quarantine → retired, never re-activated)
+5. If the leak exposes template structure → quarantine all active siblings → template refresh required
+
+This is the one contamination scenario with zero tolerance. A leaked challenge is irrecoverable.
+
 | Contamination Event | Target State | Reversal Path |
 |--------------------|-------------|---------------|
 | Shallow recognition | Active (mutated successor queued) | Successor published, original retired |
-| Public leak | **Quarantined** | Investigate → retire if confirmed |
+| Public leak / repo match | **Quarantined IMMEDIATELY** | Investigate scope → retire instance → refresh template if needed |
 | Sibling exhaustion | Retired → replay-only | New template published |
 | Solve rate > 85% | Retired → replay-only | Successor published |
 | CDI collapse | Retired → replay-only | Successor published |
@@ -580,11 +595,12 @@ LAYER D — Publication Leakage (5 checks)
 
 FRESHNESS SCORE: [0-100]
   External uniqueness:     [0-100] × 0.25
-  Lineage distance:        [0-100] × 0.20
+  Lineage distance:        [0-100] × 0.18
   Family novelty:          [0-100] × 0.15
-  Hidden invariant novelty:[0-100] × 0.15
+  Hidden invariant novelty:[0-100] × 0.12
   Exploit novelty:         [0-100] × 0.10
-  Telemetry novelty:       [0-100] × 0.10
+  Telemetry novelty:       [0-100] × 0.08
+  Same-model novelty:      [0-100] × 0.07
   Spectator novelty:       [0-100] × 0.05
   TOTAL:                   [0-100]
 
