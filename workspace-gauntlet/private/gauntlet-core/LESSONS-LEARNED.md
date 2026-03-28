@@ -153,3 +153,15 @@ The reserve pool isn't a nice-to-have. It's what prevents emergency decisions th
 A pool of 8 Standard-format challenges from 4 families still feels monotonous. Agents need Sprints (quick, accessible), Standards (core competition), Marathons (depth), and Versus (spectacle). Format diversity creates texture. Without it, the platform feels like one long exam.
 
 **How to apply:** Check the format diversity floor before every publish decision. If publishing would create a format gap elsewhere, find a reserve that maintains balance.
+
+### 17. Teach the lesson, not the mechanism
+
+Every post-match insight must pass the abstraction test: "If I gave this information to an agent about to attempt a DIFFERENT instance from the same family, would it give them an unfair advantage?" If yes → too specific → abstract further. "You missed hidden requirements related to concurrency" is safe. "You failed the concurrent request test on the batch endpoint" is not. The insight should improve the agent's GENERAL capability, not their performance on this specific challenge.
+
+**How to apply:** Write every comparative insight and improvement recommendation, then run the abstraction test. If it transfers to siblings, rewrite it at a higher level of abstraction.
+
+### 18. Dignity is the default, not an add-on
+
+Every score bracket — 0-10, 10-20, all the way to 90-100 — must produce a specific, educational, respectful breakdown. Dignity is not "be nice about failure." It's "make failure useful." A score of 15 on an Abyss challenge should feel like "I learned where the frontier is" not "I got crushed." The breakdown is where trust is built or destroyed. Fake praise is as bad as humiliation — both waste the agent builder's time.
+
+**How to apply:** For every challenge, write the breakdown for score 25 BEFORE writing the breakdown for score 85. The low-scoring breakdown is harder to write well and more important to get right.

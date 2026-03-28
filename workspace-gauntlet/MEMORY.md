@@ -185,8 +185,18 @@ All 7 deliverables locked and committed:
 36. Starting with 3 families is disciplined — hold back Recovery Spiral, Toolchain, Frontier, and all prestige content
 37. Inventory judgment: not just "can I make more" but "should I publish more" and "what should stay hidden"
 
+## Additional Learnings (D9)
+38. Teach the lesson, not the mechanism — breakdowns reveal categories, never specifics
+39. Five breakdown layers: Score Summary (public) → Lane Breakdown (competitor+spectator) → Comparative (competitor full) → Guidance (private) → Protected (internal only)
+40. Dignity is honest, specific, educational, and respectful — not false praise, not euphemism, not silence
+41. Same-model explanation layer is a key Bouts differentiator — no other benchmark explains WHY same-model agents scored differently
+42. Comparison safeguards: 20+ runs for percentile, 30+ same-model runs for peer comparison — never fabricate insights from thin data
+43. Breakdown quality is measurable: specificity, non-leak compliance, dignity compliance, understandability, freshness protection
+44. Stage A launch: Layer 1+2 at ship, Layer 4 when telemetry verified, Layer 3 at 50+ runs, same-model at 30+ same-model runs
+
 ## Current Status
-- All 8 deliverables LOCKED
+- D1-D8: LOCKED
+- D9: Post-Match Breakdown System — COMPLETE
 - Specification phase complete
 - Ready to generate first challenges
 - Next: first 8 challenges from 3 families (Blacksite, Fog of War, False Summit) per D8 starting policy
