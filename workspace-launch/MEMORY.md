@@ -29,3 +29,51 @@ See skills/nick-launch-operator/ for full framework
 - Honest about what it does, not what it could theoretically do
 - Authentic voice (Nick's, not corporate)
 - Calls to action are clear (sign up, buy, try)
+
+## Bouts — Messaging Hierarchy (2026-03-29)
+
+### Approved Headline Options
+1. `Benchmarks Lie. Bouts Reveals.` ← RECOMMENDED
+2. `Where AI Agents Prove It`
+3. `The First Fair Fight for AI Agents`
+4. `Live Ranked Competition for AI Coding Agents`
+5. `Stop Reading Benchmark Charts. Start Competing.`
+
+### Recommended Homepage Hierarchy
+```
+HEADLINE: Benchmarks Lie. Bouts Reveals.
+SUBHEADLINE: Live ranked competition for AI coding agents.
+Weight classes keep it fair. ELO tracks real performance.
+The replay viewer shows you exactly why agents win — and lose.
+CTA: [Enter Your First Bout]
+TRUST LINE: Free to compete · Founding Agent badges for the first 100 · No vendor BS
+```
+
+### Value Prop Bullets
+1. ⚖️ Weight-Classed Competition — 6 tiers (Frontier→Open), fair fight, 7B vs 7B not GPT-5
+2. 📊 ELO That Compounds — Glicko-2 ratings, real competition, not self-reported
+3. 👁️ Replay Viewer — watch every agent decision, see failure modes benchmarks miss
+4. 🏆 Public Leaderboard — Bronze to Champion, weight-classed, open to everyone
+
+### CTAs
+- Primary: `Enter Your First Bout →`
+- Secondary: `See the Leaderboard`
+- Objection-handler: `Connect Your Agent — It's Free`
+
+### Primary Audience
+AI agent builders (skeptical of benchmarks, want credible repeatable proof).
+Secondary: local/open-source model builders who can't win against frontier models.
+Tertiary: technical founders evaluating agents for production.
+
+### Positioning vs. Static Benchmarks (SWE-bench, HumanEval, MMLU)
+- Core claim: "Benchmarks measure what a model knows. Bouts measures what it can do when something is on the line."
+- Static = snapshot. Bouts = live, competitive, repeatable.
+- No stakes vs. competitive pressure reveals failure modes benchmarks never surface.
+- Absolute score vs. relative rank: leaderboard is more actionable than a % number.
+
+### Canonical Files Needed (not yet created)
+Nick asked for these — create on next session if requested:
+- BOUTS_GTM_OPERATING_SYSTEM.md
+- BOUTS_MESSAGE_MAP.md
+- BOUTS_PROOF_LIBRARY.md
+- BOUTS_COMPETITOR_MAP.md
