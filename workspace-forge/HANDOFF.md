@@ -33,31 +33,46 @@
 - Test agents in DB: `final-auth-test`, `Testagentarwna`
 - Connector docs don't show v0.1.1 badge
 
-### Current Tasks (as of 2026-03-28 — updated 10:18 AM KL)
+### Current Tasks (as of 2026-03-28 — updated 12:13 PM KL)
 - [ ] Gauntlet's new role: refine tier profiles + mutation quality (infrastructure is done — Forge built it all)
 - [ ] Companion spec docs if Nick wants: BOUTS_TRANSPARENCY_POLICY_v1, BOUTS_INTEGRITY_AND_ENFORCEMENT_v1, BOUTS_POST_MATCH_BREAKDOWN_SPEC_v1, BOUTS_CHALLENGE_CALIBRATION_SPEC_v1
 - [ ] Nick's side: Stripe live keys + webhook, Iowa address, bouts.gg domain, ORACLE_WALLET_ADDRESS + BASE_RPC_URL
 
-## Full System Status (as of 10:18 AM KL)
+## Full System Status (as of 12:13 PM KL)
 ✅ 4-lane judging system (Objective/Process/Strategy/Integrity)
 ✅ Challenge quality automation (CDI, auto-flag, quarantine, enforcement cron every 15min)
 ✅ Activation gate (calibration_status=passed + required assets check + trigger)
 ✅ Activation freeze snapshot (prompt hash, test config, judge weights, thresholds frozen at activation)
-✅ Hybrid calibration system (synthetic + real LLM runners, orchestrator, mutation engine)
+✅ Hybrid calibration system v3 (synthetic + real LLM, escalation logic, divergence risk, flagship hard gates, per-lane breakdowns, full cache key)
+✅ Mutation engine (semantic/structural/adversarial, anti-drift checks, flagship gates)
 ✅ Admin APIs: /api/admin/challenge-quality, /api/admin/calibration
 ✅ Mobile nav fixed (Header on all public pages)
+✅ Dashboard shell: Bouts logo in mobile header, notifications bell wired to real API
+✅ Login page: Bouts logo, GitHub primary CTA, email secondary
+✅ Live prize pool: DB trigger + 8% fee formula + challenge card display
+✅ Stale copy cleaned: challenges hero, footer, agent form
+✅ No fake data anywhere confirmed
+✅ Full E2E test: 85/85 passing
 ✅ Full content alignment (philosophy, fair-play, how-it-works, contest rules, docs)
 ✅ SITE_CANON.md locked
+✅ GitHub repo in sync (all commits pushed)
 ⏳ Gauntlet: refine calibration profiles + mutation quality
-⏳ Nick: Stripe live, domain, chain secrets
+⏳ Nick: Stripe live keys + webhook, Iowa address, bouts.gg domain, ORACLE_WALLET_ADDRESS + BASE_RPC_URL
 
-## Latest Shipped (2026-03-28 ~10:12 AM KL)
+## Latest Shipped (2026-03-28 ~11:12 AM KL)
 - ✅ Hybrid calibration system live — synthetic-runner, real-llm-runner, orchestrator, mutation-engine
 - ✅ challenge_calibration_results table live
 - ✅ /api/admin/calibration — run_synthetic, run_full, run_forced_real, mutate actions
 - ✅ Mutation engine — semantic/structural/adversarial variants, auto-creates new draft challenge
 - ✅ Policy map: daily=synthetic only, standard=synthetic+optional real, featured/prize=both required
 - ✅ Build error fixed (max_coins missing from select)
+- ✅ Calibration v3: escalate on judge delta >15pts, judge_divergence_risk signal, flagship hard gates, per-lane breakdowns, full cache key
+- ✅ Login: Bouts logo, GitHub primary CTA, email secondary
+- ✅ Dashboard: Bouts logo in mobile header, notifications bell wired to real API
+- ✅ Live prize pool: platform_fee_percent column, recompute_prize_pool() DB function, DB trigger, challenge card badges
+- ✅ Stale copy: challenges hero, footer (BOUTS ELITE → BOUTS), agent placeholders
+- ✅ Full E2E test: 85/85 passing, zero real bugs
+- ✅ GitHub repo pushed and in sync
 
 ## Latest Fixes (2026-03-28 ~8:58 AM KL)
 - ✅ Mobile nav fixed — InfoNav replaced with shared Header on /judging, /how-it-works, /philosophy, /fair-play, /status
