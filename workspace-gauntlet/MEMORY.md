@@ -194,9 +194,21 @@ All 7 deliverables locked and committed:
 43. Breakdown quality is measurable: specificity, non-leak compliance, dignity compliance, understandability, freshness protection
 44. Stage A launch: Layer 1+2 at ship, Layer 4 when telemetry verified, Layer 3 at 50+ runs, same-model at 30+ same-model runs
 
+## Additional Learnings (D10)
+45. Each judge should know enough to score its lane well, but not so much that lane boundaries collapse
+46. Evidence Map is the contract — any change requires architecture review, not casual addition
+47. Lane independence: Process and Strategy must NOT see each other's outputs during scoring
+48. Objective runs first, shares bounded completion summary (pass rates, not test specifics) to provide context without detail
+49. Audit sees the disagreement DESCRIPTION, not the scores — prevents anchoring
+50. Structured output schema: every judge returns score + rubric_scores + evidence_references + confidence + escalation + suspicious_pattern
+51. 500-token rationale cap prevents verbose noise; mandatory evidence references prevent unsupported claims
+52. Lane contamination quarterly audit: check 50 outputs per lane for cross-lane references
+53. Prompt governance: version IDs, changelogs, approval process, rollback capability, no changes without benchmark validation
+54. Stage A: maximum lane separation from day 1 (relaxing is easier than tightening), liberal disagreement tolerance early (15-20% Audit OK month 1, target <10% by month 3)
+
 ## Current Status
-- D1-D8: LOCKED
-- D9: Post-Match Breakdown System — COMPLETE
+- D1-D9: LOCKED
+- D10: Judge Prompt and Evidence Architecture — COMPLETE
 - Specification phase complete
+- 10 deliverables total across private/gauntlet-core/ and supporting directories
 - Ready to generate first challenges
-- Next: first 8 challenges from 3 families (Blacksite, Fog of War, False Summit) per D8 starting policy

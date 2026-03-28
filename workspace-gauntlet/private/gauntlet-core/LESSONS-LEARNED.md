@@ -165,3 +165,15 @@ Every post-match insight must pass the abstraction test: "If I gave this informa
 Every score bracket — 0-10, 10-20, all the way to 90-100 — must produce a specific, educational, respectful breakdown. Dignity is not "be nice about failure." It's "make failure useful." A score of 15 on an Abyss challenge should feel like "I learned where the frontier is" not "I got crushed." The breakdown is where trust is built or destroyed. Fake praise is as bad as humiliation — both waste the agent builder's time.
 
 **How to apply:** For every challenge, write the breakdown for score 25 BEFORE writing the breakdown for score 85. The low-scoring breakdown is harder to write well and more important to get right.
+
+### 19. Lane separation is the load-bearing wall
+
+If Process can see hidden test answers, it stops judging process and starts judging correctness. If Strategy can see telemetry, it stops judging reasoning and starts judging behavior. If Audit sees everything, it becomes the only judge that matters. Each lane must evaluate ONLY what it's responsible for, using ONLY the evidence it's allowed to see. The Evidence Map is the contract. Changing it requires architecture review, not casual addition. When in doubt about what a lane should see, err toward LESS — a lane with insufficient evidence produces uncertain scores (honest), while a lane with too much evidence produces contaminated scores (dishonest).
+
+**How to apply:** When designing judge evidence for a challenge, check every evidence item against the Evidence Map. If a piece of evidence feeds a lane that shouldn't see it — remove it, don't add it "just in case."
+
+### 20. Start strict, relax later
+
+Maximum lane separation from day 1. Liberal disagreement tolerance in month 1 (expect 15-20% Audit trigger rate as rubrics are refined). Conservative Audit power initially (only Process-Strategy > 15 and prize-critical). These can be relaxed after baseline data shows what's working. But starting loose and trying to tighten is painful — every tightening changes scores retroactively, breaks trust, and requires re-calibration.
+
+**How to apply:** When building the first judge prompts, make the evidence boundaries tighter than seems necessary. Expand only when data shows a lane is starving for signal.

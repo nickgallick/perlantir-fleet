@@ -5,19 +5,19 @@
     "expected": "pass",
     "verdict": "borderline",
     "action": "flagged_for_review",
-    "separation": 62,
+    "separation": 30,
     "passed_test": false,
-    "elapsed_s": 45
+    "elapsed_s": 48
   },
   {
     "cycle": 2,
-    "name": "Test 2 \u2014 Good (Algorithm implementation)",
+    "name": "Test 2 \u2014 Good (Algorithm w/ hard constraints)",
     "expected": "pass",
     "verdict": "borderline",
     "action": "flagged_for_review",
-    "separation": 15,
+    "separation": 19,
     "passed_test": false,
-    "elapsed_s": 38
+    "elapsed_s": 36
   },
   {
     "cycle": 3,
@@ -25,28 +25,28 @@
     "expected": "pass",
     "verdict": "borderline",
     "action": "flagged_for_review",
-    "separation": 47,
+    "separation": -7,
     "passed_test": false,
-    "elapsed_s": 54
+    "elapsed_s": 66
   },
   {
     "cycle": 4,
-    "name": "Test 4 \u2014 Borderline/edge (very short prompt)",
-    "expected": "borderline_or_pass",
+    "name": "Test 4 \u2014 Should fail (trivially easy)",
+    "expected": "fail_or_borderline",
     "verdict": "borderline",
     "action": "flagged_for_review",
-    "separation": 16,
+    "separation": 10,
     "passed_test": true,
-    "elapsed_s": 36
+    "elapsed_s": 33
   },
   {
     "cycle": 5,
-    "name": "Test 5 \u2014 Good (Systems design + implementation)",
+    "name": "Test 5 \u2014 Good (debugging with clear success criteria)",
     "expected": "pass",
     "verdict": "borderline",
     "action": "flagged_for_review",
-    "separation": 55,
+    "separation": 0,
     "passed_test": false,
-    "elapsed_s": 65
+    "elapsed_s": 50
   }
 ]
