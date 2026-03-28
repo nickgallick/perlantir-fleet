@@ -3,11 +3,11 @@
 # Last updated: 2026-03-26
 
 ## Fleet Roster (14 Agents — Current)
-1. **Maks** ⚡ — Builder | @OpenClawVPS2BOT | Sonnet 4.6 | workspace: /data/.openclaw/workspace
+1. **Maks** ⚡ — Secondary Developer (support only — engaged by Nick request) | @OpenClawVPS2BOT | Sonnet 4.6 | workspace: /data/.openclaw/workspace
 2. **MaksPM** 📋 — Orchestrator | @VPSPMClawBot | Sonnet 4.6 | workspace: /data/.openclaw/workspace-pm
 3. **Scout** 🔍 — Research | @ClawScout2Bot | Sonnet 4.6 | workspace: /data/.openclaw/workspace-scout (uses /workspace)
 4. **ClawExpert** 🧠 — COO/Ops | @TheOpenClawExpertBot | Sonnet 4.6 | workspace: /data/.openclaw/workspace-clawexpert
-5. **Forge** 🔥 — Code Review | @ForgeVPSBot | Sonnet 4.6 | workspace: /data/.openclaw/workspace-forge
+5. **Forge** 🔥 — Head Developer (Architect + Builder + Reviewer) | @ForgeVPSBot | Sonnet 4.6 | workspace: /data/.openclaw/workspace-forge
 6. **Pixel** 🎨 — Design | @ThePixelCanvasBot | Sonnet 4.6 | workspace: /data/.openclaw/workspace-pixel
 7. **Launch** 🚀 — Go-to-Market | @PerlantirLaunchBot | Sonnet 4.6 | workspace: /data/.openclaw/workspace-launch
 8. **Chain** ⛓️ — Blockchain | @TheChainVPSBot | Sonnet 4.6 | workspace: /data/.openclaw/workspace-chain
@@ -27,6 +27,10 @@ Nick (CEO) → ClawExpert (COO) → All Agents
 - Gauntlet: `anthropic/claude-opus-4-6` (NON-NEGOTIABLE — challenge design requires max reasoning)
 
 ## Key Fleet Events
+
+### 2026-03-29
+- **Forge promoted to Head Developer**: Forge now owns architecture + building + self-review + deploy. Maks demoted to secondary/support — only engaged by Nick's explicit request.
+- **Fully Wired Systems rule hardcoded**: Both Forge and Maks SOUL.md updated with P0 rule against fake data, disconnected UI, and mock-driven features.
 
 ### 2026-03-27
 - **Gauntlet added** (10th agent): Challenge generation engine for Bouts. @TheGauntletVPSBot. Opus 4.6. 76 skills incoming.

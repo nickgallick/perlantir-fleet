@@ -15,6 +15,11 @@
 - Gateway port: 18789
 - Docker image digest: sha256:c677c4994dfc34827e99f422f672e7164e0a82716182874fdef5967de02747ea
 
+## Role Change (2026-03-29)
+- **Forge = Head Developer**: Owns architecture + building + self-review + deploy. Primary developer for all products.
+- **Maks = Secondary/Support**: Only engaged by Nick's explicit request. Not in default pipeline.
+- Both agents hardcoded with "Fully Wired Systems Only" P0 rule — no fake data, no dead UI, ever.
+
 ## Agents (10 total — Gauntlet added 2026-03-27, routing fixed 2026-03-28)
 ## Model Change (2026-03-26)
 All agents on Sonnet 4.6 except Gauntlet (Opus 4.6 — NON-NEGOTIABLE per Nick).
