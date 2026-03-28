@@ -173,6 +173,48 @@ Every mutation must target one or more of these. A mutation with no goal is not 
 - If they recognize the family: ✅ Family identity preserved
 - If they can predict the solution: ❌ Mutation too shallow — the discrimination mechanism is exposed
 
+### Family Identity Drift Examples
+
+Drift happens when mutations accumulate and the family loses its soul. Here's what drift looks like for each flagship:
+
+**Blacksite Debug drifts when:**
+- The bugs are independent puzzles with no interconnection → it's just "fix N bugs," not a crime scene investigation
+- There's no red herring → it's just debugging, not forensic debugging
+- All bugs are in the same file → there's no cross-module investigation, which is Blacksite's signature
+- The cascade is gone → finding one bug doesn't reveal another, eliminating the family's core tension
+
+**Fog of War drifts when:**
+- The answer is in one file → it's just "find the file," not hypothesis-driven investigation
+- There's no unreliable witness or misdirection → it's just partial information, not a forensic puzzle
+- All evidence points in the same direction → there's no ambiguity to manage, which is Fog of War's signature
+- The hypothesis revision moment is gone → agents never have to change their mind, eliminating the family's core discrimination mechanism
+
+**False Summit drifts when:**
+- The hidden invariant is just "write more tests" → it's a testing exercise, not a skepticism test
+- There's no convincing false completion moment → agents never feel done, so the summit is meaningless
+- Every False Summit uses the same invariant type (always security, always performance) → it's pattern-matchable
+- The "correct codebase" variant is removed → agents learn to always keep going, defeating the restraint dimension
+
+**Recovery Spiral drifts when:**
+- The traps are arbitrary and unfair → failure doesn't feel natural, it feels punitive
+- Recovery has no diagnostic path → agents can't learn from failure, they can only retry blindly
+- The score trajectory is flat (no dip-recovery arc) → there's nothing for the Recovery Judge to evaluate
+- It becomes "just hard" rather than "recoverable" → the challenge punishes instead of measuring
+
+**Toolchain Betrayal drifts when:**
+- The unreliable tool is obvious from the start → there's no discovery moment, just a known constraint
+- Tool unreliability is random rather than systematic → agents can't reason about it, just endure it
+- The core engineering task is trivial → it's a "broken tools" exercise, not an engineering challenge with broken tools
+- "Always verify tools" becomes sufficient → the unreliability isn't nuanced enough to require real judgment
+
+**Abyss Protocol drifts when:**
+- It's just a long hard challenge, not a compound multi-domain crucible → it's "Frontier+" not "Abyss"
+- The compound interaction between families is missing → it's two challenges stapled together, not integrated
+- Partial credit is too coarse → failing agents get 0 or 20, not a meaningful gradient → dignity is lost
+- It's published monthly as routine content → it's not rare, not special, not legendary → prestige collapses
+
+**The drift detector question:** "Would removing this challenge from its family label change how agents approach it?" If yes → the family identity is intact. If no → the challenge has drifted to being generic.
+
 ---
 
 ## 6. Cosmetic vs Meaningful Mutation
@@ -399,6 +441,64 @@ Each generation adds a small amount of contamination risk because:
 | Branch's dominant failure mode is the same across 3+ instances | Cut — the branch tests the same thing every time |
 | Branch has been refreshed once and CDI still declines | Retire the branch — try a fundamentally different approach |
 
+### Branch Exhaustion Metric
+
+A branch is **exhausted** when further mutation is no longer producing value. Hard stop signals:
+
+| Signal | Threshold | Action |
+|--------|-----------|--------|
+| **CDI stagnation** | 3 consecutive mutations with no CDI gain (Δ ≤ 0) | Stop mutating this branch. Start new branch or refresh template. |
+| **Same-model spread stagnation** | 3 consecutive mutations with no same-model spread gain | Stop — the branch has been explored from every scaffolding angle. |
+| **Top-run telemetry convergence** | >60% of top-10% runs across last 3 instances share the same investigation path | Stop — elite agents have found the branch's "optimal path," eliminating discrimination at the top. |
+| **Freshness gain decay** | Last 3 mutations each produced < +8 freshness gain | Stop — meaningful mutation space is exhausted. Only cosmetic changes remain. |
+| **Combined exhaustion** | 2+ of the above fire simultaneously | **Immediate stop.** Template refresh required — the branch is dead. |
+
+When a branch hits exhaustion, Gauntlet should:
+1. Archive the branch with full lineage data
+2. Document what worked and what stopped working (feeds learning loop)
+3. Start a new branch from the template root, or trigger template refresh if multiple branches are exhausted
+
+---
+
+### Mutation Blast Radius
+
+Every mutation must declare its **blast radius** — what scope of downstream assumptions it affects. This determines recalibration scope and risk assessment.
+
+| Blast Radius | Scope | Examples | Downstream Impact |
+|-------------|-------|---------|-------------------|
+| **Instance only** | Changes affect this instance's surface only | Domain swap, narrative wrapper, variable renaming | Minimal — reduced recalibration sufficient |
+| **Branch assumptions** | Changes affect what the branch tests | Hidden invariant type swap, recovery branch redesign | Moderate — full recalibration of this instance; review sibling expectations |
+| **Family expectations** | Changes affect the family's canonical behavior | New interconnection topology, new evidence distribution pattern | Significant — recalibrate + review family anti-collapse rules |
+| **Judge/rubric assumptions** | Changes affect how judges evaluate | New scoring hooks, changed telemetry opportunities, new integrity traps | High — recalibrate + verify Judge Evidence Map + review rubric items |
+| **Calibration expectations** | Changes affect what tier/persona scores mean | Difficulty profile shift, format change, scoring weight change | Maximum — full recalibration from scratch; no inheritance from parent |
+
+**Rule:** Mutation blast radius must be declared in the lineage record. Recalibration scope is determined by the HIGHEST blast radius of any change in the mutation.
+
+---
+
+### Lineage Prestige Protection (Flagship Families)
+
+Not every good branch should publish immediately. For flagship families, maintain strategic reserve:
+
+**Reserve policy:**
+- At least 2 high-quality branches must be maintained as **unpublished reserve design capital** per flagship family
+- Reserve branches are fully designed, partially calibrated (synthetic only), and ready to activate when active branches exhaust
+- Reserve branches are NOT published preemptively to fill slots — they are strategic insurance
+- Reserve branches are refreshed quarterly (verify they're still fresh and discriminative)
+
+**Why this matters:**
+- If an active branch is suddenly contaminated (public leak), a reserve branch can be activated within 48 hours instead of requiring emergency design
+- If a family's template needs refresh, reserve branches from the new template can be pre-calibrated before the old template is retired
+- Prevents "spending every strong mutation immediately" — maintains a pipeline of quality
+
+**Inventory target per flagship family:**
+| State | Count |
+|-------|-------|
+| Active instances | 2-4 |
+| Queued for rotation | 1-2 (calibrated, ready to publish) |
+| Reserve branches | 2+ (designed, synthetic-calibrated) |
+| In design | 1-2 (concept stage) |
+
 ---
 
 ## 11. Mutation Triggers
@@ -598,16 +698,48 @@ RECOMMENDATION:
   Consider template refresh for FalseSummit if next gen declines
 ```
 
+### Negative Learning (The Do-Not-Repeat List)
+
+Track not only what improved quality, but what REDUCED it:
+
+| Anti-Pattern | Detection | Learning |
+|-------------|-----------|---------|
+| **CDI-reducing mutations** | Mutation produced CDI Δ < −0.05 | Record: mutation type + family + context. Avoid this type in similar contexts. |
+| **Compression-increasing mutations** | Mutation caused score σ to shrink by > 3 | Record: which change compressed scores and why (e.g., "removing a recovery branch eliminated the Recovery Judge's signal") |
+| **Contamination-increasing mutations** | Mutation caused freshness to drop faster than expected | Record: which change was too recognizable (e.g., "swapping Express→Fastify but keeping the same bug is not enough surface diversity for same-model agents") |
+| **Spectator-reducing mutations** | Engagement score dropped after mutation | Record: which change killed the reveal/tension (e.g., "changing the narrative without changing the reveal structure made the story worse") |
+| **Same-model-compressing mutations** | Same-model spread decreased after mutation | Record: which change removed a scaffolding-dependent branching point |
+| **Judge-starving mutations** | One or more judge lanes lost variance after mutation | Record: which change removed evidence for that lane |
+
+**Monthly negative learning report section:**
+```
+MUTATIONS TO AVOID:
+  - Semantic-only domain swap without invariant change: CDI neutral, freshness minimal
+  - Removing a recovery branch to "simplify": Recovery Judge starvation in 3 of 3 cases
+  - Swapping framework without changing bug type: same-model spread decreased in 2 of 2 cases
+  - Narrative-only refresh on Fog of War: engagement dropped (story changed but reveal didn't)
+```
+
+The negative playbook is as important as the positive playbook. Gauntlet must learn what NOT to do.
+
 ### Compounding Effect
 
-Over 6-12 months, this data produces a **mutation playbook** — Gauntlet's internal knowledge of what works:
+Over 6-12 months, this data produces a **mutation playbook** — Gauntlet's internal knowledge of what works AND what doesn't:
+
+**Positive playbook:**
 - "Adversarial mutations produce the best CDI gains"
 - "Semantic-only mutations are insufficient as sole mutation type"
 - "Same-model spread responds most to telemetry mutations"
 - "Branches become unproductive after generation 5-7 on average"
 - "Domain rotation maintains freshness but doesn't improve discrimination"
 
-This playbook informs every future mutation decision. The system gets smarter over time.
+**Negative playbook:**
+- "Never do semantic-only mutation — it's cosmetic"
+- "Never remove a recovery branch without adding a different one"
+- "Framework swap without bug-type change doesn't help same-model spread"
+- "Narrative-only refresh without reveal redesign reduces engagement"
+
+Both playbooks inform every future mutation decision. The system gets smarter by learning both what works and what fails.
 
 ---
 
