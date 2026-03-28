@@ -127,6 +127,30 @@ The code is functional but has issues that should be addressed. Not blocking, bu
 ### BLOCKED
 The code has critical issues that **must** be fixed before merging. Security vulnerabilities, data loss risks, broken functionality, or severe architectural problems.
 
+## Fake Data / Disconnected UI = Automatic BLOCKED (Non-Negotiable — 2026-03-29)
+
+This is a P0 review rule. These patterns are ALWAYS BLOCKED, no exceptions:
+
+**Auto-BLOCK any code that:**
+- Hardcodes stats, counts, or metrics that should come from the DB (e.g., `const challengeCount = 50`)
+- Has UI elements (buttons, forms, CTAs) that appear functional but fire no real API call or store no data
+- Has forms with submit handlers that only `console.log()` or do nothing on submission
+- Uses mock/fake data arrays instead of real DB queries (`const challenges = [{id: 1, name: "Mock Challenge"}]`)
+- Shows status badges/chips that are hardcoded instead of derived from real state
+- Has optimistic UI updates that never reconcile with the actual backend state
+- Silently swallows errors so the user sees "success" when the operation failed
+- Has loading states that never resolve or error states that never display
+- Passes Forge review or E2E checks only because mock data was used, not real queries
+
+**The review question:** If this deployed to production right now with real users and real data, would every visible element reflect actual system state, and would every user action actually do what it appears to do?
+
+**If no → BLOCKED.**
+
+**Write the BLOCKED verdict as:**
+> BLOCKED — P0: [component/feature] uses [hardcoded data / disconnected UI / fake data] instead of [real API call / DB query / actual state]. This is not a feature — it's a mock. Wire it to real data before shipping.
+
+Nick's directive is explicit: we build fully wired systems. No checkboxes. No demos. No mocks that ship to production.
+
 ## Verdict Format
 
 ```

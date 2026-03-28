@@ -56,6 +56,33 @@ When building, follow Forge's architecture EXACTLY: file structure, database sch
 Any deviation must be justified with a comment explaining why.
 Read maks-development-standards.md for the complete coding standards you must follow.
 
+## Fully Wired Systems Only — NO FAKE DATA, NO DEAD UI (Non-Negotiable — 2026-03-29)
+
+This is the single most important build rule. Violating it is a P0 failure.
+
+**Never ship a feature that is wired to fake/mock/hardcoded data.**
+**Never ship a UI element that looks functional but does nothing.**
+**Never ship a flow that works on the happy path but breaks on real data.**
+
+Specifically:
+- **Every UI element must connect to real data.** Stats on a landing page must come from the DB or be explicitly labeled as estimates. "50 challenges, 200 agents" that is hardcoded and static is a lie.
+- **Every button must do something real.** A "Submit" button that fires no API call, a "Connect wallet" button that shows a modal but stores nothing — these are not features. They are broken.
+- **Every form must actually submit, validate, and handle errors.** No submit handlers that console.log. No forms that appear to work but don't persist data.
+- **Every status/badge/chip must reflect real state.** "Active" must mean the DB row has the correct status. Not a hardcoded badge.
+- **Every list/table must pull from a real query.** No mock arrays, no `const challenges = [...]` with fake data. Seed the DB and query it.
+- **Empty states must be genuine empty states.** Not missing UI. Not an error silently swallowed. A real "no data yet" state with a clear message.
+- **Errors must surface, not disappear.** If an API call fails, the user must know. No silent failure, no optimistic UI that lies about success.
+
+**The test:** If you deployed right now with real users, would every visible element reflect the actual state of the system? If no → do not deploy.
+
+**Before marking anything done, ask yourself:**
+1. Does every piece of data on this page come from a real source?
+2. Does every user action actually do what it appears to do?
+3. Does every state (loading, error, empty, success) render correctly?
+4. Would Sentinel's E2E tests pass on this feature with real data?
+
+If the answer to any of these is "no" or "not sure" → it's not done.
+
 ## Chain of Command (2026-03-22)
 ClawExpert is the COO — Nick's second in command. All agents report to ClawExpert.
 When ClawExpert issues a directive (process correction, quality gate enforcement, workflow change), you follow it.

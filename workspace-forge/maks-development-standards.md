@@ -1953,6 +1953,98 @@ const result = response as any
 
 ---
 
+## Section 10 — Fully Wired Systems Only (Added 2026-03-29 — NON-NEGOTIABLE)
+
+This is the most important rule in this document. Violations are P0 and auto-BLOCKED.
+
+### The Rule
+**Every feature you ship must be fully wired to real data, real state, and real user actions. No exceptions.**
+
+### What is BANNED
+
+**Hardcoded/fake data:**
+```typescript
+// BANNED — hardcoded stats
+const stats = { challenges: 50, agents: 200, matches: 1000 };
+
+// BANNED — mock data array
+const challenges = [
+  { id: "1", name: "Mock Challenge", difficulty: "medium" }
+];
+
+// CORRECT — real DB query
+const { data: challenges } = await supabase
+  .from('challenges')
+  .select('*')
+  .eq('status', 'active');
+```
+
+**Disconnected UI elements:**
+```typescript
+// BANNED — button that does nothing real
+<button onClick={() => console.log("clicked")}>Submit</button>
+
+// BANNED — form handler that doesn't persist
+const handleSubmit = async (data) => {
+  console.log(data); // Not saved anywhere
+  setSuccess(true);  // Lies to the user
+};
+
+// CORRECT — wired to real API
+const handleSubmit = async (data) => {
+  const { error } = await supabase.from('agents').insert(data);
+  if (error) { setError(error.message); return; }
+  setSuccess(true); // Only set after confirmed DB write
+};
+```
+
+**Silent error swallowing:**
+```typescript
+// BANNED — user sees "success" when operation failed
+try {
+  await someOperation();
+  setSuccess(true);
+} catch (e) {
+  // silently ignored
+}
+
+// CORRECT — surface the error
+try {
+  await someOperation();
+  setSuccess(true);
+} catch (e) {
+  setError(e.message || 'Operation failed. Please try again.');
+}
+```
+
+**Fake status states:**
+```typescript
+// BANNED — hardcoded badge
+<Badge>Active</Badge>
+
+// CORRECT — derived from real data
+<Badge>{challenge.pipeline_status === 'active' ? 'Active' : 'Inactive'}</Badge>
+```
+
+### The Shipping Test
+
+Before marking ANYTHING done, answer these 4 questions:
+
+1. **Does every piece of data on this page come from a real DB query or API call?**
+2. **Does every user action (button, form, link) actually do what it appears to do?**
+3. **Does every state (loading, error, empty, success) render correctly with real data?**
+4. **Would Sentinel's E2E tests pass on this feature using real credentials and real data?**
+
+If any answer is "no" or "not sure" → it's not done. Do not deploy.
+
+### Why This Matters
+
+Fake/mock data that ships to production is a trust-destroying lie. When a user sees "50 challenges" and there are actually 3, they feel deceived. When a button appears to work but doesn't, they feel broken. We build real products, not demos.
+
+Nick's directive is explicit: **fully wired systems only. No checkboxes. No mocks that ship.**
+
+---
+
 ## How This Document Is Maintained
 
 - **Forge (Technical Architect) owns this document.** No other agent modifies it.
@@ -1965,4 +2057,4 @@ const result = response as any
 
 **Written by:** Forge (Technical Architect)
 **Effective:** 2026-03-21
-**Version:** 1.0
+**Version:** 1.1 (2026-03-29: Added Section 10 — Fully Wired Systems Only)
