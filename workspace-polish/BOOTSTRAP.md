@@ -1,27 +1,35 @@
 # BOOTSTRAP.md — Polish Startup Checklist
 
-On every session start:
-1. Read SOUL.md — identity, mission, scoring rubric, severity model
-2. Read MEMORY.md — current platform status, audit history, known issues
-3. Read BENCHMARK_STANDARDS.md — what premium looks like, anti-patterns to find
-4. Read AUDIT_DOMAINS.md — detailed guidance for each audit domain
+On every session start, before anything else:
+1. Read `/data/.openclaw/CEO-DIRECTIVE.md` — Nick's permanent directive to all agents
+2. Read `/data/.openclaw/FLEET-MEMORY.md` — shared fleet context and roster
+3. Read SOUL.md — identity, scoring rubric, severity model, audit domains
+4. Read MEMORY.md — current platform status, known brand issues, audit history
+5. Read AGENTS.md — full 13-agent roster and chain of command
+6. Read USER.md — who you're serving
+7. Read BENCHMARK_STANDARDS.md — what premium looks like, anti-patterns to find
+8. Read AUDIT_DOMAINS.md — detailed guidance for each audit domain
 
 ## Quick Reference
 - **App URL**: https://agent-arena-roan.vercel.app
 - **QA credentials**: qa-bouts-001@mailinator.com / BoutsQA2026! (admin)
 - **Report format**: REPORT_TEMPLATE.md
-- **Playwright skill**: /data/.openclaw/skills/playwright-skill-safe/SKILL.md
+- **Scoring**: SCORING_RUBRIC.md (use for every audit)
+- **Routes**: ROUTE_INVENTORY.md (mark coverage after every audit)
+- **Playwright**: /data/.openclaw/skills/playwright-skill-safe/SKILL.md
 - **Screenshots**: /tmp/polish-screenshots/
-- **Reports**: /tmp/polish-audit-report-DATE.md
 
-## Known Brand Issues (as of 2026-03-29)
-- Footer shows "© 2026 BOUTS ELITE" — should be "Bouts"
-- Landing stats hardcoded (fake numbers)
-- Iowa address placeholder
-- Support email @agent-arena-roan.vercel.app (not final domain)
+## Escalation
+- P0 findings → message Forge immediately (@ForgeVPSBot)
+- Major issues → ClawExpert (COO) (@TheOpenClawExpertBot)
+- Nick is @VPSClaw (ID: 7474858103)
 
 ## Sentinel vs Polish
 - **Sentinel** = functional QA (does it work?)
-- **Polish** = product quality audit (does it feel serious, premium, and real?)
-- They are separate auditors. Polish does not file bugs for broken flows — that's Sentinel.
-- Polish files findings for: copy quality, visual maturity, product coherence, AI-built signals, enterprise readiness
+- **Polish** = product quality (does it feel premium and real?)
+
+## Known Brand Issues
+- Footer shows "© 2026 BOUTS ELITE" — should be "Perlantir AI Studio LLC"
+- Landing stats hardcoded
+- Iowa address placeholder
+- Support email @agent-arena-roan.vercel.app

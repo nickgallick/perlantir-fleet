@@ -2,48 +2,78 @@
 
 ## Platform Overview
 - **URL**: https://agent-arena-roan.vercel.app
+- **Codebase**: /data/agent-arena
 - **Legal**: Perlantir AI Studio LLC, Iowa Code § 99B skill-based competitions
-- **Stack**: Next.js 15 App Router, TypeScript, Supabase (Postgres + Auth + RLS), Vercel
-- **Auth**: Supabase Auth (JWT-based)
-- **Payments**: Stripe (not yet live)
+- **Stack**: Next.js 15 App Router, TypeScript strict, Supabase (Postgres + Auth + RLS), Vercel
+- **Auth provider**: Supabase Auth (JWT-based, sessions managed by Supabase)
 
-## Roles
-- **anonymous**: No auth — can see public routes only
-- **competitor**: Authenticated user — can use dashboard, enter challenges, view own results
-- **admin**: Elevated role — can access /admin/*, all admin APIs, pipeline management
-- **connector**: API key auth (GAUNTLET_INTAKE_API_KEY) — can POST to /api/challenges/intake only
-- **spectator**: Not a distinct auth role — same as anonymous or competitor with spectate access
-
-## Key Security Boundaries
-1. **admin role**: Stored in profiles table, checked server-side on every admin route/API
-2. **GAUNTLET_INTAKE_API_KEY**: `a86c6d887c15c5bf259d2f9bcfadddf9` — valid only for intake endpoint
-3. **SUPABASE_SERVICE_ROLE_KEY**: Server-side only — never in client code or API responses
-4. **ENABLE_QA_LOGIN**: Must be `false` in production — /qa-login must 404
-5. **Activation snapshot**: Challenge scoring frozen at activation — immutable post-activation
-
-## Challenge Lifecycle (Security Relevant States)
-- draft → (validation) → draft_review → (Forge) → approved_for_calibration → calibrating → passed/flagged → active
-- active challenges: immutable scoring config (activation_snapshot frozen)
-- quarantined: removed from competition but data preserved
-- hidden_tests: never visible to competitors at any pipeline state
-
-## Supabase RLS
-- Row Level Security enabled on all 3 new pipeline tables (challenge_bundles, forge_reviews, inventory_decisions)
-- RLS should also enforce on challenges, profiles, agents tables
-- Service role bypasses RLS — service role key must stay server-side
-
-## Known Non-Goals (Security)
-- No 2FA required for first launch
-- No formal penetration test required pre-launch
-- Stripe not live — payment security not testable
-- Migration 00024 partial — challenge_bundles may not exist
-
-## Environment Variables (Security Relevant)
+## Environment Variables (Security Classified)
 | Variable | Location | Risk if exposed |
 |----------|----------|----------------|
-| SUPABASE_SERVICE_ROLE_KEY | Server only | Full DB bypass — critical |
-| GAUNTLET_INTAKE_API_KEY | Server + Vercel | Challenge injection possible |
-| CRON_SECRET | Server only | Cron manipulation |
-| VERCEL_TOKEN | Server only | Unauthorized deploys |
-| NEXT_PUBLIC_SUPABASE_ANON_KEY | Client (public) | Acceptable — anon key is meant to be public |
-| NEXT_PUBLIC_SUPABASE_URL | Client (public) | Acceptable |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server only | Full DB bypass — CRITICAL |
+| `GAUNTLET_INTAKE_API_KEY` | Server + Vercel | Unauthorized challenge injection |
+| `CRON_SECRET` | Server only | Cron endpoint manipulation |
+| `VERCEL_TOKEN` | Server only | Unauthorized deploys |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Client (public) | Acceptable — meant to be public, RLS enforces access |
+| `NEXT_PUBLIC_SUPABASE_URL` | Client (public) | Acceptable |
+| `NEXT_PUBLIC_APP_URL` | Client (public) | Acceptable |
+
+Values (for audit verification only — never log or expose):
+- Anon key: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...` (starts with eyJ)
+- Supabase URL: `https://gojpbtlajzigvyfkghrg.supabase.co`
+- Full credentials in `/data/agent-arena/.env.local`
+
+## Role Architecture
+| Role | How set | What it grants |
+|------|---------|---------------|
+| anonymous | No auth | Public routes only |
+| authenticated (competitor) | Supabase Auth session | Dashboard, challenge entry, own results |
+| admin | profiles.role = 'admin' in DB | /admin/*, all admin APIs |
+| connector | API key auth (GAUNTLET_INTAKE_API_KEY) | POST /api/challenges/intake only |
+
+**Critical**: Admin role is stored in the `profiles` table, checked server-side. It is NOT determined solely by JWT claims.
+
+## Security Architecture
+- **Frontend gating**: Next.js middleware + route-level checks (first layer)
+- **API gating**: Server-side role check at each API route handler (enforced layer)
+- **DB gating**: Supabase RLS policies on protected tables (defense-in-depth)
+- **Connector auth**: Bearer token check at intake endpoint (single-purpose key)
+
+## Challenge Security Model
+- **Hidden tests**: Never in any API response to competitor or anonymous role
+- **Judge configuration**: Admin only — weights, thresholds, scoring rubric not public
+- **Activation snapshot**: Frozen at activation — immutable scoring config
+- **CDI / calibration data**: Admin only
+- **pipeline_status**: Admin only (internal state machine)
+
+## Key Security Boundaries (test these first)
+1. `/qa-login` → 404 (must not exist in production)
+2. `/admin/*` → 401/redirect for unauth, 403 for non-admin
+3. `/api/admin/*` → 401 for unauth, 403 for non-admin (at API level, not just UI)
+4. `/api/me` → 401 for unauth
+5. GAUNTLET_INTAKE_API_KEY → only valid for `/api/challenges/intake`
+6. Challenge detail API → no hidden_tests, no judge_weights for any public role
+7. Activation snapshot → no mutation endpoint for active challenges
+
+## Known Non-Goals (do not flag)
+- No 2FA (not required for this product category)
+- Stripe not live (payment security not testable)
+- No formal penetration test (not required for first launch)
+- /api/cron/challenge-quality is open (intentional — cron runner access)
+- NEXT_PUBLIC_SUPABASE_ANON_KEY in client code (acceptable — anon key is public by design)
+
+## Supabase RLS Tables (must have RLS enabled)
+- `profiles` — user profiles including role field
+- `challenges` — challenge data including hidden fields
+- `agents` — agent registrations
+- `challenge_bundles` — Gauntlet intake bundles (admin only)
+- `challenge_forge_reviews` — Forge review records (admin only)
+- `challenge_inventory_decisions` — operator decisions (admin only)
+- `arena_wallets` — user coin balances
+
+## Codebase Reference
+- Auth middleware: `src/middleware.ts` or `middleware.ts`
+- Admin route check pattern: `src/app/api/admin/*/route.ts`
+- RLS policies: Supabase dashboard > Authentication > Policies
+- Environment check: `/data/agent-arena/.env.local`
+- Challenge intake: `src/app/api/challenges/intake/route.ts`
