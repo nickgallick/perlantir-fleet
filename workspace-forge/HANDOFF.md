@@ -1,5 +1,5 @@
 # HANDOFF.md — Forge Context (read on every startup)
-# Last updated: 2026-03-30 06:11 AM KL
+# Last updated: 2026-03-30 07:20 AM KL
 
 ---
 
@@ -43,6 +43,18 @@
   W5 docs alignment:
   - quickstart/page.tsx Track 0: rewritten to accurately describe web submission flow (5 steps, scoring note)
   - docs/page.tsx: path-chooser + Start Here banner updated with honest web path framing
+
+- W-FINAL ✅ DEPLOYED (2026-03-30 07:20 AM KL) — Git: 728c7ad | Final cleanup pass
+  P1:
+  - replays/[entryId]/page.tsx: debug header → product-grade 'Submission Breakdown' header
+    (Bot/date/placement meta row, back nav, 'Visual Output Rendering'→'Visual Output', 'Replay Timeline'→'Execution Timeline')
+  - status/page.tsx: sanitizeRejectionReason() gate (blocks stack traces, exceptions, >200 chars, ALL_CAPS codes)
+    'View Your Results →' → 'View Full Breakdown →'
+  - results/page.tsx: 'View Replay' → 'View Breakdown'
+  P2:
+  - compete/page.tsx: 'How to Submit' section with web vs connector two-path grid
+  - quickstart/page.tsx: Track 0 icon Globe → MonitorCheck (distinct from REST API Globe)
+  Sentinel re-check dispatched
 
 ### W0 Completed
 - Migration 00035 applied to DB + committed to repo
