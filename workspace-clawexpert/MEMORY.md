@@ -62,6 +62,7 @@ Without this, ALL messages route to Maks (main/default agent). This is how all 1
 ## Auth Token
 - Gateway token: R0ddvlV8VIER6QRhJ8KujsOdZfJG7HxM
 - Hooks token: hooks_R0ddvlV8VIER6QRhJ8KujsOdZfJG7HxM
+- GitHub token: ghp_***REDACTED_SEE_TOOLS_MD*** (rotated 2026-03-29 — old token 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 expired)
 
 ## Key Events
 - 2026-03-22: Promoted to COO. Chain of command added to all agent SOUL.md files.

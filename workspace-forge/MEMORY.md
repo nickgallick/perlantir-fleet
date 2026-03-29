@@ -151,6 +151,108 @@ See review-history/ for per-project logs
 ## Skills Available
 security-review, typescript-mastery, react-nextjs, supabase-patterns, database-review, api-design, performance, accessibility-seo, expo-react-native, testing-quality, devops-docker, code-review-protocol, forge-research, framework-source-code, developer-patterns, auto-fix, threat-modeling, self-review, weekly-security-scan, owasp-stack-specific, react-nextjs-security, supabase-attack-vectors, and 80+ more
 
+## FGHI Follow-up Fixes (2026-03-29 ~12:27 PM KL) ✅ COMPLETE
+Git: 605c289 | All 9 fixes deployed
+- DocsTracker expanded to 6 more docs pages
+- 4 milestone events: first_sandbox/production_flow_completed, first_webhook_delivery_success, first_repeat_submission
+- Invite rate limit (10/hr) + idempotent duplicate invite
+- org_audit_log table (delete/member_removed/role_changed)
+- recent_form explicitly defined + recent_form_meta in API
+- Family strength confidence tiers: ≥5=high, ≥2=medium, =1 suppressed
+- Tag normalization on write (lowercase, trim, dedup)
+- Interest inbox UI per agent + PATCH signal endpoint
+- Admin abuse monitoring (interest_signal_abuse in analytics)
+
+## Phase I — Marketplace-Readiness Foundation (2026-03-29 ~12:12 PM KL) ✅ COMPLETE
+Git: 29d7541 | Migration: 00034_marketplace_readiness.sql
+- capability_tags, domain_tags, availability_status, contact_opt_in on agents
+- Tag filtering on GET /api/v1/agents, PATCH /api/v1/agents/[id]/discovery
+- Interest signals: hard opt-in check, 5/hr rate limit, 24h cooldown, UNIQUE(agent,requester)
+- ClaimBadge used throughout, /docs/discovery page
+
+## Phase H — Verified Agent Reputation (2026-03-29 ~11:58 AM KL) ✅ COMPLETE
+Git: a6689c5 | Migration: 00033_reputation.sql
+- agent_reputation_snapshots (participation, completion, consistency, family strengths, recent form)
+- ClaimBadge shared component (src/components/shared/claim-badge.tsx) — used everywhere
+- computeAgentReputation() — excludes sandbox + org-private, is_verified at 3+ completions
+- GET /api/v1/agents/[id]/reputation — public, below_floor suppresses all stats
+- Daily recompute cron (04:00 UTC), /docs/reputation page
+
+## Phase G — Private/Org Tracks (2026-03-29 ~11:43 AM KL) ✅ COMPLETE
+Git: 7cb3bb1 | Migration: 00032_orgs.sql
+- organizations, org_members, org_invitations tables + challenges.org_id FK
+- org-guard.ts: hard 404 on all 5 surfaces (list, detail, sessions, results, breakdowns)
+- Full /api/v1/orgs/* CRUD + members + invitations
+- OrgManagement settings tab, admin org selector, /docs/orgs
+
+## Phase F — Adoption Analytics (2026-03-29 ~10:56 AM KL) ✅ COMPLETE
+
+Git: c4311ff | Deploy: https://agent-arena-roan.vercel.app
+Migration: 00031_platform_analytics.sql (platform_events table, 5 indexes, cleanup fn, pg_cron weekly)
+
+Key files:
+- src/lib/analytics/log-event.ts — fire-and-forget logger, inferAccessMode()
+- src/app/api/analytics/track/route.ts — client-side whitelisted ingestion
+- src/components/analytics/docs-tracker.tsx — DocsTracker + TrackableButton
+- src/app/api/admin/analytics/route.ts — access_mode_breakdown, friction_hotspots, env_split, recent_errors
+- src/app/api/admin/analytics/funnel/route.ts — 9-stage funnel with drop-off %
+- src/app/api/admin/analytics/access-modes/route.ts — per-mode activity
+
+Events wired: token_created, token_revoked, session_created, sandbox_session_created, submission_received (v1+connector), result_retrieved, breakdown_retrieved, webhook_created, dry_run_validated, auth_failed, scope_error
+Docs funnel: DocsTracker on docs-home, quickstart, sandbox, sdk pages
+
+## Phase E — Developer/Integration Management UI (2026-03-29 ~10:42 AM KL) ✅ COMPLETE
+
+Git: 3c56492 | Deploy: https://agent-arena-roan.vercel.app
+Migration: 00030_settings_ui.sql applied (consecutive_failures + last_rotated_at on webhooks, notifications table, admin_developer_metrics view)
+
+Key files:
+- src/components/settings/token-management.tsx — full token CRUD, environment filter, one-time reveal modal
+- src/components/settings/webhook-management.tsx — health indicators, delivery history, rotate secret, test event
+- src/components/settings/developer-quickstart.tsx — live diagnostics + SDK/CLI snippets
+- src/app/(dashboard)/settings/page.tsx — Tokens + Webhooks + Developer tabs added
+- src/app/api/v1/webhooks/[id]/deliveries/route.ts — delivery history endpoint
+- src/app/api/v1/webhooks/[id]/rotate-secret/route.ts — secret rotation (plaintext shown once)
+- src/app/api/admin/developer-metrics/route.ts — admin-only metrics
+
+## Phase D — Sandbox / Test Mode (2026-03-29 ~10:30 AM KL) ✅ COMPLETE
+
+Git: a71c84c | Deploy: https://agent-arena-roan.vercel.app
+Migration: 00029_sandbox.sql applied
+
+Architecture: Stripe-style token environment split. bouts_sk_test_* = sandbox, bouts_sk_* = production.
+Hard boundary enforced at DB query level (sandboxFilter + enforceEnvironmentBoundary).
+
+Key files:
+- src/lib/auth/token-auth.ts — AuthContext now has environment + token_id fields
+- src/lib/auth/sandbox-guard.ts — enforceEnvironmentBoundary(), sandboxFilter()
+- src/lib/judging/sandbox-judge.ts — deterministic synthetic judging (no LLM, no on-chain)
+- src/lib/judging/orchestrator.ts — sandbox early-exit path
+- src/app/api/v1/dry-run/validate/route.ts — validation_only + simulated(501) modes
+- src/app/api/v1/sandbox/challenges/route.ts — public sandbox challenge list
+- src/app/api/v1/sandbox/webhooks/test/route.ts — test webhook event delivery
+- src/app/docs/sandbox/page.tsx — full sandbox docs page
+
+Seeded sandbox challenges (permanent UUIDs):
+- 00000000-0000-0000-0000-000000000001 — [Sandbox] Hello Bouts (sprint, 30min)
+- 00000000-0000-0000-0000-000000000002 — [Sandbox] Echo Agent (standard, 60min)
+- 00000000-0000-0000-0000-000000000003 — [Sandbox] Full Stack Test (marathon, 120min)
+
+CLI: bouts login --sandbox, [SANDBOX] indicator, doctor shows env, @bouts/cli v0.1.2 published
+
+## 2026-03-29 — Phase D–I Build Directives (locked by Nick)
+
+1. Settings UI (/settings/) — build new section, must feel native to existing dashboard (not bolt-on)
+2. Analytics — Supabase platform_events only, no third-party for v1, 90-day retention
+3. Docs tracking — HYBRID: server-side for core route hits, client-side for quickstart started/completed, copy actions, install snippet clicks
+4. Orgs — anyone can create an org (user-initiated)
+5. Private challenge access — hard 404 everywhere for non-members (no existence leakage)
+6. Agent profiles — fully public (no auth required to view)
+7. Reputation floor — suppress public stats until 3+ completed submissions
+8. Interest signals — in-app notification only (no email for now)
+9. Verified vs self-claimed — shared React component system used everywhere (not ad hoc per page)
+10. CLI publishing — publish each phase as it completes (@bouts/cli v0.1.2 with Phase D sandbox support)
+
 ## 2026-03-29 — Phase C (Python SDK, GitHub Action, MCP, Docs, Examples)
 
 1. **Python SDK (bouts-sdk v0.1.0)** — packages/python-sdk/. Sync + async, Pydantic v2, auto-retry, typed exceptions. Builds to .whl. PyPI publish pending token from Nick.

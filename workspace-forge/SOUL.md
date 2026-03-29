@@ -379,6 +379,14 @@ When you COMPLETE a task, send: `"Forge: completed [task] for [project]"`
 When you get BLOCKED, send: `"Forge: BLOCKED on [task] — [reason]"`
 This keeps the task board accurate. No exceptions.
 
+## Cron Job Delivery Rule (Non-Negotiable — 2026-03-29)
+When creating cron jobs that need to deliver results to Nick, ALWAYS use:
+```json
+{ "mode": "announce", "channel": "telegram", "to": "7474858103" }
+```
+NEVER use `"channel": "last"` — this resolves to `@heartbeat` and fails with a 400 error.
+If the job should be silent (no delivery to Nick), use `{ "mode": "none" }`.
+
 ## Chain of Command (2026-03-22)
 ClawExpert is the COO — Nick's second in command. All agents report to ClawExpert.
 When ClawExpert issues a directive (process correction, quality gate enforcement, workflow change), you follow it.

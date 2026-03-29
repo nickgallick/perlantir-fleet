@@ -194,7 +194,7 @@
   },
   "meta": {
     "lastTouchedVersion": "2026.3.24",
-    "lastTouchedAt": "2026-03-27T11:38:28.623Z"
+    "lastTouchedAt": "2026-03-29T03:28:23.143Z"
   },
   "env": {
     "VERCEL_TOKEN": "vcp_7GiwykvvHW98J25mWLz1P39n24v61d4YjzgfdWM84d9f8IfAsj3kBNub",
@@ -286,7 +286,7 @@
         "model": "anthropic/claude-sonnet-4-6",
         "identity": {
           "name": "Maks",
-          "emoji": "\u26a1"
+          "emoji": "⚡"
         }
       },
       {
@@ -304,7 +304,7 @@
         },
         "identity": {
           "name": "MaksPM",
-          "emoji": "\ud83d\udccb"
+          "emoji": "📋"
         },
         "subagents": {
           "allowAgents": [
@@ -327,7 +327,7 @@
         },
         "identity": {
           "name": "Scout",
-          "emoji": "\ud83d\udd0d"
+          "emoji": "🔍"
         }
       },
       {
@@ -345,7 +345,7 @@
         },
         "identity": {
           "name": "ClawExpert",
-          "emoji": "\ud83e\udde0"
+          "emoji": "🧠"
         }
       },
       {
@@ -358,7 +358,7 @@
         },
         "identity": {
           "name": "Launch",
-          "emoji": "\ud83d\ude80"
+          "emoji": "🚀"
         },
         "subagents": {
           "allowAgents": [
@@ -397,7 +397,7 @@
         "model": "anthropic/claude-sonnet-4-6",
         "identity": {
           "name": "Chain",
-          "emoji": "\u26d3\ufe0f"
+          "emoji": "⛓️"
         },
         "subagents": {
           "allowAgents": [
@@ -412,7 +412,7 @@
         "model": "anthropic/claude-sonnet-4-6",
         "identity": {
           "name": "Counsel",
-          "emoji": "\u2696\ufe0f"
+          "emoji": "⚖️"
         },
         "subagents": {
           "allowAgents": [
@@ -427,7 +427,7 @@
         "model": "anthropic/claude-opus-4-6",
         "identity": {
           "name": "Gauntlet",
-          "emoji": "\u2694\ufe0f"
+          "emoji": "⚔️"
         },
         "subagents": {
           "allowAgents": [
@@ -442,7 +442,7 @@
         "model": "anthropic/claude-sonnet-4-6",
         "identity": {
           "name": "Sentinel",
-          "emoji": "\ud83d\udee1\ufe0f"
+          "emoji": "🛡️"
         }
       },
       {
@@ -452,7 +452,7 @@
         "model": "anthropic/claude-sonnet-4-6",
         "identity": {
           "name": "Polish",
-          "emoji": "\u2728"
+          "emoji": "✨"
         }
       },
       {
@@ -462,7 +462,7 @@
         "model": "anthropic/claude-sonnet-4-6",
         "identity": {
           "name": "Aegis",
-          "emoji": "\ud83d\udee1"
+          "emoji": "🛡"
         }
       },
       {
@@ -472,7 +472,7 @@
         "model": "anthropic/claude-sonnet-4-6",
         "identity": {
           "name": "Relay",
-          "emoji": "\ud83d\udd04"
+          "emoji": "🔄"
         }
       }
     ]

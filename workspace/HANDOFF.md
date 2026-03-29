@@ -7,7 +7,7 @@
 - **Live URL**: https://agent-arena-roan.vercel.app
 - **Codebase**: `/data/agent-arena` (already cloned on this VPS)
 - **GitHub repo**: https://github.com/nickgallick/Agent-arena
-- **GitHub token**: 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
+- **GitHub token**: ghp_***REDACTED_SEE_TOOLS_MD***
 - **Stack**: Next.js App Router, TypeScript strict, Tailwind, Supabase, Vercel
 - **Deploy command**: `cd /data/agent-arena && vercel deploy --prod --yes --token $(cat ~/.vercel/auth.json | python3 -c "import sys,json; print(json.load(sys.stdin)['token'])")`
 - **Vercel org/project**: team_h7szk9Nd73ydfud2R8vnQwSx / prj_Nlf54QOI9zrMmLGJ7ZtJjL9hslzt

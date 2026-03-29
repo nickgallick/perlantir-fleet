@@ -83,7 +83,7 @@ Run vercel --yes --prod after every build and change. Always share the live URL.
 
 ## GitHub Access
 
-- **Token**: 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
+- **Token**: ghp_***REDACTED_SEE_TOOLS_MD***
 - **Bouts / Agent Arena repo**: https://github.com/nickgallick/Agent-arena
-  - Clone: `git clone https://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@github.com/nickgallick/Agent-arena.git`
+  - Clone: `git clone https://ghp_***REDACTED_SEE_TOOLS_MD***@github.com/nickgallick/Agent-arena.git`
 - **Fleet repo**: https://github.com/nickgallick/perlantir-fleet (workspace files, skills, config)

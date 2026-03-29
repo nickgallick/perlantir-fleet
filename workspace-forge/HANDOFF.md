@@ -1,5 +1,108 @@
 # HANDOFF.md — Forge Context (read on every startup)
-# Last updated: 2026-03-29 ~03:55 AM KL
+# Last updated: 2026-03-29 ~12:06 PM KL
+
+---
+
+## Nick's Follow-Up Items (2026-03-29 — post Phases F/G/H, non-blocking)
+
+### Phase F Follow-ups
+1. Expand DocsTracker to: Python SDK, GitHub Action, MCP, auth, CLI, webhooks pages (as those surfaces grow)
+2. Keep analytics metadata structured — no high-cardinality blobs, stay queryable
+3. Add "aha moment" milestone events: first_sandbox_flow_completed, first_production_flow_completed, first_webhook_delivery_success, first_repeat_submission
+4. Future: retention/cohort view — repeat use by mode, sandbox→production conversion, first→second submission conversion
+
+### Phase I Follow-ups
+1. Tag normalization — lowercase on write, dedup, controlled vocabulary later, basic moderation to prevent junk tags
+2. Interest inbox UX — owner needs clean inbox: unread/read, archived, resolved, spam/abuse flag
+3. Discovery ranking logic — later: verified performance should influence ordering, self-claimed tags should not dominate
+4. Abuse monitoring — admin visibility into repeated rejections, muted/blocked requester behavior
+5. Taxonomy governance — define who creates tags, freeform vs canonical, when tags graduate to official vocabulary
+
+### Phase G Follow-ups
+1. Hard 404 rule must apply to ALL future org-private surfaces (leaderboards, profile-derived, org-scoped API filters)
+2. Invitation hardening: rate limit invites, duplicate handling, expired token behavior, revoked membership after invite
+3. Clarify org deletion semantics: what happens to private challenges, soft vs hard delete, auditability
+4. Resist role/permission sprawl — keep org roles simple unless strong reason to expand
+
+### Phase H Follow-ups
+1. Define "recent form" explicitly in code + docs: how many runs, recency weighting, category filtering
+2. Suppress OR visibly mark low-confidence family strengths (insufficient data even above 3-completion floor)
+3. Keep public profiles restrained and trust-oriented — no vanity drift
+4. Future confidence layer: emerging → established → high-confidence labels (only when sample sizes justify)
+
+---
+
+---
+
+## Phase D–I Status (2026-03-29)
+
+### Phase D — Sandbox / Test Mode ✅ COMPLETE (2026-03-29 ~10:30 AM KL)
+Git: a71c84c | Migration: 00029_sandbox.sql
+- bouts_sk_test_* sandbox tokens, bouts_sk_* production tokens
+- Hard access boundary at DB query level (sandboxFilter + enforceEnvironmentBoundary)
+- 3 seeded sandbox challenges (UUIDs ...0001, ...0002, ...0003)
+- Deterministic sandbox judging (orchestrator early-exit, no LLM/on-chain)
+- POST /api/v1/dry-run/validate — validation_only live, simulated=501 placeholder
+- GET /api/v1/sandbox/challenges — public
+- POST /api/v1/sandbox/webhooks/test
+- /docs/sandbox page, quickstart defaulted to sandbox
+- CLI: --sandbox flag, [SANDBOX] indicator, @bouts/cli v0.1.2 published
+
+### Phase E — Developer/Integration Management UI ✅ COMPLETE (2026-03-29 ~10:42 AM KL)
+Git: 3c56492 | Migration: 00030_settings_ui.sql
+- Token management UI: create/revoke, environment filter, amber=sandbox/blue=production, one-time reveal modal
+- Webhook management UI: health indicators, delivery history, rotate secret, test, delete
+- Developer quickstart panel: live diagnostics, SDK/CLI snippets, real copy-to-clipboard
+- Admin developer metrics: token creation by day, webhook health, 24h failure alerts
+- New endpoints: /api/v1/webhooks/[id]/deliveries, /api/v1/webhooks/[id]/rotate-secret, /api/admin/developer-metrics
+
+### Phase F — Adoption Analytics ✅ COMPLETE (2026-03-29 ~10:56 AM KL)
+Git: c4311ff | Migration: 00031_platform_analytics.sql
+- platform_events table, logEvent() fire-and-forget logger
+- 11 routes instrumented, docs funnel (DocsTracker client component)
+- Admin Analytics tab: funnel, access modes, friction hotspots, env split
+- 90-day retention cron registered (pg_cron, Sundays 03:00 UTC)
+### Phase G — Private/Org Track ✅ COMPLETE (2026-03-29 ~11:43 AM KL)
+Git: 7cb3bb1 | Migration: 00032_orgs.sql
+- organizations, org_members, org_invitations tables + challenges.org_id FK
+- org-guard.ts: hard 404 on all 5 surfaces (list, detail, sessions, results, breakdowns)
+- /api/v1/orgs/* — full CRUD + members + invitations
+- OrgManagement settings tab, admin org selector, /docs/orgs page
+### Phase H — Verified Agent Reputation ✅ COMPLETE (2026-03-29 ~11:58 AM KL)
+Git: a6689c5 | Migration: 00033_reputation.sql
+- agent_reputation_snapshots table, ClaimBadge shared component
+- computeAgentReputation() fire-and-forget, wired into orchestrator
+- GET /api/v1/agents/[id]/reputation — public, below_floor at <3 completions
+- Public agent profiles, daily recompute cron, /docs/reputation
+
+### Phase I — Marketplace-Readiness Foundation ✅ COMPLETE (2026-03-29 ~12:12 PM KL)
+Git: 29d7541 | Migration: 00034_marketplace_readiness.sql
+- capability_tags, domain_tags, availability_status, contact_opt_in on agents
+- GET /api/v1/agents with tag filtering, PATCH /api/v1/agents/[id]/discovery
+- POST/GET /api/v1/agents/[id]/interest — full anti-spam (opt-in check, 5/hr, 24h cooldown, UNIQUE constraint)
+- Interest inbox UI per agent, /docs/discovery, agent profile page updated
+
+### FGHI Follow-up Fixes ✅ COMPLETE (2026-03-29 ~12:27 PM KL)
+Git: 605c289
+- F: DocsTracker on 6 more docs pages, 4 milestone events wired (first_sandbox/production/webhook/repeat)
+- G: Invite rate limit (10/hr) + idempotent duplicate handling, org_audit_log table + deletion semantics
+- H: recent_form explicitly defined (JSDoc + API meta), family strength confidence tiers (suppress count<2)
+- I: Tag normalization, interest inbox UI + PATCH signal endpoint, admin abuse monitoring
+### Phase I — Marketplace-Readiness → QUEUED
+
+### Build Directives (locked by Nick 2026-03-29 10:20 AM KL)
+1. Settings nav — new /settings/ section, native feel to existing dashboard
+2. Analytics — Supabase platform_events only, no third-party
+3. Docs tracking — HYBRID (server-side routes + client-side for quickstart/copy/install events)
+4. Orgs — user-initiated creation (anyone can create)
+5. Private challenges — hard 404 everywhere for non-members
+6. Agent profiles — fully public (no auth required)
+7. Reputation floor — 3+ completed submissions to show public stats
+8. Interest signals — in-app notification only (no email)
+9. Verified/self-claimed — shared React component system everywhere
+10. CLI — publish each phase as it completes
+
+---
 
 ---
 
