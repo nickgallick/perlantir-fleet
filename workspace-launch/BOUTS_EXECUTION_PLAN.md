@@ -1,174 +1,163 @@
 # BOUTS_EXECUTION_PLAN.md
-## Launch — March 2026 | Prioritized by leverage and readiness
+## Launch — March 2026 (Revised)
 
 ---
 
 ## The One Rule Before Starting
 
-Before any public push, messaging must be internally consistent. If the homepage says one thing and the docs say something else and the founder's Twitter says something different — the product feels confused, not early. Confusion is more damaging at this stage than being small.
+Before any public push, owned surfaces must be internally consistent. If the homepage says one thing and the docs say something different and the founder's X says something else — the product feels confused, not early. Confusion is more damaging at this stage than being small.
 
-Align the message first. Distribute second.
+**Align the owned surfaces first. Distribute second. No exceptions.**
 
 ---
 
-## WEEK 1 — Update First (Alignment Before Distribution)
+## IMMEDIATE — Update Before Any Distribution
 
-These are the changes that unlock everything else. Do them in order.
+These four changes unlock everything else. They are not polish. They are pre-distribution requirements.
 
-### 1. Update the homepage hero — TODAY
-This is the highest leverage change you can make. It's the first thing every visitor sees. The current messaging is too narrow (benchmark-contrast framing) for the platform that exists now.
-
-**Swap in:**
+### 1. Update the homepage hero
+Swap in:
 - Headline: *Bouts is where coding agents prove what they can actually do.*
 - Sub: *Calibrated challenges. Four-lane judging. Verified performance records built from real competition — not self-reported claims.*
 - CTA: *Enter Your First Bout / Read the Docs*
 
-This change alone reframes the public story. Do it before posting anywhere.
+### 2. Add the four-lane judging section to the homepage
+This is the primary differentiator. Visitors who want to understand why Bouts is different need to find it without digging. A four-card layout — Objective, Process, Strategy, Integrity — with 2-3 sentences each is enough.
 
-### 2. Add the four-lane judging explanation to the homepage
-This is the product differentiation and it needs to be visible. It does not need to be long — three sentences per lane, or a simple four-card layout. The point is that visitors who want to understand why Bouts is different can find out without digging.
+### 3. Update docs / quickstart
+Rewrite the docs home and quickstart using BOUTS_DOCS_MESSAGING.md as the guide. Quickstart should be sandbox-first. Every step should be verifiable against the live product. Test the quickstart manually before posting anywhere. If a developer can't run a sandbox bout in 10 minutes following the docs, fix the docs.
 
-### 3. Update agent profiles to clearly label verified vs. self-reported data
-If this isn't visually obvious on agent profiles, fix it. This is the core trust promise. If a visitor can't immediately tell which data came from the platform and which came from the agent team, the whole trust story falls apart.
-
-### 4. Publish the methodology brief (light version)
-Write the 1,000-word version first. Title: *How Bouts Evaluates Coding Agents.* Put it at bouts.ai/methodology. Link it from the homepage and docs. This is the document that earns credibility with technical buyers and researchers who need to understand the system before they trust it.
-
-This document should be live before you do any significant distribution.
+### 4. Fix agent profile labeling
+Platform-verified results and self-reported data must be visually and structurally distinct on every agent profile. If this is not immediately obvious to a first-time visitor, the core trust promise is being broken by the UI.
 
 ---
 
-## WEEK 2 — Highest Leverage Execution
+## WEEK 1 — Foundation Content
 
-### 5. Publish 3 founder posts (from the content bank)
-Start with these three, in this order:
+### 5. Publish the methodology brief
+Write the 1,000-word version using BOUTS_METHODOLOGY_BRIEF_OUTLINE.md as the guide. Publish at bouts.ai/methodology. Link it from the homepage and docs.
 
-1. **Why I built Bouts** — origin story, personal, conviction-driven
-2. **One score hides too much** — explains the four-lane model without being a product spec
-3. **The trust problem no one is solving** — positions Bouts in the ecosystem, not against a specific competitor
+This document earns credibility with technical buyers and researchers who need to understand the evaluation system before they trust it. It should be live before significant distribution.
 
-Post on X/Twitter. Cross-post to LinkedIn. Do not post all three on the same day — space 2-3 days apart.
+### 6. Write and schedule 3 founder posts
+Use the BOUTS_FOUNDER_CONTENT_BANK.md. Start with these three, in this order:
 
-These posts are not announcements. They are education. The goal is for a technical reader to finish reading and think: "This person understands the problem I have."
+1. *Why I built Bouts* — origin story, conviction, personal
+2. *One score hides too much* — explains four-lane model without being a product spec
+3. *The trust problem no one is solving* — positions Bouts in the ecosystem
 
-### 6. Show HN post
-This is the highest-leverage single distribution event for this audience. Post on a Tuesday or Wednesday morning, 8 AM ET.
+Post on X/Twitter. Cross-post to LinkedIn. Space 2-3 days apart. These are education posts, not announcements. The goal: a technical reader finishes and thinks "this person understands my problem."
 
-Use the title: *Show HN: Bouts — Competitive evaluation platform for coding agents with four-lane judging*
+---
 
-The first comment should explain the methodology. Be honest about what's early. The HN audience will respect intellectual honesty more than polished copy.
+## WEEK 2 — First Distribution Push
 
-Do not post Show HN until the homepage and methodology brief are live. If someone clicks through and the homepage doesn't match what you posted, you lose them.
+### 7. Show HN
+This is the highest-leverage single distribution event for the target audience. Post Tuesday or Wednesday, 8 AM ET.
 
-### 7. Reddit r/AI_Agents + r/LocalLLaMA
-These two communities have the highest concentration of your primary audience. Post authentically — show the product, explain the design decisions, invite real feedback.
+Title: *Show HN: Bouts — Competitive evaluation platform for coding agents with four-lane judging*
 
-Do not post to r/MachineLearning until you have more platform activity. That community expects more substantive data behind evaluation methodology claims.
+First comment: explain the methodology. Be honest about what's early. The HN audience responds to intellectual honesty better than polished copy.
+
+Do not post Show HN until the homepage, docs, methodology brief, and profile labeling are all live.
+
+### 8. Reddit r/AI_Agents + r/LocalLLaMA
+Highest concentration of primary audience. Post authentically — show the product, explain design decisions, invite real feedback.
+
+Do not post to r/MachineLearning yet. That community expects methodological substance and real data behind evaluation claims. Wait until there's more platform activity and a stronger data story.
+
+### 9. 1:1 lab and builder outreach
+Identify 5-10 AI labs or technical teams publicly building coding agents. Send a direct message — two paragraphs, not a template. What Bouts is, why their team might find it useful.
+
+Do not do this at scale. The first 10 relationships matter more than 100 cold emails.
 
 ---
 
 ## WEEK 3 — Distribution Expansion
 
-### 8. Docs update
-Rewrite the docs home using the structure in BOUTS_DOCS_MESSAGING.md. The current docs (if they exist) likely predate the full platform story. Quickstart should be sandbox-first. The docs quality is proof of platform quality.
-
-### 9. Lab / partner outreach (1:1, not broadcast)
-Identify 5-10 AI labs or technical teams who are publicly building coding agents. Send a direct message — not a template. Two paragraphs: what Bouts is, why their team might find it useful.
-
-Do not do this at scale with a tool. The first 10 relationships matter more than 100 cold emails.
-
-### 10. Product Hunt (Week 3-4)
-Product Hunt is worth doing for the attention, not for the audience fit — this audience skews consumer-focused. Post after you have some real platform activity: a few public bouts completed, a few agent profiles with real records. It reads better.
+### 10. Product Hunt
+Worth doing for reach, not audience fit — Product Hunt skews consumer. Post after you have real platform activity: a few public bouts completed, a few agent profiles with records. It reads better with something to show.
 
 ---
 
 ## WHAT CAN WAIT
 
 **Discovery / reputation marketing:**
-You have the foundation. You should not market it as a finished product. Wait until agent profiles have meaningful activity — 10+ bouts on the most active profiles — before putting the reputation layer front and center.
+Wait until agent profiles have meaningful activity — 10+ bouts on the most active profiles — before putting the reputation layer front and center.
 
 **On-chain prize mechanics:**
-This is a trust and transparency tool for specific competitions. It is not the story. Don't mention it in any public-facing content unless someone asks specifically about prize mechanics. It will confuse the positioning.
+Not the story. Don't mention it in public-facing content unless someone asks specifically about prize mechanics.
 
 **Private tracks:**
-The infrastructure is real. The enterprise-facing product layer is early. Don't push this until you have at least one organization using it with results you can speak to. Then reference it as proof of platform breadth, not as a featured product.
+Don't push until you have at least one organization using it with results you can speak to.
 
 **r/MachineLearning:**
-This community will ask hard questions about methodology and data volume. Wait until you have more platform activity and a stronger methodology brief with real examples before posting here.
+Wait until more platform activity and a stronger methodology brief with real examples.
 
 **Case studies:**
-Don't write case studies until you have real results from real builders who consent to being referenced. The temptation will be to write a case study based on internal testing. Resist it. A real case study from one real builder is worth more than five internal examples.
+Don't write case studies until you have real results from real builders who consent to being referenced.
 
 **Marketplace / discovery framing:**
-Not now. Not until the reputation layer has depth. "Find and hire agents" is a future product. If you say it now without the product reality to back it, it damages credibility.
+Future product. Not now.
+
+**Volume / traction claims:**
+Only use live verified numbers. Small exact numbers are worse than no numbers.
 
 ---
 
-## WHAT MUST BE ALIGNED BEFORE PUBLIC PUSH
+## WHAT MUST BE TRUE BEFORE SIGNIFICANT DISTRIBUTION
 
-These things must be true before significant distribution:
-
-1. **Homepage messaging matches platform reality.** The hero copy describes the product that exists today. (See Week 1, item 1.)
-
-2. **The methodology brief is published.** You are asking technical people to trust a new evaluation system. Give them the document that explains how it works.
-
-3. **Agent profiles visually distinguish verified from self-reported data.** This is the core trust promise. If it's not obvious in the UI, the messaging is lying.
-
-4. **The docs quickstart works.** Someone following the quickstart should be able to run a sandbox bout in under 10 minutes without hitting a broken step. Test it manually before you post Show HN.
-
-5. **The four-lane model is explained on the homepage.** Not buried. Visible. Linked or expandable.
-
-6. **You have at least a few real competition results on public profiles.** Even 3-4 public bouts completed and visible is enough to support the claim that the platform works. Zero public results during the distribution push is a credibility gap.
+1. Homepage messaging matches platform reality — hero uses the new copy
+2. Docs quickstart works — someone can run a sandbox bout in under 10 minutes following it
+3. Agent profiles visually distinguish verified from self-reported data
+4. Four-lane judging explanation is on the homepage
+5. Methodology brief is published
+6. At least a few real competition results exist on public profiles
 
 ---
 
 ## WHAT NOT TO PUSH UNTIL THE PLATFORM HAS MORE ACTIVITY
 
-**Volume claims:**
-Don't say "X agents have competed" or "Y bouts completed" until the numbers are genuinely impressive. Exact numbers that are small are worse than no numbers.
-
-**Reputation layer depth:**
-The phrase "verified reputation" is most powerful when there's actually a meaningful record behind it. A profile with 2 bouts is technically verified but practically thin. Wait until your most active agents have 10+ bouts before pushing reputation-first content.
-
-**Comparison content against specific products:**
-Don't publish "Bouts vs. SWE-bench" or "Bouts vs. HumanEval" comparison content yet. The contrast is yours to draw — but doing it formally (blog post, comparison page) before you have platform credibility invites "but who uses Bouts?" as the response. Draw the contrast in founder posts and positioning language. Save formal comparisons for when the platform has more weight.
+- Volume claims ("X agents have competed" — only if the number is genuinely impressive)
+- Reputation layer depth (wait until active profiles have 10+ bouts)
+- Formal benchmark comparisons (Bouts vs. SWE-bench content) — draw the contrast in founder posts first, formal comparison pages come later
+- Case studies without real external builder consent
 
 ---
 
-## SUMMARY — THE DECISION TREE
+## EXECUTION ORDER (clean summary)
 
 ```
-TODAY:
-  → Update homepage hero + add four-lane explanation
-  → Fix agent profile verified/self-reported labeling
+IMMEDIATELY (before anything else):
+  1. Homepage hero update
+  2. Docs / quickstart update
+  3. Agent profile verified/self-reported labeling
 
-THIS WEEK:
-  → Publish methodology brief (light version)
-  → Write and schedule 3 founder posts
+WEEK 1:
+  4. Methodology brief published
+  5. 3 founder posts written and scheduled
 
-NEXT WEEK:
-  → Post Show HN
-  → Post r/AI_Agents + r/LocalLLaMA
-  → Start 1:1 lab/partner outreach
+WEEK 2:
+  6. Show HN
+  7. r/AI_Agents + r/LocalLLaMA
+  8. 1:1 lab/builder outreach (5-10 targets)
 
 WEEK 3:
-  → Docs update
-  → Product Hunt
+  9. Product Hunt
 
 WAIT:
-  → Reputation-first marketing (needs more platform activity)
-  → On-chain messaging (not the story)
-  → Private tracks marketing (needs real org customer)
-  → Marketplace/discovery framing (future product)
-  → Volume/traction claims (needs real numbers)
+  - Reputation-first marketing
+  - On-chain messaging
+  - Private tracks marketing
+  - r/MachineLearning
+  - Marketplace/discovery framing
+  - Volume claims without real numbers
 ```
 
 ---
 
 ## The Call
 
-The biggest single risk right now is distributing before the homepage and methodology brief are live. If someone lands on a homepage that doesn't match what you're saying in public posts, you've spent trust you haven't earned yet.
-
-Fix the owned surfaces first. Then distribute.
+The homepage and docs are the two surfaces that do the most work. Homepage converts cold traffic. Docs convert serious builders. Both need to be right before distribution.
 
 The message is strong. The platform is real. The sequencing is what determines whether it lands.

@@ -108,8 +108,29 @@ Lead message: trusted competitive evaluation + verified performance vs. self-rep
 Core differentiator: four-lane judging (Objective, Process, Strategy, Integrity)
 Do NOT lead with: on-chain, marketplace, weight classes/ELO, feature count, MCP
 
-## Execution Priority (2026-03-29)
-1. TODAY: Update homepage hero + four-lane section + agent profile verified labeling
-2. THIS WEEK: Publish methodology brief, schedule 3 founder posts
-3. NEXT WEEK: Show HN, r/AI_Agents, r/LocalLLaMA, 1:1 lab outreach
-4. WAIT: Reputation-first marketing, on-chain messaging, private tracks marketing, volume claims
+## Execution Priority (2026-03-29 — UPDATED after review pass)
+Pre-distribution (in order):
+1. Homepage hero update
+2. Docs / quickstart update (treated as immediate — not optional polish)
+3. Agent profile verified/self-reported labeling
+4. Methodology brief published
+5. THEN: 3 founder posts + Show HN + r/AI_Agents + r/LocalLLaMA
+
+## Retired Framings (2026-03-29)
+These were in older docs and are now retired:
+- "competitive benchmark for coding agents" → use "competitive evaluation platform"
+- "the arena for coding agents" → retired
+- "same-model separation engine" as primary framing → demoted to supporting proof
+- "sandbox uses identical judging to production" → use "sandbox mirrors the real submission and result flow"
+- Volume/ops claims (QA check counts, test counts) → removed from proof library, go stale
+- Aggressive/combative homepage lines ("Bouts is the fix", "Bouts can show the truth") → toned down
+
+## Key Language Fixes (2026-03-29)
+- Sandbox: "mirrors the real submission and result flow" (not "identical judging")
+- "bout" is brand language; "session" acceptable in API/docs where clearer
+- Don't imply sandbox and production are literally identical under the hood
+- Platform-verified vs. self-reported is the core trust vocabulary — use consistently
+
+## Canonical Message System (2026-03-29)
+One system only. All docs reconciled. No parallel message maps.
+Files: BOUTS_GTM_OPERATING_SYSTEM.md + BOUTS_MESSAGE_MAP.md now aligned with V2 positioning.
