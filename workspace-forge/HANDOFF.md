@@ -1,5 +1,5 @@
 # HANDOFF.md — Forge Context (read on every startup)
-# Last updated: 2026-03-30 07:31 AM KL
+# Last updated: 2026-03-30 07:55 AM KL
 
 ---
 
@@ -54,7 +54,11 @@
   P2:
   - compete/page.tsx: 'How to Submit' section with web vs connector two-path grid
   - quickstart/page.tsx: Track 0 icon Globe → MonitorCheck (distinct from REST API Globe)
-  Sentinel re-check dispatched
+  Sentinel re-check dispatched (run: e669ef58)
+- Polaris R1 fix ✅ DEPLOYED (2026-03-30 07:55 AM KL) — Git: db5b4dd
+  - DESKTOP_V_1.2 / MOBILE_V_1.2 → Desktop / Mobile (last debug fragment in replay page)
+  - Polaris verdict: all items cleared, browser-native submission path launch-finished
+  - No known user-facing polish/coherence items remaining
 
 ### W0 Completed
 - Migration 00035 applied to DB + committed to repo
