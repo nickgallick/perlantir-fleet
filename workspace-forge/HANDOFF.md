@@ -1,5 +1,69 @@
 # HANDOFF.md — Forge Context (read on every startup)
-# Last updated: 2026-03-29 ~12:06 PM KL
+# Last updated: 2026-03-29 ~23:47 PM KL
+
+---
+
+## Web Submission System (Phase W) — IN PROGRESS (2026-03-30)
+
+### Status
+- W0 ✅ COMPLETE — Git: abdf3dc | Deployed
+- W1 = next — participation state model, explicit entry states on challenge detail page
+
+### W0 Completed
+- Migration 00035 applied to DB + committed to repo
+- web_submission_supported column on challenges (default false)
+- submission_source column on submissions ('web'|'connector'|'api'|'sdk'|'github_action'|'mcp'|'internal')
+- challenge_entries.status constraint extended: added 'workspace_open', 'expired'; removed legacy 'judging' (migrated to 'in_progress')
+- Sandbox challenges (all 3 fixed UUIDs) flagged web_submission_supported=true
+- PATCH /api/admin/challenges/[id] accepts web_submission_supported boolean
+- Challenge Health admin tab: Web Submit toggle column per row
+- Supabase PAT rotated in TOOLS.md
+
+### Nick's 7 Clarifications (locked before W0)
+1. Session identity: one active session per user/challenge, idempotent on workspace open, timer starts on workspace open (deliberate fairness model)
+2. Agent in web submission: user submits ON BEHALF OF their registered agent profile — agent is the identity, user is the operator. UI: "Submitting as [Agent Name]"
+3. Integrity/process for web: submission_source='web' stored. Process lane scored on artifact quality not toolchain. Integrity lane notes manual path. No scoring disadvantage — different evidence profile, same standard.
+4. UX framing: "Manual Browser Submission" label explicit in workspace header
+5. Constraints surfaced: inline constraint panel in workspace (text-only, 100KB, one submission, no draft save, no auto-resume, session timing)
+6. State model locked: Entered → Open Workspace → Submission Required → Submitted → Judging → Result Ready → Expired/Failed
+7. W0 proceeding
+
+### Phase W Build Plan (approved)
+- W0: Migration 00035 (web_submission_supported, session_id FK), admin toggle, sandbox flag
+- W1: Participation state model, entry flow clarity
+- W2: Workspace page (/challenges/[id]/workspace)
+- W3: POST /api/challenges/[id]/web-submit + runtime wiring
+- W4: Status + result UX
+- W5: Docs/messaging alignment
+
+---
+
+## Copy Cleanup + Docs Pass (2026-03-29 evening) — COMPLETE
+
+### Sitewide Copy Cleanup — CLOSED
+Commits: 049eeb8 → 6367f8b → 439296f → 8a7dc34 → 8b0be6a
+Root cause: duplicate header components. public-header.tsx is the live public nav (Track A missed it).
+Bucket C (migration sprint only): [ARENA:*] wire protocol, CSS arena-* classes, /components/arena/ directory, x-arena-api-key, arena-connect/arena-connector package names, ARENA_API_KEY
+
+### Tier 1 Docs Pass — COMPLETE (86d9999)
+- /docs: 6-card "Where do you want to start?" path chooser
+- /docs/quickstart: Track 0 (web) + tracks 1-3 + "Not sure which path?" note
+- /docs/connector H1: "Connector CLI — Setup Guide"  
+- All 6 underdocumented paths have "Who this is for" intros: API, TS SDK, Python SDK, CLI, GitHub Action, MCP
+- GitHub Action: sandbox-first 6-step section
+- MCP: honest framing ("production-capable, not first path for most users")
+- Awaiting: Nick production verification → Launch polish pass on intros
+
+### Tier 2 Docs (deferred, do when capacity allows)
+- SDK pages: sandbox walkthrough examples
+- CLI: vs connector comparison note
+- GitHub Action: troubleshooting section
+- Sandbox: "which paths support sandbox" matrix
+
+### Connection-Path Architecture Analysis
+Produced in session. 9 sections (matrix, onboarding arcs, depth audit, IA recommendation, copy per path, fix package, tier plan, truthfulness rules). Forward to Launch for messaging reference.
+
+---
 
 ---
 

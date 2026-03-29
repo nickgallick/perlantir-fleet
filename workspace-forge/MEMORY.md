@@ -151,6 +151,61 @@ See review-history/ for per-project logs
 ## Skills Available
 security-review, typescript-mastery, react-nextjs, supabase-patterns, database-review, api-design, performance, accessibility-seo, expo-react-native, testing-quality, devops-docker, code-review-protocol, forge-research, framework-source-code, developer-patterns, auto-fix, threat-modeling, self-review, weekly-security-scan, owasp-stack-specific, react-nextjs-security, supabase-attack-vectors, and 80+ more
 
+## Web Submission System — W0 COMPLETE (2026-03-30 01:55 AM KL)
+Git: abdf3dc | Deploy: https://agent-arena-roan.vercel.app
+- Migration 00035: web_submission_supported (challenges), submission_source (submissions), status constraint extended (workspace_open, expired), legacy judging→in_progress
+- Sandbox challenges flagged web_submission_supported=true (all 3)
+- PATCH /api/admin/challenges/[id]: accepts web_submission_supported
+- Challenge Health admin tab: Web Submit toggle column (per-challenge enable/disable)
+- Supabase PAT updated in TOOLS.md: sbp_f8240f4ee4a6edf7bbdb8f60aa1efa5affeb2b27
+- W1 next: participation state model — explicit entry states on challenge detail page
+
+## Web Submission System (Phase W) — APPROVED, W0 STARTING (2026-03-30 01:20 AM KL)
+- Nick approved phased web submission build (W0–W5)
+- 7 clarifications locked (see HANDOFF.md)
+- Key decisions: session-aware workspace, timer starts on open, submission_source='web', "Manual Browser Submission" UX label, explicit constraint panel, 7-state model on challenge detail
+- Migration: 00035_web_submission.sql (web_submission_supported on challenges, session_id FK on entries)
+- Product truth gap closes when W5 ships
+
+## Tier 1 Docs Pass (2026-03-29 ~23:43 PM KL) ✅ COMPLETE
+Git: 86d9999 | Deploy: https://agent-arena-roan.vercel.app
+- /docs: "Where do you want to start?" 6-card path chooser added
+- /docs/quickstart: 4 tracks (0=Web, 1=REST, 2=TS SDK, 3=CLI) + "Not sure which path?" note
+- /docs/connector: H1 → "Connector CLI — Setup Guide", intro leads with "Bouts Connector CLI"
+- /docs/api, /docs/sdk, /docs/python-sdk, /docs/cli, /docs/github-action, /docs/mcp: all have "Who this is for" intros
+- GitHub Action: sandbox-first section added
+- MCP: "production-capable but not recommended first path" framing
+
+## Connection-Path Architecture Analysis (2026-03-29 ~23:05 PM KL)
+Full analysis produced (9 sections) — matrix, onboarding arcs, depth audit, IA recommendation, copy per path, fix package, tier plan, truthfulness rules.
+Tier 1 implemented: 86d9999
+Tier 2 (deferred): SDK sandbox walkthroughs, CLI vs connector comparison note, GitHub Action troubleshooting, sandbox path matrix
+Tier 3 (later): full tutorials per path, interactive path selector, MCP client-specific guides
+
+## Copy Cleanup Passes (2026-03-29) — ALL COMPLETE
+Commits: 049eeb8 → 6367f8b → 439296f → 8a7dc34 → 8b0be6a
+Root cause fixed: duplicate header components (public-header.tsx was the live one, Track A only edited header.tsx)
+
+## Sitewide Copy Cleanup — COMPLETE + CLOSED (2026-03-29)
+Source: BOUTS_FINAL_COPY_ALIGNMENT.md (workspace-launch)
+
+Pass 1 (Track A): 049eeb8 — 20 files, all Tier 1/2/3 rewrites
+Pass 2 (completion): 6367f8b — 17 more files, final string sweep
+
+Status: CLOSED. Do not reopen unless specific leftover string found in live product.
+
+Bucket B (deferred — safe later):
+- Docs card reorder (individually-written JSX blocks, layout risk)
+- [ARENA:*] wire protocol markers (connector protocol syntax, not copy)
+- arena.json config name
+- x-arena-api-key header (API contract)
+
+Bucket C (migration sprint — NOT opportunistic cleanup):
+- [ARENA:*] event protocol → connector v2 + backwards compat
+- x-arena-api-key header → API v2 deprecation cycle
+- CSS classes (arena-glass, arena-live-dot, etc.)
+- /components/arena/ directory rename
+
 ## FGHI Follow-up Fixes (2026-03-29 ~12:27 PM KL) ✅ COMPLETE
 Git: 605c289 | All 9 fixes deployed
 - DocsTracker expanded to 6 more docs pages

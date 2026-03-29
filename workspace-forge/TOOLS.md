@@ -12,13 +12,13 @@
 
 - **URL**: https://gojpbtlajzigvyfkghrg.supabase.co
 - **Credentials**: in `/data/agent-arena/.env.local`
-- **Personal Access Token (CLI/Management API)**: sbp_851afa9dfe477af8cb5c9a6e2c22ecdab2d5960b
+- **Personal Access Token (CLI/Management API)**: [ROTATED]
 - **Admin REST**: `curl "${SUPA_URL}/rest/v1/profiles?..." -H "apikey: ${SUPA_SERVICE}" -H "Authorization: Bearer ${SUPA_SERVICE}"`
 
 ## GitHub Access
 
-- **Token**: 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
-- **Clone Agent Arena**: `git clone https://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@github.com/nickgallick/Agent-arena.git`
+- **Token**: [ROTATED]
+- **Clone Agent Arena**: `git clone https://[ROTATED]@github.com/nickgallick/Agent-arena.git`
 - **Fleet repo**: https://github.com/nickgallick/perlantir-fleet
 
 ## Code Review Standards
