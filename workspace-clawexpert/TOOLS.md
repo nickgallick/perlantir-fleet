@@ -48,7 +48,7 @@ tail -100 /data/.openclaw/logs/config-audit.jsonl
 ## Git / GitHub
 
 - **Fleet repo**: https://github.com/nickgallick/perlantir-fleet (private)
-- **GitHub token**: ghp_***REDACTED_SEE_TOOLS_MD***
+- **GitHub token**: stored in git remote URL only — check with `git remote get-url origin` (rotated 2026-03-29)
 - **Commit changes**: `cd /data/.openclaw && git add -A && git commit -m "message" && git push origin main`
 - **Quick status**: `cd /data/.openclaw && git status --short`
 
