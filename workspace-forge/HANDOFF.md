@@ -25,10 +25,24 @@
   - Duplicate getUser() fixed in src/middleware.ts — single hoisted call, reused for both cookie refresh + auth guard
   - All docs/lib/api refs to old all-zeros sandbox UUIDs updated (sandbox-judge, sandbox-guard, webhook test, docs pages)
 - W4 ✅ COMPLETE (2026-03-30 06:15 AM KL) — Git: 5528022 | Deployed
-  - challenge-submissions/[submissionId]/route.ts: maybeSingle→limit(1) fix + result_id on completed
-  - status/page.tsx: improved failed state (reason box, guidance, retry button), result_id type, RefreshCw/AlertTriangle
-  - workspace/page.tsx: timer + Submitting As merged into single identity card, in-flight submitting state (spinner, blue border, Sending badge)
-  - W5 = next: docs/messaging alignment
+- W4-polish + W5 ✅ COMPLETE (2026-03-30 06:35 AM KL) — Git: c4f4836 | Deployed
+
+  Result path fixes:
+  - challenge-submissions/[submissionId]/route.ts: entry_id added to select + response
+  - status/page.tsx: CTA now routes to /replays/[entry_id] (real per-entry result, not generic /results)
+    Dead breakdownHref removed. CopyButton for Submission ID. Date+time on submitted timestamp.
+    Status border colors per-state.
+  - results/page.tsx: fixed fetch /api/results → /api/me/results (empty state was caused by 404 on wrong route)
+    Field mapping fixed for challenge_entries response. Replay link fixed: /replays/[entry.id].
+    'Battle Results' → 'Your Results'. Empty-state text readable. Win-rate single clean card.
+
+  Trust/polish fixes:
+  - replays/[entryId]/page.tsx: EXPORT DATA + LOGS buttons removed. 'Validated by AI Oracle V4' → 'Bouts Judging System'.
+  - workspace/page.tsx: label 'Your Solution — Web Submission' → 'Your Solution'
+
+  W5 docs alignment:
+  - quickstart/page.tsx Track 0: rewritten to accurately describe web submission flow (5 steps, scoring note)
+  - docs/page.tsx: path-chooser + Start Here banner updated with honest web path framing
 
 ### W0 Completed
 - Migration 00035 applied to DB + committed to repo
