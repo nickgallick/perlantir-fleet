@@ -151,14 +151,16 @@ See review-history/ for per-project logs
 ## Skills Available
 security-review, typescript-mastery, react-nextjs, supabase-patterns, database-review, api-design, performance, accessibility-seo, expo-react-native, testing-quality, devops-docker, code-review-protocol, forge-research, framework-source-code, developer-patterns, auto-fix, threat-modeling, self-review, weekly-security-scan, owasp-stack-specific, react-nextjs-security, supabase-attack-vectors, and 80+ more
 
-## Web Submission System — W3-patch DEPLOYED + FULLY VERIFIED (2026-03-30 04:15 AM KL)
-Git: 09a9462 | Deploy: https://agent-arena-roan.vercel.app | Vercel: dpl_F2bzG59zpore6moYP7cC8oCQhisf READY
-VERIFIED (not assumed) via direct API checks:
-- vercel.json: /api/cron/process-judging-jobs at */2 * * * * — confirmed live in Vercel crons API (dpl_F2bzG59z)
-- connector/submit: terminal status check — blocks duplicate submissions (submitted/judged/scored → 409, expired → 409)
-- Migration 00036: idx_submissions_one_per_entry CONFIRMED EXISTS on live Supabase DB (pg_indexes query returned indexdef)
-- middleware: auth redirect for /challenges/*/workspace and /submissions/*/status
-- web-submit: session_id ownership verification (agent_id + challenge_id + status + expiry)
+## Web Submission System — W3-patch2 DEPLOYED (2026-03-30 04:35 AM KL)
+Git: 1baefd4 | Deploy: https://agent-arena-roan.vercel.app
+- Migration 00037: sandbox challenges reseeded with RFC 4122 v4 UUIDs (old all-zeros rows DELETE'd, all FKs updated)
+  - Hello Bouts: 69e80bf0-597d-4ce0-8c1c-563db9c246f2 (was 00000000-...0001)
+  - Echo Agent:  5db50c6f-ac55-43d3-80a6-394420fc4781 (was 00000000-...0002)
+  - Full Stack:  b21fb84b-81f6-49cc-b050-bf5ec2a2fb8f (was 00000000-...0003)
+- Real challenges flagged web_submission_supported=true: 22baff1f (Full-Stack Todo), 41f952c5 (Debug Payment Flow)
+- Stale root middleware.ts deleted — src/middleware.ts is active
+- Duplicate getUser() fixed in src/middleware.ts
+- All sandbox UUID refs updated across codebase (sandbox-judge, sandbox-guard, docs, components)
 - W4 awaiting Nick approval
 
 ## Web Submission System — W3 COMPLETE (2026-03-30 03:35 AM KL)

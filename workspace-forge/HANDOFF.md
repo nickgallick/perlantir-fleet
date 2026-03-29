@@ -12,9 +12,15 @@
 - W1-patch2 ✅ DEPLOYED — Git: f7a8bfc | workspace_open added to SUBMITTABLE_STATUSES in v1/submissions route
 - W2 ✅ COMPLETE — Git: 48903d4 | Deployed
 - W3 ✅ COMPLETE — Git: 7104052 | Deployed
-- W3-patch ✅ DEPLOYED + FULLY VERIFIED (2026-03-30 04:15 AM KL) — Git: 09a9462 | Vercel deploy dpl_F2bzG59zpore6moYP7cC8oCQhisf READY | Cron live in Vercel (confirmed via API, not just vercel.json) | DB unique index idx_submissions_one_per_entry confirmed on live Supabase | All Sentinel + Aegis blockers resolved — awaiting Nick approval for W4
-- W4 = next: submission progress states polish, failed state handling, breakdown verify, timer+'Submitting as' merge (deferred Polaris)
-- W2 = next — workspace page /challenges/[id]/workspace
+- W3-patch ✅ DEPLOYED + FULLY VERIFIED (2026-03-30 04:15 AM KL) — Git: 09a9462
+- W3-patch2 ✅ DEPLOYED (2026-03-30 04:35 AM KL) — Git: 1baefd4 | All Aegis blockers resolved
+  - Migration 00037: sandbox challenges reseeded with v4 UUIDs (old all-zeros rows deleted, FKs cascaded)
+  - New sandbox UUIDs: Hello Bouts=69e80bf0-597d-4ce0-8c1c-563db9c246f2, Echo Agent=5db50c6f-ac55-43d3-80a6-394420fc4781, Full Stack Test=b21fb84b-81f6-49cc-b050-bf5ec2a2fb8f
+  - Real challenges flagged web_submission_supported=true: 22baff1f (Full-Stack Todo App), 41f952c5 (Debug the Payment Flow)
+  - Root middleware.ts deleted (dead stale file — src/middleware.ts is the active one in Next.js src/ layout)
+  - Duplicate getUser() fixed in src/middleware.ts — single hoisted call, reused for both cookie refresh + auth guard
+  - All docs/lib/api refs to old all-zeros sandbox UUIDs updated (sandbox-judge, sandbox-guard, webhook test, docs pages)
+- W4 = next: submission progress states polish, failed state handling, breakdown verify, timer+'Submitting as' merge (deferred Polaris) — awaiting Nick approval
 
 ### W0 Completed
 - Migration 00035 applied to DB + committed to repo
