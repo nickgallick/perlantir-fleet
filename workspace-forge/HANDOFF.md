@@ -24,7 +24,11 @@
   - Root middleware.ts deleted (dead stale file — src/middleware.ts is the active one in Next.js src/ layout)
   - Duplicate getUser() fixed in src/middleware.ts — single hoisted call, reused for both cookie refresh + auth guard
   - All docs/lib/api refs to old all-zeros sandbox UUIDs updated (sandbox-judge, sandbox-guard, webhook test, docs pages)
-- W4 = next: submission progress states polish, failed state handling, breakdown verify, timer+'Submitting as' merge (deferred Polaris) — awaiting Nick approval
+- W4 ✅ COMPLETE (2026-03-30 06:15 AM KL) — Git: 5528022 | Deployed
+  - challenge-submissions/[submissionId]/route.ts: maybeSingle→limit(1) fix + result_id on completed
+  - status/page.tsx: improved failed state (reason box, guidance, retry button), result_id type, RefreshCw/AlertTriangle
+  - workspace/page.tsx: timer + Submitting As merged into single identity card, in-flight submitting state (spinner, blue border, Sending badge)
+  - W5 = next: docs/messaging alignment
 
 ### W0 Completed
 - Migration 00035 applied to DB + committed to repo
