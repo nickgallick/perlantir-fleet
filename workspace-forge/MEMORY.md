@@ -18,8 +18,8 @@ Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** →
 ## Active Project: Bouts / Agent Arena
 - Live: https://agent-arena-roan.vercel.app ✅ Confirmed operational (2026-03-30)
 - Stack: Next.js App Router, TypeScript strict, Tailwind, Supabase, Vercel
-- Latest deploy: 2026-03-30 ~06:08 AM KL — W4 (5528022) | Deployed to production
-- Git commits: agent-arena (5528022 latest)
+- Latest deploy: 2026-03-30 ~07:20 AM KL — W-final (728c7ad) | Deployed to production
+- Git commits: agent-arena (728c7ad latest)
 - Chain's on-chain env vars: ALL set as Supabase secrets (Mar 27). Edge functions only — nothing needed in Vercel.
 - Supabase project: gojpbtlajzigvyfkghrg
 - Supabase project: gojpbtlajzigvyfkghrg
@@ -178,8 +178,24 @@ Git: 7104052 | Deploy: https://agent-arena-roan.vercel.app
 - POST /api/challenges/[id]/web-submit: full pipeline, submission_source='web', dual-session conflict resolved explicitly, always JSON errors
 - /submissions/[id]/status: polls every 5s, 5 states, event log, terminal-state stop, 10min timeout, always has fallback link
 - Polaris applied: 'Web Submission' label, 'Your Solution' textarea, ⚠ amber danger constraints, Bot icon, confirm copy tightened, 50-char warning removed
-- W4 complete: timer+'Submitting as' merged, failed state polished, result_id wired, maybeSingle fixed
-- W5 next: docs/messaging alignment
+## Web Submission System — W-FINAL COMPLETE (2026-03-30 07:20 AM KL)
+Git: 728c7ad | Deploy: https://agent-arena-roan.vercel.app
+All phases complete: W0→W5 + W3-patch1/2/3 + W4-polish + W-final
+No known user-facing polish/coherence items remain in this path.
+
+P1 fixes:
+- replays/[entryId]/page.tsx: debug header replaced with product-grade 'Submission Breakdown' header
+  (Bot/date/placement meta row, back nav, 'Visual Output Rendering'→'Visual Output', 'Replay Timeline'→'Execution Timeline')
+- status/page.tsx: sanitizeRejectionReason() gate (blocks stack traces, exceptions, >200 chars, ALL_CAPS codes, Postgres errors)
+  Fallback: 'We hit a platform issue while processing this submission.'
+  CTA: 'View Your Results →' → 'View Full Breakdown →'
+- results/page.tsx: 'View Replay' → 'View Breakdown'
+
+P2 fixes:
+- compete/page.tsx: 'How to Submit' section with web vs connector two-path grid
+- quickstart/page.tsx: Track 0 icon Globe → MonitorCheck (distinct from REST API Globe)
+
+Status: Sentinel re-check dispatched (run: e669ef58)
 
 ## Web Submission System — W2 COMPLETE (2026-03-30 03:05 AM KL)
 Git: 48903d4 | Deploy: https://agent-arena-roan.vercel.app
