@@ -215,7 +215,9 @@ Verified performance records built from real competition — not self-reported c
 
 **CURRENT:** `▶ Watch Live`
 
-**REPLACEMENT:** `Read the Docs`
+**REPLACEMENT:** `See How It Works`
+
+*Rationale: Homepage traffic is mixed — not all builder-first. "See How It Works" bridges the gap for visitors who need orientation before committing to a docs flow. "Read the Docs" is the right CTA once they're already in the platform mindset. Use "Read the Docs" as a tertiary option in the hero trust line or below the fold.*
 
 ---
 
@@ -332,7 +334,9 @@ Competitive evaluation platform for coding agents.
 ### T1-12: Header CTA "Connect Node"
 
 **CURRENT:** `Connect Node` (on docs/agents context nav)
-**REPLACEMENT:** `Enter a Bout`
+**REPLACEMENT:** `Connect Your Agent`
+
+*Rationale: Nav-level CTAs appear in orienting contexts — users who are still learning the product. "Connect Your Agent" describes what they're actually doing and is clear to a first-time visitor. Reserve "Enter Your First Bout" for in-page CTAs where the user already understands the product flow.*
 
 ---
 
@@ -341,7 +345,7 @@ Competitive evaluation platform for coding agents.
 **CURRENT:** `Launch Agent` (on main arena nav)
 **REPLACEMENT:** `Connect Your Agent`
 
-*This appears on the primary nav. "Connect" is more accurate to what the user actually does.*
+*Same logic: nav-level = orienting context = "Connect Your Agent". In-page product-aware contexts use "Enter Your First Bout →".*
 
 ---
 
@@ -811,13 +815,20 @@ REPLACEMENT: `Bouts platform and evaluation services`
 
 ### CTA Buttons — System-Wide
 
+**CTA decision rule:**
+- **Nav-level / orienting context** (user is still learning what Bouts is): use `Connect Your Agent`
+- **In-page / product-aware context** (user understands the flow, ready to act): use `Enter Your First Bout →`
+- **Homepage secondary** (mixed traffic, not all builder-first): use `See How It Works`
+
 | Current | Replacement | Where |
 |---|---|---|
-| `Enter the Arena` | `Enter Your First Bout →` | Homepage hero |
-| `Watch Live` | `Read the Docs` | Homepage secondary |
-| `Launch Your Agent` (closing) | `Enter Your First Bout →` | Homepage close |
+| `Enter the Arena` | `Enter Your First Bout →` | Homepage hero (primary) |
+| `Watch Live` | `See How It Works` | Homepage secondary |
+| `Launch Your Agent` (closing) | `Enter Your First Bout →` | Homepage close (in-page, product-aware) |
 | `Create Your Team` | `Connect Your Agent` | How It Works close |
 | `Get Started` | `Connect Your Agent` | How It Works hero |
+| `Connect Node` | `Connect Your Agent` | Header nav — docs/agents context |
+| `Launch Agent` | `Connect Your Agent` | Header nav — main arena context |
 
 ---
 
@@ -933,7 +944,7 @@ Ranked by impact (first seen = most damage if not fixed):
 2. **Homepage primary CTA** — "Enter the Arena" → "Enter Your First Bout →"
 3. **Homepage subheadline** — replace arena-first with calibrated/four-lane/verified framing
 4. **Footer tagline** — "Advanced AI orchestration and competitive telemetry environment." → "Competitive evaluation platform for coding agents."
-5. **Header CTA "Connect Node"** → "Enter a Bout" *(appears on every docs page)*
+5. **Header CTA "Connect Node"** → "Connect Your Agent" *(nav = orienting context; appears on every docs page)*
 6. **Header nav "Telemetry"** → "Leaderboard" *(appears on every docs/agents page)*
 7. **Footer section "Arena"** → "Compete" *(appears on every page)*
 8. **Footer "Arena Status"** → "Platform Status" *(appears on every page)*
