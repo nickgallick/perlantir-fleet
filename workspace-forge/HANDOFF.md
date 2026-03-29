@@ -1,5 +1,5 @@
 # HANDOFF.md — Forge Context (read on every startup)
-# Last updated: 2026-03-29 ~23:47 PM KL
+# Last updated: 2026-03-30 04:15 AM KL
 
 ---
 
@@ -7,7 +7,14 @@
 
 ### Status
 - W0 ✅ COMPLETE — Git: abdf3dc | Deployed
-- W1 = next — participation state model, explicit entry states on challenge detail page
+- W1 ✅ COMPLETE — Git: 0ccf990 | Deployed
+- W1-patch ✅ DEPLOYED — Git: d9ec19f | result_ready CTA fixed, judging state removed, workspace_open confirmed clean
+- W1-patch2 ✅ DEPLOYED — Git: f7a8bfc | workspace_open added to SUBMITTABLE_STATUSES in v1/submissions route
+- W2 ✅ COMPLETE — Git: 48903d4 | Deployed
+- W3 ✅ COMPLETE — Git: 7104052 | Deployed
+- W3-patch ✅ DEPLOYED + FULLY VERIFIED (2026-03-30 04:15 AM KL) — Git: 09a9462 | Vercel deploy dpl_F2bzG59zpore6moYP7cC8oCQhisf READY | Cron live in Vercel (confirmed via API, not just vercel.json) | DB unique index idx_submissions_one_per_entry confirmed on live Supabase | All Sentinel + Aegis blockers resolved — awaiting Nick approval for W4
+- W4 = next: submission progress states polish, failed state handling, breakdown verify, timer+'Submitting as' merge (deferred Polaris)
+- W2 = next — workspace page /challenges/[id]/workspace
 
 ### W0 Completed
 - Migration 00035 applied to DB + committed to repo

@@ -16,10 +16,10 @@
 Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** → QA → Launch
 
 ## Active Project: Bouts / Agent Arena
-- Live: https://agent-arena-roan.vercel.app ✅ Confirmed operational (2026-03-29)
+- Live: https://agent-arena-roan.vercel.app ✅ Confirmed operational (2026-03-30)
 - Stack: Next.js App Router, TypeScript strict, Tailwind, Supabase, Vercel
-- Latest deploy: 2026-03-29 ~02:30 AM KL — all 3 phases live
-- Git commits: agent-arena (6319f59 latest), perlantir-fleet (82b665cb latest)
+- Latest deploy: 2026-03-30 ~04:07 AM KL — W3-patch (09a9462) | Vercel deploy dpl_F2bzG59zpore6moYP7cC8oCQhisf READY
+- Git commits: agent-arena (09a9462 latest)
 - Chain's on-chain env vars: ALL set as Supabase secrets (Mar 27). Edge functions only — nothing needed in Vercel.
 - Supabase project: gojpbtlajzigvyfkghrg
 - Supabase project: gojpbtlajzigvyfkghrg
@@ -150,6 +150,56 @@ See review-history/ for per-project logs
 
 ## Skills Available
 security-review, typescript-mastery, react-nextjs, supabase-patterns, database-review, api-design, performance, accessibility-seo, expo-react-native, testing-quality, devops-docker, code-review-protocol, forge-research, framework-source-code, developer-patterns, auto-fix, threat-modeling, self-review, weekly-security-scan, owasp-stack-specific, react-nextjs-security, supabase-attack-vectors, and 80+ more
+
+## Web Submission System — W3-patch DEPLOYED + FULLY VERIFIED (2026-03-30 04:15 AM KL)
+Git: 09a9462 | Deploy: https://agent-arena-roan.vercel.app | Vercel: dpl_F2bzG59zpore6moYP7cC8oCQhisf READY
+VERIFIED (not assumed) via direct API checks:
+- vercel.json: /api/cron/process-judging-jobs at */2 * * * * — confirmed live in Vercel crons API (dpl_F2bzG59z)
+- connector/submit: terminal status check — blocks duplicate submissions (submitted/judged/scored → 409, expired → 409)
+- Migration 00036: idx_submissions_one_per_entry CONFIRMED EXISTS on live Supabase DB (pg_indexes query returned indexdef)
+- middleware: auth redirect for /challenges/*/workspace and /submissions/*/status
+- web-submit: session_id ownership verification (agent_id + challenge_id + status + expiry)
+- W4 awaiting Nick approval
+
+## Web Submission System — W3 COMPLETE (2026-03-30 03:35 AM KL)
+Git: 7104052 | Deploy: https://agent-arena-roan.vercel.app
+- POST /api/challenges/[id]/web-submit: full pipeline, submission_source='web', dual-session conflict resolved explicitly, always JSON errors
+- /submissions/[id]/status: polls every 5s, 5 states, event log, terminal-state stop, 10min timeout, always has fallback link
+- Polaris applied: 'Web Submission' label, 'Your Solution' textarea, ⚠ amber danger constraints, Bot icon, confirm copy tightened, 50-char warning removed
+- Deferred to W4: timer+'Submitting as' card merge
+- W4 next: submission progress states polish, breakdown handoff verify
+
+## Web Submission System — W2 COMPLETE (2026-03-30 03:05 AM KL)
+Git: 48903d4 | Deploy: https://agent-arena-roan.vercel.app
+- GET /api/challenges/[id]/workspace: idempotent session creation, timer-start on first open, 5 workspace states
+- /challenges/[id]/workspace page: left=prompt panel, right=timer+constraints+textarea+submit
+- Manual Browser Submission badge, Submitting as [Agent Name], 5-min warning banner
+- Constraints panel (collapsed default), byte counter + progress bar, 1-submission confirm modal
+- 7 handled states: loading/open/not_entered/already_submitted/expired/not_supported/error
+- Fixed [challengeId]/sessions route: upsert status 'active' → 'workspace_open'
+- Submit wired to POST /api/challenges/[id]/web-submit (built in W3)
+- W3 next: web-submit route + status polling page
+
+## Web Submission System — W1-patch2 DEPLOYED (2026-03-30 02:38 AM KL)
+Git: f7a8bfc | Deploy: https://agent-arena-roan.vercel.app
+- SUBMITTABLE_STATUSES in /api/v1/submissions/route.ts now includes workspace_open
+- All Sentinel W1 findings resolved — W2 fully cleared
+
+## Web Submission System — W1-patch DEPLOYED (2026-03-30 02:25 AM KL)
+Git: d9ec19f | Deploy: https://agent-arena-roan.vercel.app
+- P1 fix: result_ready CTA → /results (real dashboard), was broken /challenges/[id]/results (404)
+- Dead state removed: 'judging' eliminated from ParticipationState type + stateConfig (not a real entry status)
+- workspace_open allowlists confirmed complete — no further changes needed in existing routes
+- W2 cleared by Forge, awaiting Nick approval
+
+## Web Submission System — W1 COMPLETE (2026-03-30 02:25 AM KL)
+Git: 0ccf990 | Deploy: https://agent-arena-roan.vercel.app
+- ParticipationStatusBlock component: 8 explicit states (not_entered/entered/workspace_open/submitted/judging/result_ready/expired/failed)
+- participation_state + user_entry_id returned from challenge detail API
+- web_submission_supported in public challenge detail + list API
+- workspace_open in events/stream allowlist + JUDGEABLE_STATUSES
+- expired state copy: "This entry can no longer accept a submission"
+- W2 next: workspace page /challenges/[id]/workspace
 
 ## Web Submission System — W0 COMPLETE (2026-03-30 01:55 AM KL)
 Git: abdf3dc | Deploy: https://agent-arena-roan.vercel.app
