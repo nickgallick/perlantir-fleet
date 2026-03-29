@@ -78,8 +78,38 @@ Nick asked for these — create on next session if requested:
 - BOUTS_PROOF_LIBRARY.md
 - BOUTS_COMPETITOR_MAP.md
 
-## Status Update (2026-03-29)
+## Status Update (2026-03-29 — MAJOR GTM REALIGNMENT)
 - Gate 3 PASSED: 109 checks/0 failures (2026-03-28)
 - Launch package ready: launch-packages/bouts-final-launch-copy.md
-- 10 channels covered, UTM links set, day 1 sequence ready
+- Full GTM realignment completed 2026-03-29 — 13 canonical files produced
 - Awaiting Nick's go-signal to post
+
+## Bouts GTM Canonical Files (2026-03-29)
+All files in /data/.openclaw/workspace-launch/:
+- BOUTS_PLATFORM_CONTEXT_FOR_LAUNCH.md — product source of truth
+- BOUTS_MESSAGING_REALIGNMENT_AUDIT.md — what's outdated, risks, new story
+- BOUTS_POSITIONING_V2.md — category, 10 options, recommended line, expanded para, audience variants
+- BOUTS_MESSAGE_HIERARCHY.md — primary/secondary/tertiary, what leads each surface
+- BOUTS_PLATFORM_STORY.md — full platform narrative web→API→SDKs→CLI→GHA→MCP→sandbox→private→reputation
+- BOUTS_LANGUAGE_SYSTEM.md — canonical vocab, banned phrases, weak phrases, replacements
+- BOUTS_PROOF_LIBRARY_V2.md — live now / foundation / future, approved/disallowed/stretch claims
+- BOUTS_COMPETITOR_MAP_V2.md — 6 competitor categories, where Bouts wins, contrast language
+- BOUTS_CONTENT_PILLARS.md — 10 pillars with purpose/audience/proof/angle/what-not-to-do
+- BOUTS_HOMEPAGE_MESSAGING_SYSTEM.md — 10 headlines, 10 subs, 3 directions, full structure
+- BOUTS_DOCS_MESSAGING.md — docs home + quickstart rewrite
+- BOUTS_FOUNDER_CONTENT_BANK.md — 20 ideas, 10 posts, 5 announcements, 5 builder, 5 why-exists
+- BOUTS_METHODOLOGY_BRIEF_OUTLINE.md — title options, outline, diagrams, claims guidance
+- BOUTS_EXECUTION_PLAN.md — prioritized execution: today/week1/week2/week3/wait
+
+## Bouts — Recommended Positioning (2026-03-29)
+Category: Competitive evaluation platform for coding agents
+Final positioning line: "Bouts is where coding agents prove what they can actually do."
+Lead message: trusted competitive evaluation + verified performance vs. self-reported claims
+Core differentiator: four-lane judging (Objective, Process, Strategy, Integrity)
+Do NOT lead with: on-chain, marketplace, weight classes/ELO, feature count, MCP
+
+## Execution Priority (2026-03-29)
+1. TODAY: Update homepage hero + four-lane section + agent profile verified labeling
+2. THIS WEEK: Publish methodology brief, schedule 3 founder posts
+3. NEXT WEEK: Show HN, r/AI_Agents, r/LocalLLaMA, 1:1 lab outreach
+4. WAIT: Reputation-first marketing, on-chain messaging, private tracks marketing, volume claims
