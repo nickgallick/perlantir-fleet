@@ -18,8 +18,8 @@ Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** →
 ## Active Project: Bouts / Agent Arena
 - Live: https://agent-arena-roan.vercel.app ✅ Confirmed operational (2026-03-30)
 - Stack: Next.js App Router, TypeScript strict, Tailwind, Supabase, Vercel
-- Latest deploy: 2026-03-30 ~04:07 AM KL — W3-patch (09a9462) | Vercel deploy dpl_F2bzG59zpore6moYP7cC8oCQhisf READY
-- Git commits: agent-arena (09a9462 latest)
+- Latest deploy: 2026-03-30 ~06:08 AM KL — W4 (5528022) | Deployed to production
+- Git commits: agent-arena (5528022 latest)
 - Chain's on-chain env vars: ALL set as Supabase secrets (Mar 27). Edge functions only — nothing needed in Vercel.
 - Supabase project: gojpbtlajzigvyfkghrg
 - Supabase project: gojpbtlajzigvyfkghrg
@@ -151,25 +151,35 @@ See review-history/ for per-project logs
 ## Skills Available
 security-review, typescript-mastery, react-nextjs, supabase-patterns, database-review, api-design, performance, accessibility-seo, expo-react-native, testing-quality, devops-docker, code-review-protocol, forge-research, framework-source-code, developer-patterns, auto-fix, threat-modeling, self-review, weekly-security-scan, owasp-stack-specific, react-nextjs-security, supabase-attack-vectors, and 80+ more
 
-## Web Submission System — W3-patch2 DEPLOYED (2026-03-30 04:35 AM KL)
-Git: 1baefd4 | Deploy: https://agent-arena-roan.vercel.app
-- Migration 00037: sandbox challenges reseeded with RFC 4122 v4 UUIDs (old all-zeros rows DELETE'd, all FKs updated)
-  - Hello Bouts: 69e80bf0-597d-4ce0-8c1c-563db9c246f2 (was 00000000-...0001)
-  - Echo Agent:  5db50c6f-ac55-43d3-80a6-394420fc4781 (was 00000000-...0002)
-  - Full Stack:  b21fb84b-81f6-49cc-b050-bf5ec2a2fb8f (was 00000000-...0003)
+## Web Submission System — W4 COMPLETE (2026-03-30 06:08 AM KL)
+Git: 5528022 | Deploy: https://agent-arena-roan.vercel.app
+
+### W3-patch2 (04:35 AM KL) — Git: 1baefd4
+- Migration 00037: sandbox challenges reseeded with RFC 4122 v4 UUIDs
+  - Hello Bouts: 69e80bf0-597d-4ce0-8c1c-563db9c246f2
+  - Echo Agent:  5db50c6f-ac55-43d3-80a6-394420fc4781
+  - Full Stack:  b21fb84b-81f6-49cc-b050-bf5ec2a2fb8f
 - Real challenges flagged web_submission_supported=true: 22baff1f (Full-Stack Todo), 41f952c5 (Debug Payment Flow)
 - Stale root middleware.ts deleted — src/middleware.ts is active
 - Duplicate getUser() fixed in src/middleware.ts
-- All sandbox UUID refs updated across codebase (sandbox-judge, sandbox-guard, docs, components)
-- W4 awaiting Nick approval
+
+### W3-patch3 (04:55 AM KL) — Git: d432ec8
+- workspace/route.ts + web-submit/route.ts: .maybeSingle() → .order('created_at').limit(1)[0]
+- Fixes PGRST116 false-negative for multi-agent users
+
+### W4 (06:08 AM KL) — Git: 5528022
+- challenge-submissions/[submissionId]/route.ts: maybeSingle→limit(1) (Sentinel carry-over) + result_id returned on completed status
+- status/page.tsx: failed state redesigned (AlertTriangle, rejection_reason box, platform framing, retry button, support guidance), result_id in type
+- workspace/page.tsx: timer + "Submitting as" merged into single identity card; in-flight submitting state (spinner, blue border, Sending badge)
+- W5 next: docs/messaging alignment
 
 ## Web Submission System — W3 COMPLETE (2026-03-30 03:35 AM KL)
 Git: 7104052 | Deploy: https://agent-arena-roan.vercel.app
 - POST /api/challenges/[id]/web-submit: full pipeline, submission_source='web', dual-session conflict resolved explicitly, always JSON errors
 - /submissions/[id]/status: polls every 5s, 5 states, event log, terminal-state stop, 10min timeout, always has fallback link
 - Polaris applied: 'Web Submission' label, 'Your Solution' textarea, ⚠ amber danger constraints, Bot icon, confirm copy tightened, 50-char warning removed
-- Deferred to W4: timer+'Submitting as' card merge
-- W4 next: submission progress states polish, breakdown handoff verify
+- W4 complete: timer+'Submitting as' merged, failed state polished, result_id wired, maybeSingle fixed
+- W5 next: docs/messaging alignment
 
 ## Web Submission System — W2 COMPLETE (2026-03-30 03:05 AM KL)
 Git: 48903d4 | Deploy: https://agent-arena-roan.vercel.app
