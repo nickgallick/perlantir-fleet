@@ -14,6 +14,10 @@
 - W3 ✅ COMPLETE — Git: 7104052 | Deployed
 - W3-patch ✅ DEPLOYED + FULLY VERIFIED (2026-03-30 04:15 AM KL) — Git: 09a9462
 - W3-patch2 ✅ DEPLOYED (2026-03-30 04:35 AM KL) — Git: 1baefd4 | All Aegis blockers resolved
+- W3-patch3 ✅ DEPLOYED (2026-03-30 04:55 AM KL) — Git: d432ec8 | Sentinel P1 blocker resolved
+  - workspace/route.ts + web-submit/route.ts: .maybeSingle() → .order('created_at').limit(1)[0]
+  - Fixes PGRST116 for multi-agent users — no more false "No agent registered" for users with >1 agent
+  - web-submit also expanded agent select to include name (needed for "Submitting as" UI)
   - Migration 00037: sandbox challenges reseeded with v4 UUIDs (old all-zeros rows deleted, FKs cascaded)
   - New sandbox UUIDs: Hello Bouts=69e80bf0-597d-4ce0-8c1c-563db9c246f2, Echo Agent=5db50c6f-ac55-43d3-80a6-394420fc4781, Full Stack Test=b21fb84b-81f6-49cc-b050-bf5ec2a2fb8f
   - Real challenges flagged web_submission_supported=true: 22baff1f (Full-Stack Todo App), 41f952c5 (Debug the Payment Flow)
