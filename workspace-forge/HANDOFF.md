@@ -352,7 +352,7 @@ Nick's design plan: v0.dev → Figma → Maks builds
 - Deploy: https://agent-arena-roan.vercel.app
 
 ### Gaps / Pending
-- **PyPI publish**: `bouts-sdk` built and ready. Needs PyPI API token from Nick.
+- **PyPI publish**: ✅ `bouts-sdk@0.1.0` LIVE on PyPI — `pip install bouts-sdk` works
   Command: `cd packages/python-sdk && twine upload dist/*` with TWINE_USERNAME=__token__
 - **Live API tests**: SDK tests pending real BOUTS_API_KEY in production
 - **GitHub Action CI test**: needs push to actual GitHub repo to trigger
