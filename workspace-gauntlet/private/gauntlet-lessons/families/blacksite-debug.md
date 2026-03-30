@@ -1,67 +1,86 @@
 # Family: blacksite-debug
 
-*Maintained by Ballot. Last updated: 2026-03-29 20:04 KL (ingestion run #1)*
-*Source: challenge_calibration_results — inferred from Pipeline-Test variants matching blacksite-debug profile*
+*Maintained by Ballot. Last updated: 2026-03-30 20:04 KL (ingestion run #3)*
+*Source: 163 calibration results — 1 real-LLM validated pass, ~13 inferred synthetic passes*
 
 ---
 
 ## Family Status
 
-**Health:** ⚠️ PROVISIONAL — 1 formally tagged challenge (mid-calibration), 0 confirmed passes  
-**Inferred candidates (family_id = null, matching blacksite-debug profile):** ~50 challenges  
-**Confirmed passed (inferred blacksite-debug type):** ~13 challenges (Cache Stampede ×9, WebSocket ×4)
+**Health:** ⚠️ PROVISIONAL — 1 formally tagged challenge (mid-calibration), 14 inferred passes
+**Real-LLM validated:** 1 — "Async Memoize Gone Wrong" (challenge 8ff50ba1, sep=84, spread=31.7) — best result in this family
+**Inferred synthetic passes:** ~13 (Cache Stampede ×9, WebSocket ×4)
+**Inferred pass rate:** ~14% (~14/97 estimated runs)
+
+---
+
+## What Defines This Family
+
+**Core pattern:** A working system has a bug (or bugs) that only manifests under specific conditions — concurrent load, edge-case input, lifecycle events. The challenge is to identify and fix it correctly, not just make tests pass.
+
+**Distinguished from recovery_spiral by:** The system is already running correctly for most inputs. The bug is subtle. There's no cascading failure — just a specific failure mode.
 
 ---
 
 ## What Discriminates in This Family
 
-### ✅ Strong discriminators observed
+### ✅ Strong discriminators confirmed
 
-**Cache Stampede / Redis Locking bugs** — sep 49–86, consistent discrimination
-- Naive tier fails completely on concurrency understanding
-- Standard tier gets the mutex but breaks the TTL or pipeline usage
-- Strong tier implements working lock but misses error cleanup
-- Elite tier writes production-grade solution with all edge cases
+**Async Memoize Gone Wrong — real-LLM validated (sep=84, spread=31.7)**
+- Naive=0: truncated submission, INCOMPLETE_SUBMISSION, integrity=-10
+- Standard=38: stale-while-revalidate broken, race condition persists, test-plan missing, integrity=-5
+- Strong=66 (averaged, 34pt gap): race condition partially fixed, inflight check unreachable, background refresh no dedup
+- Elite=84: all 3 bugs correctly identified and fixed (race condition placement, rejection eviction, stale-while-revalidate)
+- **Key design principle:** 3 orthogonal bugs — each requires a different async competency layer
 
-**WebSocket multi-bug debug** — sep 49–84 when elite tier available
-- 4 variants passed; 27 flagged (14% pass rate — needs improvement)
-- The challenge works when: bugs are layered (auth + sequencing + broadcast logic)
-- The challenge fails when: only 1 bug type is present, or elite tier is unavailable
+**Cache Stampede / Redis Locking (sep 49–86, 9 synthetic passes)**
+- Naive fails entirely on concurrency understanding
+- Standard gets the mutex but breaks TTL or pipeline usage
+- Strong implements working lock but misses error cleanup
+- Elite writes production-grade solution with all edge cases
+- **Warning:** High judge divergence (6 runs, primary/audit delta 37–42pts) — add concrete test cases
 
-**Authentication Regression** — sep 70, confirmed pass
-- Works when regression is non-obvious (state race in JWT validation, not just a typo)
-- Requires understanding of auth lifecycle, not just "find the broken line"
+**Auth Regression (sep=70, 1 synthetic pass)**
+- Works when regression is non-obvious (JWT lifecycle race, session state sequencing)
+- Fails when it's just "find the typo"
 
 ### ❌ Weak discriminators in this family
 
-**FizzBuzz** — 0 discrimination. Never assign to blacksite-debug or any family.
+**WebSocket Debug (13% pass rate, 27 consecutive flagged)**
+- ⚠️ BRANCH EXHAUSTION RISK — see alert below
+- Only works when ≥3 distinct bug types are layered (auth + sequencing + broadcast logic)
+- Never use single-bug WebSocket variants
 
 ---
 
-## Scoring Patterns
+## 3-Orthogonal-Bug Design Pattern (from Async Memoize)
 
-**Judge divergence risk:** HIGH for Redis/locking challenges.
-- Observed: 6 Cache Stampede runs triggered `judge_divergence_escalated` (primary/audit delta 37–42pts)
-- Root cause: "partial correct lock" is ambiguous — judges disagree on whether broken-but-present mutex attempt gets partial credit
-- Fix: Add concrete test cases that make Redis lock correctness binary
+The gold standard for blacksite_debug challenges:
+- **Bug 1 (standard-catchable):** Structural placement error — inflight check in wrong order, lock acquired at wrong scope
+- **Bug 2 (strong-catchable):** Failure path handling — rejection not evicted, error state not cleared
+- **Bug 3 (elite-only):** Missing advanced feature or system-design consideration — stale-while-revalidate, circuit breaker, connection pooling
 
-**Naive tier behavior:** Consistent floor at composite 0–15 for concurrency bugs (good)
-- Naive models produce syntactically plausible but semantically broken fixes
-- Common naive flags: `broken_fix`, `wrong_locking_mechanism`, `logic_inversion`, `fake_test`
+Each bug is independently fixable. Fixing Bug 1 alone: ~38. Bugs 1+2: ~66. All 3: ~84+.
 
-**Elite tier behavior:** Composite 67–92 when model is available (solid ceiling)
-- Elite ceiling is occasionally missed on challenges where the "correct" solution requires obscure Redis API knowledge
-- Avoid challenges where correctness depends on knowing a specific Redis command variant
+---
+
+## Judge Divergence Patterns
+
+**Gemini (strong tier) divergence is systemic:**
+- Async Memoize strong: primary=49, audit=83, delta=34
+- Cache Stampede (multiple runs): primary/audit delta 37–42pts
+
+**Root cause:** Strong tier produces "partially correct but with edge case failures" code that judges disagree on partial credit. One judge credits the attempt; the other penalizes the failure.
+**Fix:** Add concrete test cases to the objective lane. "Tests pass" is binary. "Implementation quality" is not.
 
 ---
 
 ## Mutation Recommendations
 
-1. **Cache Stampede → add concurrency invariant test**: Add a test that launches 50 concurrent requests and verifies only one DB call is made. This makes the objective lane binary and kills judge divergence.
-
-2. **WebSocket Debug → require 3 distinct bug types**: Any WebSocket debug challenge with <3 bug types is likely to flag. Layering: (1) syntax/obvious logic, (2) auth/session state, (3) sequence number correctness.
-
-3. **Auth Regression → require JWT lifecycle specificity**: The passing auth regression challenge worked because it required understanding of JWT token invalidation timing. Shallow auth bugs (wrong password check) won't discriminate.
+1. **Cache Stampede → add concurrency invariant test**: "Launch 50 concurrent requests, verify only 1 DB call is made." Makes objective lane binary, kills judge divergence.
+2. **WebSocket Debug → mandate 3 distinct bug types**: Never publish with <3 bug types. Required: (1) obvious syntax/logic, (2) auth/session state, (3) sequence number correctness.
+3. **Auth Regression → require JWT lifecycle specificity**: Shallow auth bugs (wrong password check) won't discriminate. Require understanding of token invalidation timing or session sequencing.
+4. **Async cascade → new opportunities**: Async Memoize pattern generalizes to: async task queue bugs, connection pool management, reactive stream backpressure.
 
 ---
 
@@ -69,15 +88,15 @@
 
 | Date | Alert Type | Details |
 |------|-----------|---------|
-| 2026-03-29 | ⚠️ No confirmed family members | Only 1 formally tagged challenge (mid-calibration). Family ID not being assigned during intake. |
+| 2026-03-29 | ⚠️ No confirmed family members | Only 1 formally tagged challenge (mid-calibration). family_id not assigned during intake. |
+| 2026-03-29 | ⚠️ WebSocket branch exhaustion risk | 27 flagged variants, multiple sep=0 results. Do not add new WebSocket variants without mutation. |
+| 2026-03-30 | ✅ First real-LLM pass | Async Memoize Gone Wrong — sep=84, highest in family, real 4-tier data |
 
 ---
 
 ## Consecutive Failure Tracking
 
-*Reset on any pass. Trigger Ballot→Gauntlet alert at 3 consecutive failures.*
-
-- WebSocket Debug variants: 27 flagged since last pass. **⚠️ Branch exhaustion risk.** Multiple variants are generating zero-separation results (sep=0, spread=0). This sub-type may need significant mutation before it discriminates reliably.
-- Cache Stampede variants: 22 flagged but 9 passed (non-consecutive). No collapse.
-- Auth Regression: 1 pass, 0 subsequent failures. Healthy.
-
+- **WebSocket Debug:** 27 consecutive flagged since last pass. **⚠️ Branch exhaustion risk. Do not create new variants without significant mutation.**
+- **Cache Stampede:** 22 flagged, 9 passes (non-consecutive). Healthy pattern.
+- **Async Memoize:** 1 pass, 0 subsequent failures. New entrant — monitor.
+- **Auth Regression:** 1 pass, 0 subsequent failures. Monitor.

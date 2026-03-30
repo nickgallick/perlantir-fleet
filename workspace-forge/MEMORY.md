@@ -15,6 +15,18 @@
 ## Pipeline Position
 Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** → QA → Launch
 
+## Ballot Ingestion Stats (last updated: 2026-03-30 20:04 KL — run #3)
+- Total calibration_results: 163 | Passed: 33 | Flagged: 129 | Calibrating: 5
+- Total challenges: 187 (all pipeline_status=draft)
+- ballot_lesson_entries in DB: 28 (positive: 7, negative: 7, mutation: 6, calibration_system: 6, family_health: 2)
+- Real-LLM validated passes: 2 — FizzBuzz With Teeth (sep=69) + Async Memoize Gone Wrong (sep=84)
+- Active alerts: WebSocket branch exhaustion (27 consecutive fails), 4 empty families, artifact trigger broken, 186/187 challenges untagged
+- No contamination, family collapse, or do-not-publish emergencies detected
+- generate_learning_artifact() DB trigger still not firing — Ballot in fallback synthesis mode
+- Lesson files: positive, negative, mutation, calibration-system, family-health, all 6 family files, index.json — all current
+- Last ingestion with new data: 2026-03-30 08:04 AM KL (run #2, 2 new real-LLM passes)
+- Runs #2 and #3 are complete. Run #3 confirmed no new data since 2 PM KL.
+
 ## Active Project: Bouts / Agent Arena
 - Live: https://agent-arena-roan.vercel.app ✅ Confirmed operational (2026-03-30)
 - Stack: Next.js App Router, TypeScript strict, Tailwind, Supabase, Vercel
@@ -23,6 +35,21 @@ Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** →
 - CRITICAL FIX (78f741e): lane-runner was sending submission_id to edge functions that require entry_id → match_results were never written. Fixed.
 - Fix A (2c9eaa5): @bouts/connector@0.1.2 published to npm. submitSolution() uses /api/connector/submit. Package renamed from arena-connector → @bouts/connector.
 - Fix B (565886b): GitHub Action makeIdempotencyKey(sessionId) — aligns with Python SDK pattern.
+
+## Remote Agent Invocation — Decision (2026-03-30 11:27 AM KL — Nick locked)
+- DECISION: Replacing manual text-submission web path with Remote Agent Invocation (Option 1)
+- Production web path = Remote Agent Invocation (Bouts calls user's HTTP endpoint server-side)
+- Sandbox/practice = manual text path retained but clearly separated + labeled
+- NOT: hosted runtime, cloud execution, browser IDE — just HTTP invocation of user's running agent
+- Build plan: 3 phases, no confirmation needed between phases
+  - Phase 1: Architecture spec + data model (migrations 00038+, new tables)
+  - Phase 2: Backend (endpoint registration, invocation engine, pipeline integration)
+  - Phase 3: Frontend UX + docs updates
+- Architecture spec saved to: /data/.openclaw/workspace-forge/remote-agent-invocation-spec.md
+- submission_source='remote_agent' for this path
+- SSRF protection required: block private IPs, require HTTPS in prod, domain allowlist option
+- HMAC-SHA256 signing: per-agent secret, X-Bouts-Signature, X-Bouts-Timestamp, replay window 5min
+- Invocation timeout: 30s hard limit, no retries on timeout (terminal)
 
 ## Phase R1 Complete — Security + Pipeline (2026-03-30 09:58 AM KL)
 - Item 9: POST /api/v1/submissions → 410 Gone (deprecated, use session-based flow)
@@ -433,3 +460,68 @@ Latest deploy: git 3f7945b | https://agent-arena-roan.vercel.app
 All QA phases passed: Sentinel 10/10, Polaris cleared, Web Submission system complete.
 Remediation pass (R1+R2+R3) complete. All P0/P1 issues resolved.
 Nick's session reset lost a feedback message — awaiting resend.
+
+## RAI (Remote Agent Invocation) — COMPLETE (2026-03-30 ~17:15 KL)
+Git: fcc3100 | Deploy: https://agent-arena-roan.vercel.app
+
+### What was built
+- Migration 00038: agents endpoint columns, agent_rai_secrets, rai_invocation_nonces, rai_invocation_log, challenges.remote_invocation_supported — RUN AND CONFIRMED in Supabase
+- /api/challenges/[id]/invoke: RAI trigger route — HMAC-SHA256 signed, SSRF-protected, validates response, logs provenance, enqueues into existing judging pipeline (submission_source=remote_invocation)
+- /api/v1/agents/[id]/endpoint: CRUD (configure/update/delete). Secret generated on create, never stored plaintext.
+- /api/v1/agents/[id]/endpoint/ping: HEAD ping, records last_ping_status
+- /api/v1/agents/[id]/endpoint/rotate-secret: new secret, old invalidated immediately
+- Workspace page: RAI-first UI — 9 invocation states, timer, confirm gate, endpoint status panel
+- Settings → Agent: Endpoint tab (RemoteInvocation component) — configure, ping, rotate, delete, one-time secret reveal
+- /docs/remote-invocation: full launch-grade docs (trust model, contract, verification code, comparison table)
+- /docs/compete, /docs/quickstart: updated to RAI language
+- /docs/web-submission: redirects to /docs/remote-invocation
+
+### Architecture
+- submission_source = remote_invocation → same enqueue_judging_job() → same pipeline. No side-channel.
+- Provenance: invocation_id, endpoint_host, latency_ms, response_content_hash, request_sent_at, schema_valid
+- SSRF: private IPs blocked at config AND invocation time
+- Rate limit: 3 invocations / 5 min / user
+- Max response: 100KB
+- Timeout: 10–120s (user-configurable, default 30s)
+
+## RAI Tightening Pass — COMPLETE (2026-03-30 ~17:55 KL)
+Git: 58dd137 | Deploy: https://agent-arena-roan.vercel.app
+
+1. remote_invocation_supported: default=false in code, ALL challenges reset to false in DB, 2 production challenges explicitly enabled (Full-Stack Todo, Debug Payment Flow). Admin PATCH endpoint now accepts this field.
+2. Retries: maxRetries=0 hardcoded in invoke route. isRetryable(): only pure TCP failure (no HTTP status code). Everything else terminal.
+3. /api/v1/agents/[id]/endpoint/validate: 5-step contract validation (reachability, signing, request_parse, response_schema, response_size). Sends real signed payload, not HEAD ping. Settings shows Validate Contract button with per-step report.
+4. One-shot semantics: timeout/invalid_response/content_too_large/platform_error return entry_consumed=false. Only successful submission INSERT + enqueue consumes the entry. Entry status updated to submitted only after submission row confirmed.
+5. Provenance visibility in breakdown API: admin=full (invocation_id, endpoint_host, latency, hash, http_status), competitor=host+env+timing+hash (no URL, no errors), public=source label only.
+6. Trust language: "Bouts verifies signed invocation, response schema, timing, and content hash. Bouts does not directly observe what runs inside your system."
+7. Schema decision: columns stay on agents table for launch. Rationale: one endpoint per agent, config co-located, no join overhead. Dedicated table is a v2 migration if multi-endpoint per agent is needed.
+8. Production path: RAI. Sandbox: web-submit still accessible (explicitly labeled). challenge detail page gates workspace button on remote_invocation_supported OR web_submission_supported.
+
+## RAI Aegis Audit Fixes — COMPLETE (2026-03-30 ~19:55 KL)
+Git: aa4db7f | Deploy: https://agent-arena-roan.vercel.app
+
+P0 AEG-P0-001: migration 00038 default changed to false (was true — backfill already done in DB)
+P1 AEG-P1-001: validateEndpointUrl() wired into PUT /api/v1/agents/[id]/endpoint (registration time, synchronous)
+P1 AEG-P1-001: isPrivateIp() wired into POST /api/challenges/[id]/invoke (DNS-level check at invocation time, DNS rebinding protection)
+P2: docs signature algorithm corrected — actual format is method\nurl\ntimestamp\nnonce\nbodyHash (not timestamp.invocationId.bodyHash)
+P2: docs retry table corrected — zero retries, no "1 retry on connection error"
+P2: docs request headers corrected — X-Bouts-Nonce not X-Bouts-Invocation-Id
+
+## RAI Full Remediation Pass — COMPLETE (2026-03-30 ~21:15 KL)
+Git: 812b72d | Deploy: https://agent-arena-roan.vercel.app
+Migration 00039 written (ALTER default to false, zero max_retries)
+
+R-Fix-1: max_retries=0 enforced throughout; redirect:error in fetch; SSRF active
+R-Fix-2: workspace API select fixed; null-safe weight_class/format/time; pre-entry nudge; env badges
+R-Fix-3: tab renamed Remote Invocation; max_retries removed from UI; Validate shortcut in workspace
+R-Fix-4: signature algo/retry/headers all correct in docs
+R-Fix-5: agent columns confirmed as launch schema; dead retry branches removed
+R-Fix-6: production (green) / sandbox (amber) environment badges; pre-entry nudge before timer
+
+FINAL STATE:
+- Default: false (explicit admin opt-in)
+- Retries: zero, hardcoded, no UI
+- One-shot: entry consumed only on submission write
+- SSRF: validateEndpointUrl at registration, isPrivateIp DNS at invocation, redirect:error in fetch
+- Provenance: admin=full, competitor=host+timing+hash, public=source-label-only
+- Schema: agent columns (intentional launch decision)
+- Production path: RAI only. Sandbox: web-submit accessible.

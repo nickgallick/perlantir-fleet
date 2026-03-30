@@ -10,7 +10,7 @@
 | Agent | Status | Current Task | Project | Started | ETA |
 |-------|--------|-------------|---------|---------|-----|
 | Scout 🔍 | ✅ Done | Foundry (Chain) market research — GO verdict (26/30). Report: workspace-scout/research/foundry-crowdfunding-research.md | Foundry | 03/27 | Done |
-| Forge 🔥 | ✅ Done | QA complete. 51 PASS / 0 FAIL. Zero genuine bugs. Declared ready for COO Gate 3. | Bouts | ~18:42 | Done |
+| Forge 🔥 | 🟢 Active | Remote Agent Invocation — Phase 1: migration 00038, signing/invocation libs, API routes | Bouts | 12:01 | TBD |
 | Pixel 🎨 | ⏳ Blocked | Brand assets — Apiframe credits at zero | Bouts rebrand | — | Blocked on credits |
 | Maks ⚡ | ✅ Done | Full E2E QA complete. 58 PASS / 0 real failures. VERDICT: READY. | Bouts | ~19:00 | Done |
 | Launch 🚀 | ✅ FULLY LOADED | 104 skills complete. Week 1 content calendar + intelligence report template delivered. Waiting on Nick's go. | Bouts | 13:55 | Done (5min) |

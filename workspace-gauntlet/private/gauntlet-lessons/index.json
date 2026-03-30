@@ -1,21 +1,72 @@
 {
-  "last_updated": null,
-  "total_lessons": 0,
+  "last_updated": "2026-03-30T12:04:00Z",
+  "ingestion_runs": 3,
+  "total_calibration_results": 163,
+  "total_challenges": 187,
+  "passed_calibrations": 33,
+  "real_llm_validated": 2,
+  "total_lessons": 28,
   "by_category": {
-    "positive": 0,
-    "negative": 0,
-    "mutation": 0,
-    "family_health": 0,
-    "calibration_system": 0
+    "positive": 7,
+    "negative": 7,
+    "mutation": 6,
+    "calibration_system": 6,
+    "family_health": 2
   },
   "by_family": {
-    "blacksite_debug": 0,
+    "blacksite_debug": 8,
+    "false_summit": 2,
     "fog_of_war": 0,
-    "false_summit": 0,
     "recovery_spiral": 0,
     "toolchain_betrayal": 0,
-    "abyss_protocol": 0
+    "abyss_protocol": 0,
+    "cross-family": 18
   },
-  "high_confidence_lessons": [],
-  "active_alerts": []
+  "high_confidence_lessons": [
+    { "category": "calibration_system", "subcategory": "calibration-thresholds", "summary": "Passing zone: sep 27-86, tier_spread 13-36. Target sep 60-80." },
+    { "category": "calibration_system", "subcategory": "artifact-generation", "summary": "generate_learning_artifact() not firing. Ballot operating in fallback synthesis mode." },
+    { "category": "calibration_system", "subcategory": "real-llm-validation", "summary": "2 real-LLM passes confirmed: FizzBuzz With Teeth (sep=69) and Async Memoize Gone Wrong (sep=84)." },
+    { "category": "negative", "subcategory": "challenge-design-failure", "summary": "Plain FizzBuzz: 96% failure rate. Never publish trivial well-known algorithms." },
+    { "category": "negative", "subcategory": "score-compression", "summary": "tier_spread_below_threshold = dominant failure (76/129). Fix: 3-layer difficulty stack." },
+    { "category": "negative", "subcategory": "elite-ceiling-miss", "summary": "synthetic_elite_below_ceiling (64/129). Fix: add production-hardening requirement." },
+    { "category": "negative", "subcategory": "difficulty-floor-failure", "summary": "synthetic_naive_too_high (27/129). Fix: naive floor target 0-15." },
+    { "category": "negative", "subcategory": "infrastructure-limitation", "summary": "74% of tier slots used fallback estimation. All 32 non-real-LLM passes are provisional." },
+    { "category": "mutation", "subcategory": "challenge-replacement", "summary": "FizzBuzz → Sliding Window Rate Limiter. Replace trivial well-known algorithms." },
+    { "category": "mutation", "subcategory": "difficulty-graduation", "summary": "Single-bug → 3-layer stack. Layer 1: naive-catchable. Layer 2: standard-catchable. Layer 3: elite-only." },
+    { "category": "family_health", "subcategory": "family-tagging", "summary": "186/187 challenges have no family_id. Gauntlet must tag during intake." }
+  ],
+  "active_alerts": [
+    {
+      "level": "warning",
+      "type": "branch_exhaustion_risk",
+      "family": "blacksite_debug",
+      "sub_type": "websocket_debug",
+      "detail": "27 consecutive flagged variants since last pass. Multiple sep=0. Mutation required before next intake.",
+      "triggered_at": "2026-03-29T18:04:00Z"
+    },
+    {
+      "level": "warning",
+      "type": "family_tagging_absent",
+      "detail": "186/187 challenges have no family_id set. Family health metrics are inferred only.",
+      "triggered_at": "2026-03-29T18:04:00Z"
+    },
+    {
+      "level": "warning",
+      "type": "empty_families",
+      "families": ["fog_of_war", "recovery_spiral", "toolchain_betrayal", "abyss_protocol"],
+      "detail": "4 of 6 families have zero challenges. Platform has no coverage in these areas.",
+      "triggered_at": "2026-03-29T18:04:00Z"
+    },
+    {
+      "level": "info",
+      "type": "artifact_trigger_broken",
+      "detail": "generate_learning_artifact() not firing post-calibration. Ballot in fallback synthesis mode.",
+      "triggered_at": "2026-03-29T18:04:00Z"
+    }
+  ],
+  "no_alerts_fired": {
+    "contamination": true,
+    "family_collapse": true,
+    "do_not_publish_emergency": true
+  }
 }

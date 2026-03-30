@@ -59,6 +59,41 @@ Layer 4 results/replay: 16 checks
 - /tmp/playwright-test-relay-regression-docs-routes-20260330.js
 - /tmp/playwright-test-relay-regression-results-replay-20260330.js
 
+## RAI Final Verification (2026-03-30 post-remediation — PASSED)
+Run: 34 checks | PASS: 29 | FAIL: 0 | WARN: 5 | Confidence: HIGH
+Commit: 812b72d (R-Fix-1 through R-Fix-6)
+All P1 blockers cleared. Zero hard failures.
+5 warnings are all environment-tab/validate/nudge items gated behind "endpoint configured" — not regressions.
+Script: /tmp/playwright-test-relay-regression-rai-final-20260330.js
+Screenshots: /tmp/relay-screenshots/rai-final-*.png
+
+## RAI Browser Regression (2026-03-30)
+Checks: 29 | PASS: 15 | FAIL: 3 | WARN: 11 | Confidence: MEDIUM
+
+### F-RAI-01 — P1: Challenge detail crashes (weight_class_id=null → charAt TypeError)
+- All active challenges have weight_class_id=null
+- formatWeightClass(null) crashes the page → "Something went wrong"
+- Fix: null guard in formatWeightClass()
+
+### F-RAI-02 — P1: Workspace API missing remote_invocation_supported in select
+- /api/challenges/[id]/workspace does NOT select remote_invocation_supported
+- Always defaults to false → all challenges would show "Connector Required"
+- Fix: add remote_invocation_supported to select query
+
+### F-RAI-03 — P2: Sandbox challenges 404 on public API
+- /api/challenges/sandbox-id → 404 even though active in DB
+
+### F-RAI-04 — P2: RAI settings section not discoverable without endpoint configured
+
+### CONFIRMED CLEAN:
+- No manual text submission textarea anywhere (old path fully removed)
+- No /settings/tokens broken links in RAI pages
+- Docs/remote-invocation loads correctly
+- Workspace terminal states (expired/submitted) render correctly
+
+Report: /tmp/relay-automation-report-20260330-rai.md
+Script: /tmp/playwright-test-relay-regression-rai-20260330.js
+
 ## Prior Coverage (from 2026-03-28)
 - /qa-login = 404 ✅ (NOW REGRESSED — returns 200)
 - Auth redirect on /dashboard ✅
