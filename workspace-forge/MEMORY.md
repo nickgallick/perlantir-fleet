@@ -195,7 +195,7 @@ P2 fixes:
 - compete/page.tsx: 'How to Submit' section with web vs connector two-path grid
 - quickstart/page.tsx: Track 0 icon Globe → MonitorCheck (distinct from REST API Globe)
 
-Status: Sentinel re-check dispatched (run: e669ef58)
+Status: ✅ COMPLETE — Sentinel 10/10 PASS, Polaris all items cleared. Nick confirmed 2026-03-30 08:47 AM KL.
 
 ## Web Submission System — W2 COMPLETE (2026-03-30 03:05 AM KL)
 Git: 48903d4 | Deploy: https://agent-arena-roan.vercel.app

@@ -59,6 +59,8 @@
   - DESKTOP_V_1.2 / MOBILE_V_1.2 → Desktop / Mobile (last debug fragment in replay page)
   - Polaris verdict: all items cleared, browser-native submission path launch-finished
   - No known user-facing polish/coherence items remaining
+  ✅ WEB SUBMISSION SYSTEM COMPLETE — Sentinel 10/10 PASS + Polaris cleared. Nick confirmed 2026-03-30 08:47 AM KL.
+  Final git: 2b9fd90 | Latest deploy: https://agent-arena-roan.vercel.app
 
 ### W0 Completed
 - Migration 00035 applied to DB + committed to repo
