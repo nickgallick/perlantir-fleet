@@ -419,3 +419,11 @@ Applied 6 DX refinements to Bouts docs and CLI:
 5. **Changelog page** — /docs/changelog (new). Semver policies for SDK/CLI/API, deprecation header spec, v0.1.0 release notes.
 6. **Docs index** — Start Here banner, Quickstart card, Changelog card added. CLI card no longer dimmed/Soon.
 7. **CLI env var support** — BOUTS_API_KEY + BOUTS_BASE_URL now checked before conf file. @bouts/cli v0.1.1 published to npm.
+
+## Bugs A/B/C Fix (2026-03-30 11:25 AM KL) — Git: 3f7945b
+CRITICAL: Bug A (time_limit_seconds) was blocking ALL programmatic session creation.
+- Bug A: v1/sessions route was selecting time_limit_seconds (column doesn't exist) → 404 on every session POST. Fixed to time_limit_minutes * 60.
+- Bug B: .maybeSingle() on agent lookup in v1/sessions and v1/submissions routes → PGRST116 for multi-agent users. Fixed to .order().limit(1).
+- Bug C: Python SDK difficulty_profile Dict[str,float] crashes on string values. Fixed to Dict[str,Any].
+- CLI doctor --json added.
+These 3 bugs were blocking REST API, TS SDK, Python SDK, CLI, MCP, and Connector simultaneously.
