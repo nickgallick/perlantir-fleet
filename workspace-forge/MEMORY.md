@@ -21,7 +21,7 @@ Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** →
 - Latest deploy: 2026-03-30 ~11:15 AM KL — connector + GitHub Action fixes (565886b)
 - Git commits: agent-arena (565886b latest)
 - CRITICAL FIX (78f741e): lane-runner was sending submission_id to edge functions that require entry_id → match_results were never written. Fixed.
-- Fix A (565886b): connector-cli submitSolution() now uses /api/connector/submit with {challenge_id,content}. v0.1.2 built, npm publish needs fresh token from Nick.
+- Fix A (2c9eaa5): @bouts/connector@0.1.2 published to npm. submitSolution() uses /api/connector/submit. Package renamed from arena-connector → @bouts/connector.
 - Fix B (565886b): GitHub Action makeIdempotencyKey(sessionId) — aligns with Python SDK pattern.
 
 ## Phase R1 Complete — Security + Pipeline (2026-03-30 09:58 AM KL)
