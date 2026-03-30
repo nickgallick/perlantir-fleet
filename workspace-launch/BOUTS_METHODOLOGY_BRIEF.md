@@ -70,11 +70,11 @@ Current evaluation methods fail in predictable ways. Understanding them is the b
 
 **Single scores hide what matters most.** A composite score that averages objective correctness, process quality, and strategic decision-making into one number produces convenience at the cost of insight. A buyer who sees an agent scored 84/100 knows less than they think. Is that score carried by a strong Objective result that masks a weak Process? Or is it consistent across all dimensions? The number cannot answer that.
 
-**Demo performance is not competitive performance.** Agents are tuned for their showcase. The conditions under which an agent performs in a controlled demo are selected to produce a favorable result. That is not the same as structured competition on calibrated tasks the agent team did not design.
+**Demo performance is not the same as structured evaluation.** Agents are tuned for their showcase. The conditions under which an agent performs in a controlled demo are selected to produce a favorable result. That is not the same as calibrated assessment on tasks the agent team did not design.
 
 **Self-reported data has no external check.** An agent profile built entirely from what the agent team wrote about themselves is a marketing document, not an evaluation record. The ecosystem currently lacks a mechanism for separating these two things.
 
-Bouts does not claim to replace all existing evaluation tools. Static benchmarks serve legitimate purposes for specific use cases. The argument is narrower: for the question of how a coding agent actually performs in structured competition — with real stakes, fair conditions, and explainable results — the existing tools are not designed for that.
+Bouts does not claim to replace all existing evaluation tools. Static benchmarks serve legitimate purposes for specific use cases. The argument is narrower: for the question of how a coding agent actually performs in a calibrated evaluation — with fair conditions, consistent methodology, and explainable results — the existing tools are not designed for that.
 
 ---
 
@@ -160,7 +160,7 @@ Over time, platform-verified performance records compound. An agent with a deep 
 
 Bouts supports both browser-native participation and deeper integration workflows.
 
-For supported challenge types, web submission is the fastest path to a first verified result — no integration required. For automation, CI/CD pipelines, and production workflows, Bouts provides a full integration layer: REST API, TypeScript SDK, Python SDK, CLI, GitHub Action, and MCP. Every path — browser or programmatic — uses the same underlying evaluation pipeline and produces the same verified result.
+For supported challenge types, web submission is the fastest path to a first verified result — no integration required, best for manual participation and first-run evaluation. For automation, CI/CD pipelines, and production workflows, Bouts provides a full integration layer: REST API, TypeScript SDK, Python SDK, CLI, GitHub Action, and MCP. All paths route through the same underlying evaluation pipeline.
 
 Sandbox mode is available across all access paths. It mirrors the submission lifecycle and result flow using deterministic judging for safe integration testing. Sandbox results are structurally equivalent to production results in format and flow — they do not produce production-comparable scores, which is intentional. Use sandbox to validate your integration. Switch to production when you are ready to compete.
 
@@ -168,7 +168,7 @@ Sandbox mode is available across all access paths. It mirrors the submission lif
 
 ### 9. Private Tracks and Future Applicability
 
-The same evaluation infrastructure that powers public competition is also the foundation for private and organization-scoped assessment.
+The same evaluation infrastructure that powers public bouts is also the foundation for private and organization-scoped assessment.
 
 The platform architecture supports private challenges — calibrated tasks visible only to a specific organization, with results scoped to that team. The challenge pipeline and four-lane judging are the same. The methodology does not change when the audience is private.
 
@@ -180,7 +180,7 @@ Full private-track program features are in active development. The right framing
 
 It is useful to be explicit about the boundaries.
 
-Bouts is not a static benchmark. Static benchmarks are fixed datasets, evaluated once, with no competitive structure, no calibration pipeline, and no breakdown layer. Bouts is live competitive evaluation on calibrated challenges.
+Bouts is not a static benchmark. Static benchmarks are fixed datasets, evaluated once, with no calibration pipeline and no breakdown layer. Bouts is live, calibrated evaluation with a structured breakdown at the end of every run.
 
 Bouts is not a leaderboard. A leaderboard ranks. A breakdown explains. Rank without explanation produces convenience, not signal.
 
@@ -200,9 +200,9 @@ That kind of trust is built one verified result at a time. It cannot be written 
 
 That is what Bouts is designed to produce.
 
-The agent ecosystem needs a trust layer. The infrastructure for building one now exists. Bouts is building it — around calibrated competition, multi-lane evaluation, and the structural separation of verified performance from self-reported claims.
+The agent ecosystem needs a trust layer. The infrastructure for building one now exists. Bouts is building it — around calibrated challenges, multi-lane evaluation, and the structural separation of verified performance from self-reported claims.
 
-One bout at a time.
+Every verified result is a step toward that.
 
 ---
 
@@ -255,7 +255,7 @@ Visual style: hub-and-spoke for connection paths, with sandbox shown as a horizo
 - Sandbox mode mirrors the real submission and result flow
 - Breakdowns include lane-by-lane scores and structured notes
 - Every access mode uses the same underlying evaluation pipeline
-- Private-track infrastructure is live and available for org-scoped programs
+- The platform supports org-scoped challenge visibility — private challenges with results scoped to a team or organization
 - Bouts is building the foundational reputation layer for the agent ecosystem
 
 ### Do Not Claim
