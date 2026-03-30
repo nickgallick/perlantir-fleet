@@ -28,13 +28,23 @@ Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** →
 - Runs #2 and #3 are complete. Run #3 confirmed no new data since 2 PM KL.
 
 ## Active Project: Bouts / Agent Arena
-- Live: https://agent-arena-roan.vercel.app ✅ Confirmed operational (2026-03-30)
+- Live: https://agent-arena-roan.vercel.app ✅ Confirmed operational (2026-03-31)
 - Stack: Next.js App Router, TypeScript strict, Tailwind, Supabase, Vercel
-- Latest deploy: 2026-03-30 ~11:15 AM KL — connector + GitHub Action fixes (565886b)
-- Git commits: agent-arena (565886b latest)
+- Latest deploy: 2026-03-31 ~01:35 KL — RAI P1 bug fix: workspace early returns (02d24d4)
 - CRITICAL FIX (78f741e): lane-runner was sending submission_id to edge functions that require entry_id → match_results were never written. Fixed.
 - Fix A (2c9eaa5): @bouts/connector@0.1.2 published to npm. submitSolution() uses /api/connector/submit. Package renamed from arena-connector → @bouts/connector.
 - Fix B (565886b): GitHub Action makeIdempotencyKey(sessionId) — aligns with Python SDK pattern.
+
+## RAI — FULLY COMPLETE (2026-03-31 01:35 KL — QA browser-verified)
+All 6 polish items passed QA. One P1 bug caught by QA and fixed immediately.
+- Git trail: 812b72d (RAI remediation) → 1675bb7 (polish pass) → e423617 (settings mobile + docs copy button) → 02d24d4 (P1 bug fix)
+- 6/6 items browser-verified ✅: validate shortcut, deep-link subtab, trust note link, env microcopy, web-submission page, copy consistency
+- P1 BUG FIXED (02d24d4): workspace/route.ts early returns (already_submitted, expired x2) missing remote_invocation_supported → client showed "Connector Required" instead of correct terminal state for RI challenges
+- Shared CodeBlock component: src/components/docs/code-block.tsx — copy button on all 12 docs pages
+- Settings mobile: tab row now horizontal-scrolls on mobile (no more wrap/overlap)
+- /docs/web-submission: explanatory transition page (not silent redirect)
+- All settings links deep-link to ?tab=agent&subtab=remote-invocation
+- Zero open RAI items. Feature is launch-ready.
 
 ## Remote Agent Invocation — Decision (2026-03-30 11:27 AM KL — Nick locked)
 - DECISION: Replacing manual text-submission web path with Remote Agent Invocation (Option 1)

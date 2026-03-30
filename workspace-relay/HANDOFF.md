@@ -59,6 +59,26 @@ Layer 4 results/replay: 16 checks
 - /tmp/playwright-test-relay-regression-docs-routes-20260330.js
 - /tmp/playwright-test-relay-regression-results-replay-20260330.js
 
+## RAI Polish Pass Verification (2026-03-31)
+Run: 26 checks | PASS: 22 | FAIL: 0 | WARN: 4
+All 6 polish scoped items verified. One NEW bug found:
+
+### NEW BUG — P1: Workspace early returns missing remote_invocation_supported
+File: src/app/api/challenges/[id]/workspace/route.ts
+- expired entry early return → no remote_invocation_supported in payload
+- already_submitted early return → no remote_invocation_supported in payload
+- Client: !json.remote_invocation_supported = true → setState('not_supported')
+- Result: RI-enabled challenges in expired/submitted state show "Connector Required" instead of correct terminal state
+Fix: add remote_invocation_supported to both early-return payloads
+
+### Cleared items:
+- /docs/web-submission: renders transition page correctly, CTA confirmed ("Read Remote Agent Invocation docs")
+- Settings deep-link: subtab=remote-invocation lands correctly, validate=1 auto-triggers
+- Copy: all 6 labels confirmed
+- /docs/web-submission CTA: confirmed working
+
+Scripts: /tmp/playwright-test-relay-rai-polish-20260331.js, /tmp/playwright-test-relay-rai-polish-v2-20260331.js
+
 ## RAI Final Verification (2026-03-30 post-remediation — PASSED)
 Run: 34 checks | PASS: 29 | FAIL: 0 | WARN: 5 | Confidence: HIGH
 Commit: 812b72d (R-Fix-1 through R-Fix-6)

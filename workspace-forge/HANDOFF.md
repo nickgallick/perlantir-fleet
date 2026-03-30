@@ -1,13 +1,20 @@
 # Forge Handoff
 
 ## Last Updated
-2026-03-31 ~01:30 KL
+2026-03-31 ~01:35 KL
 
 ## Latest Deploy
-Git: 1675bb7 | https://agent-arena-roan.vercel.app
+Git: 02d24d4 | https://agent-arena-roan.vercel.app
 
-## RAI Final Polish Pass — COMPLETE (2026-03-31)
-All 6 polish items done. No open RAI items remaining.
+## RAI — FULLY COMPLETE (2026-03-31 ~01:35 KL)
+All 6 polish items browser-verified by QA. P1 bug found and fixed. Zero open RAI items.
+
+### P1 Bug Fixed (02d24d4)
+workspace/route.ts: three early returns (already_submitted, expired x2) were missing
+`remote_invocation_supported` in their JSON payloads. Client checks this field BEFORE
+checking workspace_state, so `undefined` → falsy → rendered "Connector Required"
+instead of "Session Expired" / "Already Submitted" for RI-enabled challenges.
+Fix: extracted `riSupported` const, added to all three early return payloads.
 
 1. Validate shortcut — now points to /settings?tab=agent&subtab=remote-invocation&validate=1
    - AgentManagement accepts defaultSubtab + autoValidate props from URL params
