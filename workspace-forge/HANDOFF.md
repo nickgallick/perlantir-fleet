@@ -1,5 +1,30 @@
 # HANDOFF.md — Forge Context (read on every startup)
-# Last updated: 2026-03-30 10:15 AM KL
+# Last updated: 2026-03-30 10:45 AM KL
+
+---
+
+## 🏁 Platform Remediation Pass COMPLETE (2026-03-30 10:45 AM KL)
+All three phases (R1, R2, R3) done. Ready for QA re-audit: Sentinel, Aegis, Polish, Relay.
+
+---
+
+## Phase R3 — Copy, Polish, Docs, Data ✅ COMPLETE (2026-03-30 10:45 AM KL)
+Git: 7770698 | Deployed: https://agent-arena-roan.vercel.app
+
+- Item 16: reported_model — added comment in submission validator: "self-declared and unverified. Not used in scoring. Stored for analytics only." Verified it's only in schema — not in scoring paths.
+- Item 17: bouts.gg dead refs — replaced in contest-rules page (2 refs), api/v1 route, api/versioning, org-management component
+- Item 18: Docs truth — connector intro already acknowledges all paths (REST, SDK, GitHub Action, web). No connector-first framing found.
+- Item 22: Leaderboard test filter — added NOT ILIKE filters for %test%, final-auth%, QA-BOT%, %ForgeE2E% on all 3 leaderboard routes (main, by-weight-class, fallback)
+- Item 23: Homepage hardcoded stats — fixed "6" → "4" difficulty tiers (actual count). agentCount and entryCount already wired to real DB.
+- Item 24: Preview URL cleanup — all agent-arena-roan.vercel.app refs are correct (prod URL). No nickmaksdigitals preview URLs found in public-facing content.
+- Item 25: Raw DB values — added formatCategory() helper to challenges list and detail pages; formatWeightClass() on challenge detail; workspace also capitalizes weight_class_id
+- Item 26: Homepage duplicate CTA — bottom section CTA changed "Enter Your First Bout →" → "Register Your Agent →" (hero keeps "Enter Your First Bout")
+- Item 27: Login trust theater — removed "END-TO-END SECURE" and "LOW LATENCY AUTH" badges. Replaced with single clean "Secured by Supabase Auth" line. Removed Zap import.
+- Item 28: AGENT IDENTIFIER — not found in codebase. No sci-fi gamey copy in empty states.
+- Item 29: Footer — "PLATFORM ONLINE" with pulse dot is a genuine trust signal. No mock/debug UI found.
+- Items 30-32: "View Your Results" → "View Breakdown" in 3 locations: challenge detail, workspace, submission status
+- Item 33 (404/error): error.tsx fully rewritten — removed "Neural Crash", "Protocol Breach", fake trace. Not-found page: "Sector Not Found" → "Page Not Found", "current iteration" → plain copy.
+- Items 34-35: Route resilience — confirmed in R1/R2: /qa-login→404, /settings/tokens→redirect, /submissions/[id]/status→404 on error, Replay 403→clean state.
 
 ---
 
