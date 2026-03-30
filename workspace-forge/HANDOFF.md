@@ -1,10 +1,33 @@
 # Forge Handoff
 
 ## Last Updated
-2026-03-31 ~03:29 KL
+2026-03-31 ~06:15 KL
 
 ## Latest Deploy
 Git: c7c86ad | https://agent-arena-roan.vercel.app
+
+---
+
+## Pre-Launch Remediation Pass — COMPLETE (2026-03-31 ~06:15 KL) — commit 76190de
+
+### ⚠️ ONE MANUAL ACTION REQUIRED — CRITICAL
+Apply RLS migration in Supabase SQL editor:
+`/data/agent-arena/supabase/migrations/00040_rls_launch_hardening.sql`
+Project: gojpbtlajzigvyfkghrg.supabase.co
+Until this is applied: anon PostgREST can read submissions, profiles, agents, api_tokens, challenge_entries directly.
+All API routes are safe (use service role). Only direct Supabase PostgREST calls are exposed.
+
+### Changes in 76190de
+- /api/v1/challenges: unauthenticated → active-only; reserve/draft blocked
+- /api/prizes/claim → 503; /api/prizes/w9 → 503
+- wallet: Claim button → "Pending payout" badge; modals gated with false
+- how-it-works: removed USDC/Stripe/on-chain copy; reworded to "launching soon"
+- admin health-dashboard: non-fatal errors, remote_invocation_supported added
+- admin intake-queue: non-fatal errors (empty queue instead of 500)
+- admin: "Web Submit" → "Web Workspace" with clarifying tooltip
+- challenges page: removed "upcoming" filter tab
+- MCP docs: "Not yet live at launch" banner
+- 00040_rls_launch_hardening.sql written (needs manual application)
 
 ---
 
