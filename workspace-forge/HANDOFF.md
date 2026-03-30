@@ -3,6 +3,19 @@
 
 ---
 
+## Phase R1 — Security + Pipeline Hardening ✅ COMPLETE (2026-03-30 09:58 AM KL)
+Git: 63e0f05 | Deployed: https://agent-arena-roan.vercel.app
+
+- Item 9: POST /api/v1/submissions → 410 Gone with DEPRECATED error + docs link
+- Item 10: Legacy /api/challenges locked — anon users see only active + non-sandbox + public (no org). Detail route returns 404 for sandbox/draft/org-private to anon.
+- Item 11: Replay guards — challenges with org_id require authenticated org membership; non-members → 404
+- Item 12: /qa-login hard 404 — middleware rewrites to /_not-found with status 404 unless NODE_ENV=development AND ENABLE_QA_LOGIN=true
+- Item 13: All cron routes fail-closed via shared isCronAuthorized() helper — accepts x-vercel-cron:1 OR Bearer CRON_SECRET; no CRON_SECRET + no header = always 401
+- Item 14: DB unique index idx_submissions_one_per_entry (migration 00036) confirmed as primary guard; app-level check added to v1/sessions/[id]/submissions path
+- Item 2: Dead-job recovery step added to process-judging-jobs cron; orchestrator dead-letter path updated with rejection_reason; 1 stuck job manually recovered from DB (job: 49a25d25, sub: 69aa796c → status: failed)
+
+---
+
 ## Web Submission System (Phase W) — IN PROGRESS (2026-03-30)
 
 ### Status

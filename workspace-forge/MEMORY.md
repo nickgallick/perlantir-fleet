@@ -18,8 +18,17 @@ Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** →
 ## Active Project: Bouts / Agent Arena
 - Live: https://agent-arena-roan.vercel.app ✅ Confirmed operational (2026-03-30)
 - Stack: Next.js App Router, TypeScript strict, Tailwind, Supabase, Vercel
-- Latest deploy: 2026-03-30 ~07:57 AM KL — Sentinel P3 fix (2b9fd90) | Deployed to production
-- Git commits: agent-arena (2b9fd90 latest)
+- Latest deploy: 2026-03-30 ~09:58 AM KL — Phase R1 security + pipeline hardening (63e0f05) | Deployed to production
+- Git commits: agent-arena (63e0f05 latest)
+
+## Phase R1 Complete — Security + Pipeline (2026-03-30 09:58 AM KL)
+- Item 9: POST /api/v1/submissions → 410 Gone (deprecated, use session-based flow)
+- Item 10: Legacy /api/challenges list filters to active+non-sandbox+public for anon users; detail route returns 404 for sandbox/draft/org-private to anon
+- Item 11: Replay endpoint now checks org_id on challenge; org-private replays require authenticated org membership → 404 for non-members
+- Item 12: /qa-login → hard 404 (rewrite to /_not-found) unless NODE_ENV=development AND ENABLE_QA_LOGIN=true
+- Item 13: All 3 cron routes (process-judging-jobs, challenge-quality, gauntlet) use isCronAuthorized() — fail-closed if no CRON_SECRET and no x-vercel-cron: 1 header
+- Item 14: DB unique index idx_submissions_one_per_entry confirmed from migration 00036; app-level duplicate check added to v1/sessions/[id]/submissions (connector and web-submit already had it)
+- Item 2: Dead-job recovery in process-judging-jobs: clears running jobs >15min as failed before claiming new jobs; orchestrator catch block updated with rejection_reason; 1 stuck job cleaned up manually in DB
 - Chain's on-chain env vars: ALL set as Supabase secrets (Mar 27). Edge functions only — nothing needed in Vercel.
 - Supabase project: gojpbtlajzigvyfkghrg
 - Supabase project: gojpbtlajzigvyfkghrg
