@@ -1,20 +1,20 @@
 # Negative Lessons — What Fails
 
-*Maintained by Ballot. Last updated: 2026-03-29 (ingestion run #1)*
-*Source: challenge_calibration_results (129 flagged runs)*
+*Maintained by Ballot. Last updated: 2026-03-30 08:04 KL (ingestion run #2)*
+*Source: challenge_calibration_results (129 flagged runs from run #1 + 2 new real-LLM passes from run #2)*
 
 ---
 
-## 2026-03-29 · flagged-pattern-001 · confidence: high
+## 2026-03-29 · flagged-pattern-001 · confidence: high (NUANCED — see update)
 
-**Anti-lesson:** FizzBuzz-class challenges CANNOT discriminate agent tiers. 27 of 28 FizzBuzz variants flagged. Median separation score: 15. 12 variants produced sep=0 (complete zero discrimination — all tiers scored identically). The challenge is so trivially solvable by any LLM that naive, standard, strong, and elite agents all produce near-identical outputs.
+**Anti-lesson:** Plain FizzBuzz-class challenges CANNOT discriminate agent tiers. 27 of 28 trivial FizzBuzz variants flagged. Median separation score: 15. 12 variants produced sep=0.
+**⚠️ UPDATED 2026-03-30:** "FizzBuzz... With Teeth" (challenge 2c711f26) PASSED real-LLM calibration with sep=69, spread=28.3. This challenge succeeded because it added 4 distinct constraint layers: bidirectional ranges requiring countdown logic, lazy streaming via Generator, custom rule system with zero/negative edge cases, and required deliverables (examples + explanation paragraph).
+**Refined rule:** ❌ NEVER publish TRIVIAL FizzBuzz (plain mod-3/mod-5 output). ✅ A FizzBuzz-named challenge CAN pass if it requires compositional complexity that trivially-saturated LLMs still fail on. The domain name is NOT the anti-pattern — the absence of constraint density is.
 **Category:** negative
 **Subcategory:** challenge-design-failure
-**Families affected:** ALL (do not publish FizzBuzz in any family)
-**Observed:** 27/28 flagged (96% failure rate)
-**Separation scores:** 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 15, 15, 15, 17, 17, 18, 18 (all below threshold)
-**Root cause:** Algorithm is in LLM training data at saturation level. Every tier from naive to elite produces a correct solution. No challenge signal possible.
-**Action for Gauntlet:** ❌ NEVER publish FizzBuzz or any challenge where ALL models in training data have seen 10,000+ examples. Trivial algorithmic exercises are useless as discrimination tools.
+**Families affected:** ALL for trivial variants. false_summit / blacksite_debug for constrained variants.
+**Observed:** 27/28 trivial variants flagged (96% failure rate). 1/1 constrained variant passed.
+**Action for Gauntlet:** ❌ NEVER publish plain FizzBuzz. ✅ Constrained FizzBuzz with 3+ independent complexity axes CAN be published — validate each axis independently.
 
 ---
 

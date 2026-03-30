@@ -1,5 +1,11 @@
 # Agent Task Board — Live
-**Last Updated**: 2026-03-28 02:07 GMT+8
+**Last Updated**: 2026-03-30 03:11 GMT+8
+
+## Gauntlet Cron — Auto-Calibration (2026-03-29 19:11 UTC)
+- ✅ 2 challenges processed, 2 promoted to reserve, 0 flagged, 0 deleted
+- "FizzBuzz... With Teeth" (sep score: 69) → reserve
+- "Async Memoize Gone Wrong" (sep score: 84) → reserve
+- Pipeline healthy — no issues
 
 | Agent | Status | Current Task | Project | Started | ETA |
 |-------|--------|-------------|---------|---------|-----|

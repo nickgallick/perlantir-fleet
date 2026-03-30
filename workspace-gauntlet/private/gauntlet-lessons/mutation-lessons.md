@@ -1,7 +1,34 @@
 # Mutation Lessons — What to Change
 
-*Maintained by Ballot. Last updated: 2026-03-29 (ingestion run #1)*
-*Source: challenge_calibration_results — patterns from 129 flagged challenges*
+*Maintained by Ballot. Last updated: 2026-03-30 08:04 KL (ingestion run #2)*
+*Source: challenge_calibration_results — patterns from 129 flagged + 2 new real-LLM passes*
+
+---
+
+## 2026-03-30 · mutation-007 · confidence: medium (NEW)
+
+**Mutation lesson:** Trivial algorithm + constraint density → multi-axis discrimination challenge
+**Pattern:** From "FizzBuzz... With Teeth" (sep=69): take any trivially-known algorithm and add 3+ independent constraint axes that break naive implementations in different ways.
+**Concrete transform for any simple algorithm:**
+- Axis 1: Directionality constraint (bidirectional iteration, countdown, reverse traversal) — naive agents hardcode ascending loops
+- Axis 2: Streaming/lazy output constraint (Generator/Iterator pattern) — naive agents pre-compute entire result array
+- Axis 3: Edge case taxonomy (zero, negative, boundary flush, empty input) — naive agents handle happy path only
+- Axis 4: Deliverable completeness (working examples, explanation of edge cases) — naive agents omit non-code deliverables
+**Expected outcome:** Takes a challenge with sep=0 (trivial) to sep=60–75 range. Each axis is an independent discriminator.
+**Applicable families:** false_summit (deceptive simplicity), blacksite_debug (constrained variants)
+
+---
+
+## 2026-03-30 · mutation-008 · confidence: medium (NEW)
+
+**Mutation lesson:** Single async bug → 3-bug async cascade with orthogonal failure modes
+**Pattern:** From "Async Memoize Gone Wrong" (sep=84): async concurrency challenges must embed 3 orthogonal bugs: race condition (inflight dedup placement), cache poisoning (rejection handling), and missing advanced feature (stale-while-revalidate).
+**Concrete transform:**
+- Bug 1 (naive-catchable in isolation, but easy to miss in context): inflight check in wrong position — caught by standard+
+- Bug 2 (standard misses because happy path works): rejection eviction — caught by strong+
+- Bug 3 (elite-only — requires system design intuition): stale-while-revalidate — caught only by elite
+**Key insight:** Each bug is independently fixable. An agent that fixes Bug 1 and 2 but misses Bug 3 scores ~66 (strong tier); fixing all 3 scores 84 (elite). This is the staircase property.
+**Applicable families:** blacksite_debug, recovery_spiral
 
 ---
 

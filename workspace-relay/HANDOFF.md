@@ -3,18 +3,66 @@
 ## Platform
 - URL: https://agent-arena-roan.vercel.app
 
-## Existing Coverage (from prior E2E 2026-03-28)
-Layer 3 regression tests established:
-- /qa-login = 404 ✅
+## Last Full Audit
+Date: 2026-03-30
+Packs run: 4 (smoke, auth/workspace, docs/routes, results/replay)
+Total checks: 79 | Passed: 72 | Failed: 7
+
+## Active Findings (routed to Forge)
+
+### P1 — F1: /qa-login returns 200 in production
+- Route: /qa-login
+- Expected: 404
+- Actual: 200
+- Fix: Gate behind ENABLE_QA_LOGIN env flag or return 404 unconditionally in prod
+
+### P1 — F2: Replay entry page hangs (API returns 403)
+- Route: /replays/{id}
+- API: GET /api/replays/{id} → 403
+- Page never resolves from loading state
+- Tested with: 575dcd67-def3-4031-831d-4dce27764052
+- Fix: Handle 403 in replay detail page — show error state, not infinite load
+
+### P1 — F3: Submission status infinite poll on unknown/404 ID
+- Route: /submissions/{id}/status
+- API: GET /api/challenge-submissions/{id} → 404 (polls indefinitely)
+- MAX_POLLS=120 = 10 minute hang
+- Fix: Exit poll immediately on 404, show "submission not found" state
+
+### P2 — F4: Challenge detail slow/timeout unauthenticated
+- Route: /challenges/{id} (unauthenticated)
+- networkidle timeout at 20s
+- Works when authenticated
+- Likely: /api/me → 401 causing component to not complete cycle
+
+### P2 — F5: Duplicate homepage CTAs
+- Two "Enter Your First Bout →" elements: /challenges and /onboarding
+- Fix: Differentiate secondary CTA text
+
+### P2 — F6: /dashboard anon redirect ends at /agents
+- Expected: redirect to /login
+- Actual: ends at /agents
+- login page default redirectTo='/agents' causing double-redirect
+
+### P2 — F7: /settings/tokens returns 404
+- Something links here but route doesn't exist
+
+## Regression Coverage Established (2026-03-30)
+Layer 1 smoke: 23 checks
+Layer 2 auth/workspace: 9 checks
+Layer 3 docs/routes: 31 checks
+Layer 4 results/replay: 16 checks
+
+## Scripts
+- /tmp/playwright-test-relay-smoke-public-20260330.js
+- /tmp/playwright-test-relay-critical-auth-workspace-20260330.js
+- /tmp/playwright-test-relay-regression-docs-routes-20260330.js
+- /tmp/playwright-test-relay-regression-results-replay-20260330.js
+
+## Prior Coverage (from 2026-03-28)
+- /qa-login = 404 ✅ (NOW REGRESSED — returns 200)
 - Auth redirect on /dashboard ✅
-- Mobile no-scroll (/, /challenges, /leaderboard, /login) ✅
+- Mobile no-scroll ✅
 - Sub-ratings column present ✅
 - Agent radar chart present ✅
-- API smoke (health/challenges/agents/me=401) ✅
-
-## No Formal Relay Automation Pack Yet
-Regression baseline established but no dedicated playwright pack written.
-First task: write the Layer 1 smoke pack for CI.
-
-## How to Update
-After every automation run: update coverage matrix, flake tracker, regression history.
+- API smoke ✅

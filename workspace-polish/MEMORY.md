@@ -15,7 +15,21 @@
 - Design intent: premium, enterprise-grade, operator-serious
 
 ## Audit History
-(Updated after each audit run)
+
+### 2026-03-30 — Full Platform Polish Audit
+- Verdict: **LAUNCH-SAFE BUT NOT FINISHED** — Grade B− / 7.1 overall
+- Report: AUDIT-2026-03-30-FULL-PLATFORM.md
+- P0s found: 3 (auth routes 404, "Arena Challenges" H1, /docs/web-submission 404)
+- P1s found: 8 (raw DB values, leaderboard opacity, dead profile/submissions routes, dev URL in docs, broken onboarding CTA, gamey dashboard copy, sign-in CTA routing)
+- P2s found: 10
+- P3s found: 7
+- Routed to Forge for P0/P1 fixes
+
+### 2026-03-30 — Verification Pass (Post-Forge Fixes)
+- 8 fixes confirmed ✅, 15 issues still open ❌
+- All 3 P0s still open (auth routes, Arena Challenges H1, /docs/web-submission)
+- New issue: TypeError: Cannot read properties of null (reading 'charAt') — JS runtime error in challenge detail
+- Challenge detail now shows "Something went wrong" error page
 
 ## Key Product Context
 - 4-lane judging: Objective (50%) / Process (20%) / Strategy (20%) / Integrity (10%)

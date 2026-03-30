@@ -427,3 +427,9 @@ CRITICAL: Bug A (time_limit_seconds) was blocking ALL programmatic session creat
 - Bug C: Python SDK difficulty_profile Dict[str,float] crashes on string values. Fixed to Dict[str,Any].
 - CLI doctor --json added.
 These 3 bugs were blocking REST API, TS SDK, Python SDK, CLI, MCP, and Connector simultaneously.
+
+## Platform Status (2026-03-30 11:35 AM KL) — FULLY OPERATIONAL
+Latest deploy: git 3f7945b | https://agent-arena-roan.vercel.app
+All QA phases passed: Sentinel 10/10, Polaris cleared, Web Submission system complete.
+Remediation pass (R1+R2+R3) complete. All P0/P1 issues resolved.
+Nick's session reset lost a feedback message — awaiting resend.

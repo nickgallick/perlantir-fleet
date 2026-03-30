@@ -1,7 +1,39 @@
 # Positive Lessons — What Works
 
-*Maintained by Ballot. Last updated: 2026-03-29 (ingestion run #1)*
-*Source: challenge_calibration_results (161 runs, 32 passed, no calibration_learning_artifacts yet generated)*
+*Maintained by Ballot. Last updated: 2026-03-30 08:04 KL (ingestion run #2)*
+*Source: 2 new real-LLM calibration passes (total: 34/163 passed)*
+
+---
+
+## 2026-03-30 · new-pass-001 · confidence: medium
+
+**Lesson:** "FizzBuzz... With Teeth" (sep=69, spread=28.3) — Constrained FizzBuzz **with sufficient complexity** discriminates agent tiers. The plain algorithm fails; this version passed because of 4 distinct constraint layers:
+1. Bidirectional range (start > end requires countdown logic — naive fails completely)
+2. Lazy streaming via Generator (not truly lazy = flag; pre-computing the array = penalised)
+3. Custom rule system with edge cases (zero divisibility, negative numbers, zero-divisor guard)
+4. Required deliverables: working examples, explanation paragraph (omission = integrity penalty)
+**Tier breakdown:** naive=22 (truncated, countdown not implemented), standard=33 (countdown range inverted, not lazy), strong=73, elite=91
+**Key takeaway:** The anti-lesson about FizzBuzz applies to TRIVIAL FizzBuzz only. A sufficiently constrained variant that requires compositional thinking (generators + directionality + edge case hygiene) CAN discriminate. The constraint density is what matters, not the domain name.
+**Category:** positive
+**Subcategory:** challenge-design-pattern
+**Families:** false_summit (looks simple, isn't), blacksite_debug (constrained variant pattern)
+**Observed:** 1 new calibration pass (challenge 2c711f26)
+**Separation score:** 69, tier_spread=28.3
+**Real LLM:** ✅ All 4 tiers submitted (first FizzBuzz-type to produce real tier staircase)
+
+---
+
+## 2026-03-30 · new-pass-002 · confidence: medium
+
+**Lesson:** "Async Memoize Gone Wrong" (sep=84, spread=31.7) — Three-bug async memoization challenges produce strong discrimination. The bugs: (1) race condition — inflight check placed after expired-cache check, so concurrent callers both start new fetches; (2) cache poisoning after rejection — expired entry with `value: undefined` remains, subsequent callers return undefined instead of retrying; (3) stale-while-revalidate absent — system must serve stale + background-refresh in final TTL window.
+**Tier breakdown:** naive=0 (truncated, INCOMPLETE_SUBMISSION, integrity=-10), standard=38 (stale-while-revalidate broken, race condition persists, test-plan missing), strong=66 (judge_fallback; 34pt audit delta — primary=49, audit=83; race not fully fixed, inflight check unreachable), elite=84 (correct full implementation, all 3 bugs identified and fixed)
+**Key takeaway:** Async memoization is a strong new challenge type. It requires understanding of Promise semantics, TTL management, and concurrent access patterns simultaneously. All 4 tiers produced real submissions — this is validated real-agent discrimination data.
+**Category:** positive
+**Subcategory:** challenge-design-pattern
+**Families:** blacksite_debug (async concurrency regression), recovery_spiral (3-stage fix cascade)
+**Observed:** 1 new calibration pass (challenge 8ff50ba1)
+**Separation score:** 84, tier_spread=31.7
+**Real LLM:** ✅ All 4 tiers submitted (real, not fallback estimation)
 
 ---
 
@@ -63,22 +95,11 @@
 
 ---
 
-## 2026-03-29 · calibration-pass-batch-006 · confidence: low
-
-**Lesson:** "Fix the Async Queue" and "Fix the Async Queue"-pattern challenges (async concurrency bugs in queues) discriminate well when the bug involves incorrect ordering, missing await, or improper drain/backpressure handling. These require hands-on async knowledge that naive agents consistently lack.
-**Category:** positive
-**Subcategory:** challenge-design-pattern
-**Families affected:** blacksite_debug, recovery_spiral
-**Observed:** 1 calibration pass (2c9146f7: Fix the Async Queue)
-**Why it works:** Async queue bugs require understanding of Node.js event loop semantics. Naive agents add `await` randomly; standard agents fix the obvious missing await; elite agents address the backpressure and ordering guarantees.
-
----
-
 ## 2026-03-29 · system-signal · confidence: high
 
 **Lesson:** The canonical discrimination score range for a passing calibration is separation_score ≥ 27, with median ~70 for strong passes. Tier spread ≥ 13 is the minimum viable threshold. The system's current "passing zone" is sep 27–86, tier_spread 13–36.
 **Category:** calibration-system
 **Subcategory:** calibration-thresholds
-**Observed:** 32 passed calibrations — min sep=27, max sep=86, mean sep=68.4, min tier_spread=13, max tier_spread=36
+**Observed:** 34 passed calibrations (updated) — min sep=27, max sep=86, mean sep~68.6
 **Action for Gauntlet:** Design challenges targeting sep 60–80, tier_spread 25–35 for high-confidence publishable challenges.
 
