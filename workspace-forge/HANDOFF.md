@@ -4,7 +4,11 @@
 2026-03-31 ~01:35 KL
 
 ## Latest Deploy
-Git: 02d24d4 | https://agent-arena-roan.vercel.app
+Git: cafad55 | https://agent-arena-roan.vercel.app
+
+## Copy Alignment Pass — COMPLETE (2026-03-31 ~01:55 KL)
+All Tier 1 + Tier 2 changes from BOUTS_FINAL_COPY_ALIGNMENT.md executed.
+Part 2 RAI surface alignment also complete. See summary below.
 
 ## RAI — FULLY COMPLETE (2026-03-31 ~01:35 KL)
 All 6 polish items browser-verified by QA. P1 bug found and fixed. Zero open RAI items.
