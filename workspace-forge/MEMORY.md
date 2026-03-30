@@ -15,7 +15,7 @@
 ## Pipeline Position
 Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** → QA → Launch
 
-## Ballot Ingestion Stats (last updated: 2026-03-30 20:04 KL — run #3)
+## Ballot Ingestion Stats (last updated: 2026-03-31 02:04 KL — run #4)
 - Total calibration_results: 163 | Passed: 33 | Flagged: 129 | Calibrating: 5
 - Total challenges: 187 (all pipeline_status=draft)
 - ballot_lesson_entries in DB: 28 (positive: 7, negative: 7, mutation: 6, calibration_system: 6, family_health: 2)
@@ -25,12 +25,46 @@ Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** →
 - generate_learning_artifact() DB trigger still not firing — Ballot in fallback synthesis mode
 - Lesson files: positive, negative, mutation, calibration-system, family-health, all 6 family files, index.json — all current
 - Last ingestion with new data: 2026-03-30 08:04 AM KL (run #2, 2 new real-LLM passes)
-- Runs #2 and #3 are complete. Run #3 confirmed no new data since 2 PM KL.
+- Runs #3 and #4 confirmed no new data. System stable.
+
+## Free-at-Launch Pass — COMPLETE (2026-03-31 03:20 KL)
+Two-commit pass executed. Bouts is now fully free at launch with zero payment or gaming friction.
+
+### Commit 0818dc1 — Payment surfaces disabled
+- POST /api/challenges/[id]/checkout → 503 (inert, never creates Stripe session)
+- POST /api/webhooks/stripe → always {received:true}, no processing
+- POST /api/stripe/connect/onboard → 503
+- GET /api/stripe/connect/return → safe redirect to /wallet
+- enter-challenge-button: paid checkout branch removed; always free path
+- wallet page: bank connect CTA removed, "Payouts coming soon" note added
+- challenge detail: Entry Fee tag hardcoded to "Free", fee breakdown copy removed
+- challenge card: entry fee badge suppressed
+- how-it-works: cost FAQ + payout copy rewritten for free launch
+
+### Commit c7c86ad — Betting/gaming framing removed
+- /legal/responsible-gaming → redirect to /legal/terms
+- /legal/contest-rules → redirect to /legal/terms
+- Footer: gaming disclaimer bar removed (helplines, 18+, void-in-state), RG + Contest Rules links removed
+- Onboarding: full rewrite — removed DOB, state dropdown, age gate, restricted state block, 6-checkbox compliance wall; now: name + Terms + Privacy only
+- Middleware: US state geo-blocking (WA/AZ/LA/MT/ID) removed; OFAC blocking retained
+- /unavailable: OFAC-only copy
+- Wallet: restricted-state copy removed
+
+### Intentionally inert (not deleted)
+- src/lib/stripe.ts — functional but unreachable from UI
+- entry-fee-modal.tsx — not imported anywhere
+- Wallet W9/claim flow — retained for future payout system
+
+### Post-launch deferred cleanup
+- Remove entry-fee-modal.tsx
+- Re-enable Stripe Connect + webhook when paid challenges ship
+- Un-hardcode Entry Fee = "Free" tag
+- Re-add state geo-blocking if paid contests return
 
 ## Active Project: Bouts / Agent Arena
 - Live: https://agent-arena-roan.vercel.app ✅ Confirmed operational (2026-03-31)
 - Stack: Next.js App Router, TypeScript strict, Tailwind, Supabase, Vercel
-- Latest deploy: 2026-03-31 ~01:35 KL — RAI P1 bug fix: workspace early returns (02d24d4)
+- Latest deploy: 2026-03-31 ~03:20 KL — free-at-launch pass (c7c86ad)
 - CRITICAL FIX (78f741e): lane-runner was sending submission_id to edge functions that require entry_id → match_results were never written. Fixed.
 - Fix A (2c9eaa5): @bouts/connector@0.1.2 published to npm. submitSolution() uses /api/connector/submit. Package renamed from arena-connector → @bouts/connector.
 - Fix B (565886b): GitHub Action makeIdempotencyKey(sessionId) — aligns with Python SDK pattern.
