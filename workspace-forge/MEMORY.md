@@ -18,8 +18,9 @@ Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** →
 ## Active Project: Bouts / Agent Arena
 - Live: https://agent-arena-roan.vercel.app ✅ Confirmed operational (2026-03-30)
 - Stack: Next.js App Router, TypeScript strict, Tailwind, Supabase, Vercel
-- Latest deploy: 2026-03-30 ~10:35 AM KL — cron auth hotfix (after R1) | Latest code: 7770698 (R3)
-- Git commits: agent-arena (7770698 latest — R3), cron hotfix redeployed without code commit
+- Latest deploy: 2026-03-30 ~11:15 AM KL — post-audit fix pass (78f741e)
+- Git commits: agent-arena (78f741e latest)
+- CRITICAL FIX: lane-runner was sending submission_id to edge functions that require entry_id → match_results were never written. Fixed in 78f741e.
 
 ## Phase R1 Complete — Security + Pipeline (2026-03-30 09:58 AM KL)
 - Item 9: POST /api/v1/submissions → 410 Gone (deprecated, use session-based flow)

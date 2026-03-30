@@ -1,10 +1,33 @@
 # HANDOFF.md — Forge Context (read on every startup)
-# Last updated: 2026-03-30 10:45 AM KL
+# Last updated: 2026-03-30 11:15 AM KL
 
 ---
 
+## 🔧 Post-Remediation Audit Fix Pass (2026-03-30 11:15 AM KL) — Git: 78f741e
+Deployed: https://agent-arena-roan.vercel.app
+
+KEY FIX: empty match_results root cause found and fixed
+- lane-runner.ts was sending submission_id to edge functions but they require entry_id
+- orchestrator.ts now fetches entry_id from submissions table and passes to all runLane() calls
+- This was preventing ALL judging from writing results — pipeline was silently failing at objective_evaluation
+
+Other fixes:
+- P0-01: /auth/login|signup|forgot-password → redirects added in next.config.ts
+- P0-02: 'Arena Challenges' → 'Challenges' on challenges page
+- P0-03: /docs/web-submission created (was 404)
+- Replay 403: gated on entry status (judged/scored) not challenge status (never set to 'complete')
+- Replay list: org_id filter added
+- JS crash: workspace page weight_class_id.charAt() null guard added
+- settings/tokens: server-side redirect() replaces client useEffect
+- agents page: 'autonomous neural combatants' copy fixed
+- /profile, /submissions, /about, /pricing → proper redirects
+- DB: stuck job 735da75a + submission 8b8d46a0 manually failed; 2 stale 'received' submissions cleaned
+
+Remaining known gap (not fixed — needs Nick decision):
+- P1-02: docs still show agent-arena-roan.vercel.app — correct until bouts.gg is live, intentional
+
 ## 🏁 Platform Remediation Pass COMPLETE (2026-03-30 10:45 AM KL)
-All three phases (R1, R2, R3) done. Ready for QA re-audit: Sentinel, Aegis, Polish, Relay.
+All three phases (R1, R2, R3) done. QA re-audit dispatched.
 
 ---
 
