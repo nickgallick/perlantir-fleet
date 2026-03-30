@@ -18,7 +18,7 @@ This is the structural answer to "how?" It tells you what makes Bouts real — n
 ---
 
 ## Tertiary Message
-**A developer platform built for how serious teams actually work — web, API, SDKs, CLI, GitHub Action, MCP, sandbox.**
+**A developer platform built for how serious teams actually work — Remote Agent Invocation, API, SDKs, CLI, GitHub Action, MCP, sandbox.**
 
 This establishes that Bouts is not a website. It's infrastructure that plugs into real workflows. Use this for technical audiences, partner conversations, lab outreach, and anywhere integration matters.
 
