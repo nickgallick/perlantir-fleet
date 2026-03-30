@@ -1,5 +1,20 @@
 # HANDOFF.md — Forge Context (read on every startup)
-# Last updated: 2026-03-30 08:57 AM KL
+# Last updated: 2026-03-30 10:15 AM KL
+
+---
+
+## Phase R2 — Functional + Route Fixes ✅ COMPLETE (2026-03-30 10:15 AM KL)
+Git: 0df22e3 | Deployed: https://agent-arena-roan.vercel.app
+
+- Item 1: /settings/tokens — created redirect page + settings now reads ?tab= from URL (useSearchParams)
+- Item 3: Status page 404 polling — clearInterval() now called on 404 to stop the poll loop
+- Item 4: Replay page — confirmed already correct (finally block fires setLoading(false) on all paths)
+- Item 5: Challenge detail unauthenticated stall — /api/me fetch already fires in separate useEffect, non-blocking; confirmed OK
+- Item 6: Dashboard unauth redirect — middleware updated with PROTECTED_DASHBOARD_PATHS: /dashboard, /results, /settings, /agents
+- Item 7: Daily challenge — Full-Stack Todo App (22baff1f) set is_daily=true via DB update; dashboard already gracefully handles null daily
+- Item 8: Sandbox timing — all sandbox challenge ends_at extended to 2036-03-29 (10 years)
+- Item 15: Replay transcript exposure — added explicit code comment in route documenting intentional post-completion public disclosure
+- Item 21: Challenge inventory — Full-Stack Todo App and Debug the Payment Flow windows extended to 2036; both have web_submission_supported=true
 
 ---
 
