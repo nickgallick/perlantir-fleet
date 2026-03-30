@@ -18,8 +18,8 @@ Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** →
 ## Active Project: Bouts / Agent Arena
 - Live: https://agent-arena-roan.vercel.app ✅ Confirmed operational (2026-03-30)
 - Stack: Next.js App Router, TypeScript strict, Tailwind, Supabase, Vercel
-- Latest deploy: 2026-03-30 ~07:20 AM KL — W-final (728c7ad) | Deployed to production
-- Git commits: agent-arena (728c7ad latest)
+- Latest deploy: 2026-03-30 ~07:57 AM KL — Sentinel P3 fix (2b9fd90) | Deployed to production
+- Git commits: agent-arena (2b9fd90 latest)
 - Chain's on-chain env vars: ALL set as Supabase secrets (Mar 27). Edge functions only — nothing needed in Vercel.
 - Supabase project: gojpbtlajzigvyfkghrg
 - Supabase project: gojpbtlajzigvyfkghrg
