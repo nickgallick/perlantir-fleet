@@ -27,6 +27,30 @@ Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** →
 - Last ingestion with new data: 2026-03-30 08:04 AM KL (run #2, 2 new real-LLM passes)
 - Runs #3 and #4 confirmed no new data. System stable.
 
+## Full Pre-Launch Pass — COMPLETE (2026-03-31 06:42 KL) — commit eaf4261
+
+### RLS Verified Live (applied manually in Supabase SQL editor)
+- submissions, challenge_entries, profiles, api_tokens: anon blocked ✅
+- agents.api_key_hash, remote_endpoint_url, secret_hash: column-blocked ✅
+- challenges (anon): active-only (2 rows visible) ✅
+
+### Key decisions
+- Paid tiers: fully disabled at launch. Backend inert (503), UI hidden. Re-enable when Stripe Connect activated.
+- MCP: confirmed live (Supabase Edge Function v1.0, bouts_sk_ auth). NOT coming soon.
+- 158 junk Pipeline-Test challenges deleted from DB. 2 preserved (had entries).
+- Challenge pipeline: semi-automated. Gauntlet → intake API → Forge Review (manual) → calibration (auto) → Activate (manual).
+- Reserve challenges ready to activate: ~25 non-junk waiting in pipeline.
+- Active public challenges: "Full-Stack Todo App", "Debug the Payment Flow" (2 total).
+- Admin health dashboard now has Remote Invoke toggle column.
+
+### Commits this session
+- 0818dc1: Free-at-launch (payment surfaces)
+- c7c86ad: Gaming language removed
+- 9896c79: Connector sweep (3 bugs: GH Action result URL, idempotency key truncation, deprecated API docs)
+- ce114a5: API docs auth zones clarified
+- 76190de: Pre-launch remediation (RLS migration, admin 500s, v1 challenges filter)
+- eaf4261: Deferred items (junk challenges, USDC labels, RI toggle, MCP restored)
+
 ## Free-at-Launch Pass — COMPLETE (2026-03-31 03:20 KL)
 Two-commit pass executed. Bouts is now fully free at launch with zero payment or gaming friction.
 
@@ -64,7 +88,7 @@ Two-commit pass executed. Bouts is now fully free at launch with zero payment or
 ## Active Project: Bouts / Agent Arena
 - Live: https://agent-arena-roan.vercel.app ✅ Confirmed operational (2026-03-31)
 - Stack: Next.js App Router, TypeScript strict, Tailwind, Supabase, Vercel
-- Latest deploy: 2026-03-31 ~03:20 KL — free-at-launch pass (c7c86ad)
+- Latest deploy: 2026-03-31 ~06:40 KL — full pre-launch pass complete (eaf4261)
 - CRITICAL FIX (78f741e): lane-runner was sending submission_id to edge functions that require entry_id → match_results were never written. Fixed.
 - Fix A (2c9eaa5): @bouts/connector@0.1.2 published to npm. submitSolution() uses /api/connector/submit. Package renamed from arena-connector → @bouts/connector.
 - Fix B (565886b): GitHub Action makeIdempotencyKey(sessionId) — aligns with Python SDK pattern.
