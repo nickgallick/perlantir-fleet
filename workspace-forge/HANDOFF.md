@@ -1,29 +1,39 @@
 # Forge Handoff
 
 ## Last Updated
-2026-03-31 ~10:30 KL
+2026-03-31 ~10:45 KL
 
 ## Latest Deploy
-Git: 9817615 | https://agent-arena-roan.vercel.app
+Git: 9817615 | https://agent-arena-roan.vercel.app | pushed to GitHub
 
-## ⚠️ PENDING: Manual SQL migration required — Nick must apply in Supabase SQL editor
-**Migration file**: `supabase/migrations/00042_fix_rls_recursion_and_verify_columns.sql`
-**Why**: Supabase PAT expired — CLI + Management API both return 401. Cannot apply programmatically.
-**Impact without it**: 
-- `positive_signal`, `primary_weakness` on judge_outputs still missing → feedback UI derives from dimension scores (works, just no judge-populated signals)
-- `overall_verdict` on challenge_entries still missing → breakdown synthesizes from lane data (works)
-- RLS policies still have recursion in DB layer — **workaround deployed** (all profile/entry reads use adminClient in app code), authenticated flows fully restored
-- After migration: permanent DB-level fix, adminClient workarounds can be reverted
-
-**SQL to apply** (copy/paste into Supabase SQL Editor → Run):
-See full file at `/data/agent-arena/supabase/migrations/00042_fix_rls_recursion_and_verify_columns.sql`
-Key blocks:
-1. `ALTER TABLE public.judge_outputs ADD COLUMN IF NOT EXISTS positive_signal TEXT, ADD COLUMN IF NOT EXISTS primary_weakness TEXT;`
-2. `ALTER TABLE public.challenge_entries ADD COLUMN IF NOT EXISTS overall_verdict TEXT;`
-3. `CREATE OR REPLACE FUNCTION public.is_admin() RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER...`
-4. Drop and recreate all RLS policies using `public.is_admin()` instead of inline profiles subqueries
+## Migration 00042 — FULLY APPLIED ✅ (2026-03-31 ~10:40 KL)
+- Applied manually by Nick in Supabase SQL editor
+- Columns confirmed: positive_signal, primary_weakness (judge_outputs), overall_verdict (challenge_entries)
+- RLS recursion fixed at DB level via public.is_admin() SECURITY DEFINER function
+- All RLS policies rewritten — no more inline profiles subqueries
 
 ---
+
+## Session Summary — 2026-03-31 (Full Launch Remediation Pass)
+
+### All commits this session (oldest → newest):
+- `c0970ad` — Full launch remediation: P0 RLS fix, P1 provisional labels, P2 timing/dates, P3 radar, P4 admin, P5 copy
+- `56ca946` — RLS recursion workaround: all profile/entry reads use adminClient until migration 00042 applied
+- `9817615` — Fix replay route: remove missing columns from select until migration 00042 applied
+
+### What changed:
+- Migration 00042: is_admin() SECURITY DEFINER function, 3 new columns, all RLS policies rewritten
+- All API routes using profiles/entries now use adminClient (workaround + permanent pattern)
+- Replay route resilient to missing columns (gracefully null until migration applied)
+- Provisional placement labels on all surfaces (results, replay, challenge detail)
+- Year added to challenge open/close dates
+- Session-extends-past-close warning in workspace
+- 60m session label + tooltip on challenge cards
+- Admin form: Per-Entry Session label, Challenge Window Opens/Closes, sandbox + RAI checkboxes
+- Admin inventory: human action labels, StatusBadge human label map
+- How-it-works: prize language removed, leaderboard/rankings copy
+- Radar: no proxy defaults, suppressed when <3 real measured axes
+- requireAdmin() uses adminClient (fixes all admin routes)
 
 ## Session Summary — 2026-03-31 (Launch Timing + Feedback Model)
 

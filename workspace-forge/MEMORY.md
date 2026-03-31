@@ -88,7 +88,39 @@ Two-commit pass executed. Bouts is now fully free at launch with zero payment or
 ## Active Project: Bouts / Agent Arena
 - Live: https://agent-arena-roan.vercel.app ✅ Confirmed operational (2026-03-31)
 - Stack: Next.js App Router, TypeScript strict, Tailwind, Supabase, Vercel
-- Latest deploy: 2026-03-31 ~06:40 KL — full pre-launch pass complete (eaf4261)
+- Latest deploy: 2026-03-31 ~10:45 KL — full launch remediation pass complete (9817615)
+
+## Full Launch Remediation Pass — COMPLETE (2026-03-31 ~10:45 KL)
+Git: c0970ad → 56ca946 → 9817615 | Migration 00042 applied by Nick in Supabase SQL editor
+
+### Key decisions and permanent patterns:
+- **RLS fix**: public.is_admin() SECURITY DEFINER function — recursion-safe, bypasses RLS internally. All policies now use this instead of inline profiles subqueries.
+- **App pattern**: All API routes that read profiles or challenge_entries use createAdminClient() — safe (always filtered to user.id), eliminates RLS recursion risk permanently.
+- **requireAdmin()**: Uses createAdminClient() — all admin routes unaffected by future RLS changes.
+- **Replay route**: Strips optional columns (positive_signal, primary_weakness, overall_verdict) from SELECT until migration applied; UI synthesizes from lane data when null. Pattern to maintain.
+- **Provisional placement rule**: challenge_ends_at > now → show "· provisional" + "Official standings finalize when the challenge closes." challenge_ends_at ≤ now → final label only. Consistent across results, replay, challenge detail.
+- **Session-extends-past-close warning**: shown in workspace when challengeCloseMs < sessionExpiresMs AND close < 30 min away.
+- **Admin form labels**: "Challenge Window Opens/Closes (UTC)" + "Per-Entry Session (minutes)" — never "Time Limit" or "Starts/Ends At" alone.
+- **StatusBadge**: has full 30-entry human label map — never renders raw snake_case to operators.
+- **Supabase PAT**: expired as of 2026-03-31 — needs renewal for future CLI/Management API access.
+
+### Columns added (migration 00042):
+- judge_outputs.positive_signal TEXT
+- judge_outputs.primary_weakness TEXT  
+- challenge_entries.overall_verdict TEXT
+All nullable — UI gracefully handles null via synthesis from lane data.
+
+## Launch Timing + Feedback Model — COMPLETE (2026-03-31 ~08:00 KL)
+- Git: 335b23e + 1031d1a (two commits)
+- Challenge window vs per-entry session fully separated throughout codebase, UI, and docs
+- Default: 48h challenge window, 60min per-entry session
+- Dual-clock in workspace: "Your Session" timer + "Challenge Closes in Xh" — separate labels
+- PostMatchBreakdown fully rewritten: synthesized verdict (never generic filler), per-lane positive/weakness, "What to improve next" (evidence-derived, max 5), relative context with provisional label
+- Provisional placement on status page + replay — labeled explicitly, "standings finalize at close"
+- Schema: judge_outputs.positive_signal, judge_outputs.primary_weakness, challenge_entries.overall_verdict (migration 00041 — applied manually)
+- All timing copy updated: how-it-works, compete docs, quickstart, challenge-detail-header, landing current-challenge card
+- "LIVE SESSION" badge replaced with "Open — enter any time" everywhere
+- Landing current-challenge: now fetches real active challenge from API (was hardcoded stale data)
 - CRITICAL FIX (78f741e): lane-runner was sending submission_id to edge functions that require entry_id → match_results were never written. Fixed.
 - Fix A (2c9eaa5): @bouts/connector@0.1.2 published to npm. submitSolution() uses /api/connector/submit. Package renamed from arena-connector → @bouts/connector.
 - Fix B (565886b): GitHub Action makeIdempotencyKey(sessionId) — aligns with Python SDK pattern.
