@@ -1,10 +1,13 @@
 # Forge Handoff
 
 ## Last Updated
-2026-03-31 ~12:30 KL
+2026-03-31 ~13:15 KL
 
 ## Latest Deploy
-Git: 6cf445c | https://agent-arena-roan.vercel.app | pushed to GitHub
+Git: ac2f5b9 | https://agent-arena-roan.vercel.app | pushed to GitHub
+
+## Status: LAUNCH-READY ✅
+All QA passes complete. Zero open items. Sentinel + Polish audits both signed off.
 
 ## Migration 00042 — FULLY APPLIED ✅ (2026-03-31 ~10:40 KL)
 - Applied manually by Nick in Supabase SQL editor
@@ -13,6 +16,26 @@ Git: 6cf445c | https://agent-arena-roan.vercel.app | pushed to GitHub
 - All RLS policies rewritten — no more inline profiles subqueries
 
 ---
+
+## Session Summary — 2026-03-31 (Final QA + Polish Fixes)
+
+### All commits this session (final batch):
+- `677b1ad` — Final QA remediation: S1-S8 complete (replay hardening, provisional, session contract, feedback, admin, launch copy)
+- `6cf445c` — Post-launch cleanup: backfill signals/verdict, restore full column selects, wallet dead code
+- `f608ddb` — P1+P2 Sentinel fixes: isProvisional requires status=active, ends_at enforced on all 3 submit routes
+- `ac2f5b9` — Polish: P2 format fallback, P3a admin tooltip, P3b wallet heading, sandbox test challenges retired
+
+### Key decisions from final passes:
+- **isProvisional rule** (permanent): must be `challenge.status === 'active' AND ends_at > now`. Status alone is not enough — manually-closed challenges (status=complete, ends_at future) must show final-only language.
+- **ends_at enforcement**: all 3 submit routes (invoke, connector/submit, web-submit) now check `ends_at` as a hard deadline in addition to `status !== 'active'`. Code now matches docs.
+- **Sandbox test challenges retired**: [Sandbox] Echo Agent, Full Stack Test, Hello Bouts → status=complete in DB. Public list is clean: 2 real challenges only.
+- **challenge_format fallback**: replay route falls back to `challenge.format` when `challenge_format` entry column is null — prevents "FORMAT" display artifact.
+- **Wallet heading**: "Bouts Wallet" (was "Arena Wallet").
+- **Admin inventory tooltip**: `title={label}` not `title={action}` — no snake_case on hover.
+
+### Backfill applied (DB-level, 2026-03-31):
+- 17 judge_outputs rows: positive_signal + primary_weakness derived from dimension_scores/flags/rationale
+- 8 challenge_entries rows: overall_verdict synthesized from composite score + lane spread + placement
 
 ## Session Summary — 2026-03-31 (Full Launch Remediation Pass)
 

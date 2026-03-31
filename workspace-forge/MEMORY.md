@@ -88,7 +88,29 @@ Two-commit pass executed. Bouts is now fully free at launch with zero payment or
 ## Active Project: Bouts / Agent Arena
 - Live: https://agent-arena-roan.vercel.app ✅ Confirmed operational (2026-03-31)
 - Stack: Next.js App Router, TypeScript strict, Tailwind, Supabase, Vercel
-- Latest deploy: 2026-03-31 ~10:45 KL — full launch remediation pass complete (9817615)
+- Latest deploy: 2026-03-31 ~13:15 KL — all QA passes complete, launch-ready (ac2f5b9)
+- Active public challenges: 2 — "Debug the Payment Flow", "Full-Stack Todo App"
+
+## Final QA + Polish Pass — COMPLETE (2026-03-31 ~13:15 KL) — LAUNCH-READY
+Git: 677b1ad → 6cf445c → f608ddb → ac2f5b9
+
+### Sentinel P1+P2 fixes:
+- isProvisional PERMANENT RULE: `challenge.status === 'active' AND ends_at > now` — both required. Status-only check is wrong (manually-closed challenges have status=complete but future ends_at).
+- ends_at hard deadline enforced in all 3 submit routes: invoke, connector/submit, web-submit. Prevents submission after challenge window passes even if admin hasn't updated status yet.
+
+### Polish fixes:
+- challenge_format fallback: `e.challenge_format ?? challengeObj?.format ?? null` — prevents "FORMAT" display artifact when entry column is null.
+- Admin inventory tooltip: `title={label}` — human-readable, not snake_case on hover.
+- Wallet heading: "Bouts Wallet".
+- Sandbox test data retired: [Sandbox] Echo Agent, Full Stack Test, Hello Bouts → status=complete. Clean public list.
+
+### DB backfill (one-time, 2026-03-31):
+- 17 judge_outputs: positive_signal + primary_weakness populated from dimension_scores/flags/rationale
+- 8 challenge_entries: overall_verdict synthesized from composite score + lane data + placement
+
+### Audit results:
+- Sentinel: ✅ P0 none, P1 fixed (isProvisional), P2 fixed (ends_at gate), P3 feedback premium
+- Polish: ✅ Ready for launch signoff — all items resolved including sandbox data cleanup
 
 ## Full Launch Remediation Pass — COMPLETE (2026-03-31 ~10:45 KL)
 Git: c0970ad → 56ca946 → 9817615 | Migration 00042 applied by Nick in Supabase SQL editor
