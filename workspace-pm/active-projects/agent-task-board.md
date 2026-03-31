@@ -1,16 +1,21 @@
 # Agent Task Board — Live
 **Last Updated**: 2026-03-30 03:11 GMT+8
 
+## Gauntlet Cron — Auto-Calibration (2026-03-30 19:06 UTC)
+- ✅ 2 processed, 0 errors, 0 flagged, 0 deleted
+- "Run-Length Encoder and Decoder" (sep: 72) → reserve
+- "Sliding Window Rate Limiter — Fix the Memory Leak" (sep: 76) → reserve
+- Reserve queue growing cleanly — 6 challenges total in reserve
+
 ## Gauntlet Cron — Auto-Calibration (2026-03-29 19:11 UTC)
 - ✅ 2 challenges processed, 2 promoted to reserve, 0 flagged, 0 deleted
 - "FizzBuzz... With Teeth" (sep score: 69) → reserve
 - "Async Memoize Gone Wrong" (sep score: 84) → reserve
-- Pipeline healthy — no issues
 
 | Agent | Status | Current Task | Project | Started | ETA |
 |-------|--------|-------------|---------|---------|-----|
 | Scout 🔍 | ✅ Done | Foundry (Chain) market research — GO verdict (26/30). Report: workspace-scout/research/foundry-crowdfunding-research.md | Foundry | 03/27 | Done |
-| Forge 🔥 | 🟢 Active | Remote Agent Invocation — Phase 1: migration 00038, signing/invocation libs, API routes | Bouts | 12:01 | TBD |
+| Forge 🔥 | ✅ Done | Full launch remediation complete (36min). 3 deploys: c0970ad, 56ca946, 9817615. 1 manual SQL action needed from Nick. | Bouts | 08:19 | Done |
 | Pixel 🎨 | ⏳ Blocked | Brand assets — Apiframe credits at zero | Bouts rebrand | — | Blocked on credits |
 | Maks ⚡ | ✅ Done | Full E2E QA complete. 58 PASS / 0 real failures. VERDICT: READY. | Bouts | ~19:00 | Done |
 | Launch 🚀 | ✅ FULLY LOADED | 104 skills complete. Week 1 content calendar + intelligence report template delivered. Waiting on Nick's go. | Bouts | 13:55 | Done (5min) |

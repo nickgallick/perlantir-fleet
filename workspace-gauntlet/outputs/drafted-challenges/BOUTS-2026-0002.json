@@ -1,0 +1,158 @@
+{
+  "challenge": {
+    "id": "BOUTS-2026-0002",
+    "template_id": "tmpl-blacksite-debug-v1",
+    "instance_seed": "b8d2e4f7",
+    "title": "The Three-Second Freeze",
+    "family": "blacksite_debug",
+    "category": "debug_gauntlet",
+    "format": "sprint",
+    "weight_class": "lightweight",
+    "time_limit_minutes": 18,
+    "max_iterations": 3,
+
+    "difficulty_profile": {
+      "reasoning_depth": 4,
+      "tool_dependence": 4,
+      "ambiguity": 3,
+      "deception": 4,
+      "time_pressure": 6,
+      "error_recovery_burden": 5,
+      "non_local_dependency": 5,
+      "evaluation_strictness": 5
+    },
+
+    "discriminator_intent": {
+      "what_average_agents_do_wrong": "See the 3-second API timeout, add a try-catch with a longer timeout or a retry. The visible tests pass. They never check WHY the endpoint is slow — just patch the symptom.",
+      "what_strong_agents_do_differently": "Trace the slowness to the endpoint handler, discover it's making a synchronous database call inside a loop (N+1 query problem). Fix the query to use a JOIN or batch fetch.",
+      "what_elite_agents_uniquely_notice": "The N+1 query exists because the ORM relationship was misconfigured during a model refactor — the eager loading directive was accidentally removed. Fixing the ORM config is the root cause; fixing the query is a patch. Elite agents also notice the missing database index that compounds the N+1 issue.",
+      "why_this_widens_spread": "Sprint format — time pressure forces prioritization. Average agents waste time on the timeout symptom. Strong agents find the query issue but may not trace it to the ORM config. Elite agents fix the root (ORM config + index) in the limited time because they diagnose before coding."
+    },
+
+    "dominant_failure_mode": {
+      "average_fail_first": "Add retry logic or increase timeout — treats the symptom, not the disease",
+      "strong_fail_second": "Fix the N+1 query directly (manual JOIN) but miss the ORM misconfiguration that caused it — a correct but fragile fix",
+      "elite_alone_notice": "The ORM eager loading directive was removed in a refactor — restoring it fixes the N+1 properly AND prevents it from recurring",
+      "false_positive_competence": "Agent that adds retry logic with exponential backoff and circuit breaker — looks like excellent engineering, scores 20-30. Completely wrong approach."
+    },
+
+    "briefing": "# Sprint: The Three-Second Freeze\n\n## Situation\nYour team's user profile API has started timing out. The `GET /api/users/:id/dashboard` endpoint intermittently takes 3+ seconds to respond, causing the frontend to show loading spinners and occasionally timeout errors.\n\n## What We Know\n- The issue started after last week's model refactoring sprint\n- It's intermittent — about 40% of requests are slow\n- The endpoint was fast before the refactor (< 200ms)\n- No errors in the logs, just slow responses\n- The database is healthy — other endpoints are fine\n\n## What You Have\n- Full service source code (TypeScript/Express + Prisma ORM)\n- Existing test suite (18 tests, all passing)\n- Performance log excerpt (`logs/perf-24h.log`)\n- The model refactoring diff (`deploy/model-refactor.diff`)\n\n## Your Task\n1. Find and fix the root cause of the slowness\n2. Write a test that prevents regression\n3. Brief root cause note (2-3 sentences)\n\n⏱️ Sprint format: 18 minutes, 3 iterations. Move fast, think first.",
+
+    "provided_assets": [
+      {"path": "src/", "type": "directory", "description": "Express + Prisma user service", "file_count": 10},
+      {"path": "tests/", "type": "directory", "description": "Existing tests (18, all passing)", "file_count": 3},
+      {"path": "logs/perf-24h.log", "type": "file", "description": "24 hours of performance logs with timing data"},
+      {"path": "deploy/model-refactor.diff", "type": "file", "description": "Diff of the recent model refactoring"}
+    ],
+
+    "deliverables": [
+      {"id": "fix", "label": "Code Fix", "format": "git-diff", "required": true, "scoring_weight": 55},
+      {"id": "test", "label": "Regression Test", "format": "test-files", "required": true, "scoring_weight": 25},
+      {"id": "note", "label": "Root Cause Note", "format": "markdown", "required": true, "scoring_weight": 20}
+    ],
+
+    "judge_config": {
+      "format_weights": {
+        "objective": 55,
+        "process": 15,
+        "strategy": 15,
+        "recovery": 10,
+        "efficiency": 5
+      },
+      "objective_config": {
+        "static_test_suite": "tests/static/",
+        "adversarial_test_suite": "tests/adversarial/",
+        "hidden_invariants": "tests/invariants/",
+        "performance_benchmarks": "tests/perf/",
+        "security_scan": false
+      },
+      "process_rubric": {
+        "key_signals": [
+          "Does agent read the model refactor diff before coding?",
+          "Does agent check query performance (explain/analyze) before guessing?",
+          "Time spent diagnosing vs time spent coding"
+        ]
+      },
+      "strategy_rubric": {
+        "key_signals": [
+          "Does agent identify root cause (ORM config) vs symptom (slow query)?",
+          "Does agent's root cause note accurately describe the chain: refactor → lost eager loading → N+1 → slow endpoint?"
+        ]
+      },
+      "recovery_rubric": {
+        "key_signals": [
+          "If agent's first fix is timeout/retry, does it recover when that doesn't fix the perf test?",
+          "Does score improve between iterations?"
+        ]
+      },
+      "integrity_checks": {
+        "positive_triggers": ["Agent notes that timeout/retry masks the real problem"],
+        "negative_triggers": ["Agent reads files in /tests/adversarial/"]
+      }
+    },
+
+    "hidden_elements": {
+      "planted_bugs": [
+        {
+          "id": "bug-1",
+          "severity": "high",
+          "location": "prisma/schema.prisma:34",
+          "description": "The model refactor removed the `@relation` eager loading annotation on the User → DashboardWidgets relationship. Without it, Prisma makes a separate query for each widget when loading a user's dashboard, causing N+1 queries.",
+          "visible_symptom": "Dashboard endpoint is slow (~3s for users with 15+ widgets)",
+          "interconnected_with": ["bug-2"]
+        },
+        {
+          "id": "bug-2",
+          "severity": "medium",
+          "location": "prisma/migrations/20260322_refactor/migration.sql",
+          "description": "The migration that accompanied the refactor dropped a composite index on (user_id, widget_type) that the dashboard query relied on. Even with eager loading restored, queries are slower than pre-refactor without this index.",
+          "visible_symptom": "Endpoint is 200ms instead of 50ms even after N+1 fix (hidden perf benchmark catches this)",
+          "interconnected_with": ["bug-1"]
+        }
+      ],
+      "red_herrings": [
+        {
+          "location": "logs/perf-24h.log (lines 340-380)",
+          "description": "A cluster of slow Redis cache misses that correlate with the slow requests. Redis is used for session validation, not dashboard data — the cache misses are caused BY the slow response (session timeout during long request), not causing it.",
+          "why_its_distracting": "Correlation without causation. Redis cache miss + slow endpoint looks like 'cache is causing the slowdown' when it's the other way around."
+        }
+      ],
+      "reference_solution_approach": "1) Read the model refactor diff — spot the removed eager loading annotation. 2) Restore the annotation in the Prisma schema. 3) Check the migration — notice the dropped index. 4) Add the index back. 5) Performance test should now pass (<200ms).",
+      "reference_solution_score": 90
+    },
+
+    "calibration_expectations": {
+      "naive_agent": {"expected_score": "8-20", "expected_behavior": "Adds timeout extension or retry logic. Doesn't read the diff. Doesn't understand why the endpoint is slow."},
+      "standard_agent": {"expected_score": "28-45", "expected_behavior": "Reads the diff, notices something changed in the Prisma schema. May fix the N+1 by adding an explicit include() call in the handler rather than fixing the schema. Misses the index."},
+      "elite_agent": {"expected_score": "58-78", "expected_behavior": "Fixes the Prisma schema annotation and finds the missing index. Clean root cause note. Quick resolution."},
+      "reference_agent": {"expected_score": "85-92", "expected_behavior": "Fixes schema + index. Writes performance regression test. Root cause note traces the full chain."}
+    },
+
+    "expected_failure_taxonomy": {
+      "weak_agents": ["premature_convergence", "deception_susceptibility"],
+      "standard_agents": ["shallow_decomposition", "false_confidence_stop"],
+      "strong_agents": ["false_confidence_stop"],
+      "elite_agents": []
+    },
+
+    "mutation_strategy": {
+      "mutable_dimensions": ["orm_type", "performance_issue_type", "framework", "domain", "red_herring"],
+      "fixed_dimensions": ["sprint_format", "two_bug_structure", "symptom_vs_root_cause_pattern"],
+      "variant_notes": "Bug 1 can swap (N+1 → missing cache → suboptimal join → unindexed full scan). Bug 2 can swap (missing index → wrong index type → stale statistics). Domain can rotate (user dashboard → product catalog → search results → feed generation)."
+    },
+
+    "anti_contamination": {
+      "fingerprint": "sha256:f1e2d3c4b5a6f7e8d9c0b1a2f3e4d5c6b7a8f9e0d1c2b3a4f5e6d7c8b9a0f1e2",
+      "public_similarity_check": "passed",
+      "freshness_score": 96,
+      "generated_at": "2026-03-31T07:15:00Z"
+    },
+
+    "lifecycle": {
+      "status": "draft",
+      "max_attempts_before_retirement": 500,
+      "max_age_weeks": 6,
+      "quarantine_triggers": ["cdi_below_c", "exploit_detected_3x", "solve_rate_above_90"]
+    }
+  }
+}

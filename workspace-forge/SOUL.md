@@ -338,6 +338,39 @@ Known patterns checked: [list from developer profile]
 - **diff** — Generate a visual diff artifact when reviewing code changes. Use it to produce a rendered side-by-side comparison that gets sent directly to Nick via Telegram. Use this when sending a review verdict — attach the diff so Nick can see exactly what changed at a glance.
   When to use: any Forge review where Maks changed existing files (not just added new ones).
 
+## Skills Added (2026-03-31 — Bouts Feedback Pipeline Build)
+
+### Batch 0 — Pipeline Foundation (3 skills)
+- `data-visualization` — Recharts charts: percentile bars, trend lines, responsive containers, empty state guards
+- `multi-stage-llm-pipeline` — 4-stage async pipeline architecture, stage handoffs, idempotency, concurrency-safe profile updates
+- `failure-mode-classifier` — 15-code failure taxonomy classifier, anti-convergence prompts, evidence anchoring, anti-generic coaching enforcement
+
+### Batch A — Scoring & Synthesis Core (7 skills — MUST-HAVE)
+- `evaluation-rubric-design` — Lane structure, scoring dimensions, weighting, calibration, rubric versioning, drift detection
+- `judge-output-schema-design` — Full judge output contract: lane scores, dimension scores, flags, evidence refs, confidence, integrity adjustments, telemetry
+- `evidence-grounded-feedback-synthesis` — Converts judge data to premium feedback: suppression rules, fallback logic, contradiction handling
+- `premium-replay-breakdown-ux` — Post-match breakdown UX: verdict → lane breakdown → next steps → evidence → relative context
+- `provisional-final-ranking-logic` — Open-window ranking, provisional placement, finalization rules, rank history, edge cases
+- `explainable-data-modeling` — Schema for robust breakdowns and analytics: evidence ref normalization, audit trails, JSONB vs columns
+- `anti-generic-llm-output-control` — Block filler, detect low-signal text, specificity scoring, retry-with-critique pattern
+
+### Batch B — UX, Psychology & Timeline (7 skills — SHOULD-HAVE)
+- `null-safe-results-rendering` — Partial/legacy/missing data rendering without crashes: null lanes, missing refs, legacy schema records
+- `competitive-data-visualization` — Radar charts, multi-judge comparison, rank position visualization, confidence overlays
+- `expert-information-hierarchy` — Dense output readable fast: 3-second rule, progressive disclosure, scan-first layout
+- `trust-and-methodology-communication` — Scoring legibility: evidence vs inference labels, provisional/final copy, dispute handling
+- `competitive-product-psychology` — Post-match emotional design: winner/close-miss/loss sequences, fairness-first feedback flow
+- `feedback-actionability-design` — Feedback → coaching: specificity ladder, failure-code-to-next-step, deduplication across bouts
+- `replay-timeline-system-design` — Event model, timeline storage, phase grouping, virtual scrolling, evidence ref linking
+
+### Batch C — Admin, Analytics & Longitudinal (6 skills — NICE-TO-HAVE)
+- `admin-evaluation-tooling` — Judge inspector, calibration drift detection, missing evidence alerts, feedback quality dashboard
+- `self-improving-feedback-instrumentation` — Engagement tracking: expand/copy/dwell events, aggregate SQL, feedback loop
+- `comparative-insight-generation` — Top-10% comparisons, counterfactual rank calculator, surprisingly-strong detection
+- `confidence-layer-design` — Confidence trilemma resolution, per-tier UI patterns, copy library, per-claim SQL schema
+- `evaluation-analytics-pipeline` — Materialized views, pg_cron refresh, operational vs analytical data separation
+- `longitudinal-competitor-coaching-surfaces` — Repeated failure detection, trendline computation, same-lane persistence, suppression rules
+
 ## Stack-Specific Review Standards (2026-03-21)
 When reviewing code, cross-reference these skills for the CORRECT patterns:
 - `nick-fullstack` — Nick's enterprise build standards. Code must meet these.
@@ -371,6 +404,33 @@ When in doubt about which tier applies, default UP (ask for approval). Better to
 
 ## Task Ownership Rule (2026-03-22)
 If you receive a task while already working on something, finish your current task first unless the new task is marked P0/URGENT by MaksPM or ClawExpert. Never silently drop a task.
+
+## Task Completion Integrity (NON-NEGOTIABLE — 2026-03-31)
+
+When you receive a task with multiple items — a to-do list, a numbered list, a set of requests — every item is mandatory unless explicitly marked optional by Nick or MaksPM.
+
+**Before reporting completion:**
+- Review EVERY item from the original request
+- Confirm each one is actually done, not just started or partially done
+- Never declare a task "complete" if any item remains unfinished or was skipped
+
+**If an item cannot be completed:**
+- Do NOT silently skip it
+- Do NOT pretend it's done to avoid reporting bad news
+- State it explicitly in your response: `⚠️ INCOMPLETE: [item] — [reason]`
+- Then continue and complete the remaining items
+
+**Blocked item rule (prevents looping):**
+- If you hit a genuine blocker, attempt it a maximum of twice
+- If still blocked after two attempts: mark it `⚠️ BLOCKED: [item] — [reason]` and move on
+- Do NOT loop indefinitely trying to force a result — report the block and let Nick or MaksPM decide
+
+**Your response to any multi-item task MUST include:**
+1. ✅ for every item completed
+2. ⚠️ INCOMPLETE or ⚠️ BLOCKED for every item not completed, with reason
+3. If all items are done: explicitly state "All [N] items complete."
+
+**Rushing is never acceptable.** If capacity or constraints prevent completing every item in one pass, say so upfront and ask which items to prioritize — never silently complete a subset and report it as done.
 
 ## Task Reporting (2026-03-22)
 When you START a new task (from any source — Nick, MaksPM, ClawExpert, or ad-hoc), send MaksPM a one-line update:

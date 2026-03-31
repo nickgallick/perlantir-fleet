@@ -1,0 +1,179 @@
+{
+  "challenge": {
+    "id": "BOUTS-2026-0003",
+    "template_id": "tmpl-fog-of-war-v1",
+    "instance_seed": "e5f9a2b6",
+    "title": "The Ghost Writes",
+    "family": "fog_of_war",
+    "category": "forensic_reasoning",
+    "format": "standard",
+    "weight_class": "heavyweight",
+    "time_limit_minutes": 45,
+    "max_iterations": 5,
+
+    "difficulty_profile": {
+      "reasoning_depth": 8,
+      "tool_dependence": 5,
+      "ambiguity": 8,
+      "deception": 7,
+      "time_pressure": 5,
+      "error_recovery_burden": 6,
+      "non_local_dependency": 7,
+      "evaluation_strictness": 7
+    },
+
+    "discriminator_intent": {
+      "what_average_agents_do_wrong": "Follow the DevOps team's assertion that 'it's a Kafka consumer lag issue' and spend most of their time investigating the message queue. The actual problem has nothing to do with Kafka — the consumer lag is a downstream symptom, not a cause.",
+      "what_strong_agents_do_differently": "Dismiss the Kafka hypothesis by cross-referencing the consumer lag timeline with the write-loss timeline (lag FOLLOWS the loss, doesn't cause it). Trace the problem to the API gateway's request routing — a misconfigured load balancer weight change is sending 30% of write requests to a stale read-replica instead of the primary database.",
+      "what_elite_agents_uniquely_notice": "The load balancer misconfiguration happened because an infrastructure-as-code change (Terraform) applied a stale config from a branch that was supposed to be abandoned. Elite agents find this by reading the infra/ directory and noticing the Terraform state file references a config version that predates the current deployment. They also notice the read-replica silently accepts writes (returns 200) but doesn't persist them — a PostgreSQL streaming replication behavior that should have been caught by health checks.",
+      "why_this_widens_spread": "The distributed clue pattern requires combining 3+ evidence sources: the Kafka metrics (to dismiss), the load balancer access logs (to find the routing pattern), and the infrastructure config (to find the root cause). Average agents investigate one source. Strong agents combine two. Elite agents synthesize all three and trace to the infrastructure root."
+    },
+
+    "dominant_failure_mode": {
+      "average_fail_first": "Investigate Kafka, find consumer lag, attempt to fix the queue — treating a symptom as the cause",
+      "strong_fail_second": "Find the load balancer routing issue but attribute it to a manual config change rather than tracing to the Terraform state drift — a correct fix but incomplete understanding",
+      "elite_alone_notice": "The Terraform state drift that caused the misconfiguration, and the fact that the read-replica silently accepts writes — two independent design flaws that combined to create an invisible data loss",
+      "false_positive_competence": "Agent that tunes Kafka consumer settings, reduces lag, and shows improved throughput metrics. Looks like a fix. Writes are still being lost because the routing issue is unchanged."
+    },
+
+    "briefing": "# Incident: The Ghost Writes\n\n## Situation\nYour team's notification service is losing write operations. Users report that some notifications are created successfully (they receive a 200 response) but never appear in the notification feed. Approximately 30% of writes are vanishing.\n\n## What We Know\n- The issue started approximately 3 days ago\n- Users get a 200 OK response, but the notification doesn't persist\n- No errors in the application logs\n- The DevOps team investigated and reported: *'We're seeing significant consumer lag on the Kafka topic for notifications. The lag correlates with the missing writes. We believe it's a Kafka consumer group rebalancing issue — possibly caused by the recent consumer count scaling change.'*\n- The database team confirmed: *'PostgreSQL primary looks healthy. No replication lag reported.'*\n\n## What You Have\n- Full notification service source code (Python/FastAPI + SQLAlchemy + PostgreSQL)\n- Application logs for the last 5 days (`logs/app-5d.log`)\n- Kafka consumer metrics export (`metrics/kafka-consumer-metrics.json`)\n- Load balancer access logs (`logs/lb-access-3d.log`)\n- Infrastructure-as-code directory (`infra/` — Terraform configs)\n- Database connection config (`config/database.yml`)\n- PostgreSQL replication status (`metrics/pg-replication.json`)\n\n## Your Task\n1. Identify the true root cause of the vanishing writes\n2. Fix the issue\n3. Write tests that would detect this failure mode\n4. Produce an incident postmortem with timeline and root cause chain\n\n## Context\nThe service uses a primary PostgreSQL instance for writes and two read-replicas for reads. The load balancer routes requests based on endpoint type (GET → replicas, POST/PUT/DELETE → primary).",
+
+    "provided_assets": [
+      {"path": "src/", "type": "directory", "description": "Notification service (FastAPI + SQLAlchemy + PostgreSQL)", "file_count": 14},
+      {"path": "tests/", "type": "directory", "description": "Existing tests (42 tests, all passing)", "file_count": 5},
+      {"path": "logs/app-5d.log", "type": "file", "description": "5 days of application logs"},
+      {"path": "logs/lb-access-3d.log", "type": "file", "description": "3 days of load balancer access logs with routing decisions"},
+      {"path": "metrics/kafka-consumer-metrics.json", "type": "file", "description": "Kafka consumer group metrics showing lag"},
+      {"path": "metrics/pg-replication.json", "type": "file", "description": "PostgreSQL replication status — shows no lag"},
+      {"path": "infra/", "type": "directory", "description": "Terraform infrastructure configs", "file_count": 6},
+      {"path": "config/database.yml", "type": "file", "description": "Database connection configuration — primary + replicas"}
+    ],
+
+    "deliverables": [
+      {"id": "root-cause", "label": "Root Cause Analysis", "format": "markdown", "required": true, "scoring_weight": 30},
+      {"id": "fix", "label": "Code/Config Fix", "format": "git-diff", "required": true, "scoring_weight": 30},
+      {"id": "tests", "label": "Detection Tests", "format": "test-files", "required": true, "scoring_weight": 20},
+      {"id": "postmortem", "label": "Incident Postmortem", "format": "markdown", "required": true, "scoring_weight": 20}
+    ],
+
+    "judge_config": {
+      "format_weights": {
+        "objective": 35,
+        "process": 20,
+        "strategy": 25,
+        "recovery": 15,
+        "efficiency": 5
+      },
+      "objective_config": {
+        "static_test_suite": "tests/static/",
+        "adversarial_test_suite": "tests/adversarial/",
+        "hidden_invariants": "tests/invariants/",
+        "performance_benchmarks": null,
+        "security_scan": true
+      },
+      "process_rubric": {
+        "key_signals": [
+          "Does agent read ALL evidence sources before forming a hypothesis?",
+          "Does agent cross-reference the Kafka lag timeline with the write-loss timeline?",
+          "Does agent read the load balancer access logs (the key evidence source)?",
+          "Does agent investigate the infra/ directory?"
+        ]
+      },
+      "strategy_rubric": {
+        "key_signals": [
+          "Does agent form explicit hypotheses and test them?",
+          "Does agent dismiss the Kafka hypothesis with evidence?",
+          "Quality of the postmortem — timeline accuracy, root cause precision, prevention recommendations",
+          "Does agent document the full chain: Terraform drift → LB misconfig → writes to replica → silent data loss?"
+        ]
+      },
+      "recovery_rubric": {
+        "key_signals": [
+          "If agent initially investigates Kafka, how quickly does it pivot?",
+          "Does agent recover when the first hypothesis fails?",
+          "Time between dismissing the wrong hypothesis and finding the right one"
+        ]
+      },
+      "integrity_checks": {
+        "positive_triggers": [
+          "Agent explicitly notes the DevOps team's diagnosis is unsupported by the evidence",
+          "Agent flags that read-replicas accepting writes is a critical design flaw",
+          "Agent acknowledges uncertainty about the Terraform state timeline"
+        ],
+        "negative_triggers": [
+          "Agent attempts to read /tests/adversarial/",
+          "Agent claims certainty about root cause without evidence from load balancer logs"
+        ]
+      }
+    },
+
+    "hidden_elements": {
+      "planted_bugs": [
+        {
+          "id": "bug-1",
+          "severity": "critical",
+          "location": "infra/lb-config.tf:28",
+          "description": "Terraform load balancer configuration references a stale variable that routes write requests (POST) using weights from an abandoned config branch. The weight assigns 30% of write traffic to replica-2 instead of 0%. This happened because a terraform apply picked up state from a stale .tfstate file.",
+          "visible_symptom": "30% of write requests silently go to the read-replica",
+          "interconnected_with": ["bug-2"]
+        },
+        {
+          "id": "bug-2",
+          "severity": "high",
+          "location": "config/database.yml:12",
+          "description": "The PostgreSQL read-replica is configured with default_transaction_read_only=off (it should be ON for a replica). This means it accepts write queries without error — the write 'succeeds' (returns OK) but the data exists only on the replica's local storage and is overwritten on the next replication sync from the primary. The write effectively vanishes.",
+          "visible_symptom": "No error when writing to replica — 200 OK returned, but data doesn't persist past the next replication cycle",
+          "interconnected_with": ["bug-1"]
+        }
+      ],
+      "red_herrings": [
+        {
+          "location": "metrics/kafka-consumer-metrics.json",
+          "description": "Kafka consumer lag is real but is a DOWNSTREAM effect, not a cause. The notification creation step emits a Kafka event AFTER persisting to the database. When 30% of writes go to the replica and vanish, the corresponding Kafka events are emitted but reference notification IDs that don't exist on the primary — causing the consumer to lag while retrying failed lookups.",
+          "why_its_distracting": "The DevOps team explicitly points to Kafka. The lag metrics are real. The correlation with the issue is real. But causation runs the opposite direction: lost writes cause the lag, not the other way around."
+        },
+        {
+          "location": "metrics/pg-replication.json",
+          "description": "PostgreSQL replication status shows zero lag. This is technically accurate — replication is working perfectly. The problem is that writes to the replica are local, and replication from primary to replica overwrites them. The replication status metric doesn't show this because it only measures primary → replica sync, not replica local state.",
+          "why_its_distracting": "The database team's 'all clear' on replication is accurate but misleading — it gives false confidence that the database layer is clean."
+        }
+      ],
+      "reference_solution_approach": "1) Read ALL evidence before committing to a hypothesis. 2) Cross-reference Kafka lag timeline with write-loss reports — notice lag FOLLOWS losses (effect, not cause). 3) Read load balancer access logs — discover POST requests being routed to replica-2. 4) Read infra/lb-config.tf — find the stale weight configuration. 5) Read config/database.yml — discover replica has read_only=off. 6) Fix: correct the Terraform config (set replica write weight to 0), set read_only=on for replicas in database.yml. 7) Write tests: health check that verifies replicas reject writes, routing test that verifies POST → primary only. 8) Postmortem: Terraform state drift → LB routing → silent replica writes → 30% data loss for 3 days.",
+      "reference_solution_score": 93
+    },
+
+    "calibration_expectations": {
+      "naive_agent": {"expected_score": "5-18", "expected_behavior": "Follows the DevOps team's Kafka diagnosis. Investigates consumer group settings. May restart consumers or adjust scaling. Never reads the load balancer logs."},
+      "standard_agent": {"expected_score": "28-48", "expected_behavior": "Eventually doubts the Kafka hypothesis. Reads some additional evidence. May find the load balancer routing issue through the access logs. Fixes the routing but doesn't trace to Terraform or find the replica config issue."},
+      "elite_agent": {"expected_score": "62-80", "expected_behavior": "Dismisses Kafka early. Finds the LB routing issue AND traces to Terraform. May or may not find the replica read_only config issue. Strong postmortem."},
+      "reference_agent": {"expected_score": "88-95", "expected_behavior": "Finds both bugs, traces the full root cause chain, writes comprehensive tests, produces detailed postmortem with timeline."}
+    },
+
+    "expected_failure_taxonomy": {
+      "weak_agents": ["deception_susceptibility", "premature_convergence", "false_confidence_hallucination"],
+      "standard_agents": ["context_drift", "ambiguity_avoidance_failure", "false_confidence_stop"],
+      "strong_agents": ["shallow_decomposition"],
+      "elite_agents": ["false_confidence_stop"]
+    },
+
+    "mutation_strategy": {
+      "mutable_dimensions": ["infrastructure_type", "misdirection_source", "root_cause_mechanism", "domain", "framework", "evidence_format"],
+      "fixed_dimensions": ["distributed_clue_pattern", "unreliable_witness", "downstream_symptom_as_red_herring"],
+      "variant_notes": "Root cause can swap (Terraform drift → Kubernetes config → Docker compose override → Ansible playbook). Misdirection source can swap (DevOps team → monitoring alert → automated runbook → vendor support ticket). Domain can rotate (notifications → orders → messages → audit logs)."
+    },
+
+    "anti_contamination": {
+      "fingerprint": "sha256:d4c3b2a1e5f6d7c8b9a0e1f2d3c4b5a6e7f8d9c0b1a2e3f4d5c6b7a8e9f0d1c2",
+      "public_similarity_check": "passed",
+      "freshness_score": 97,
+      "generated_at": "2026-03-31T07:30:00Z"
+    },
+
+    "lifecycle": {
+      "status": "draft",
+      "max_attempts_before_retirement": 350,
+      "max_age_weeks": 6,
+      "quarantine_triggers": ["cdi_below_c", "exploit_detected_3x", "solve_rate_above_85", "freshness_below_70"]
+    }
+  }
+}

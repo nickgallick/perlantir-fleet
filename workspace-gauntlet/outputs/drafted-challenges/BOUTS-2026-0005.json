@@ -1,0 +1,177 @@
+{
+  "challenge": {
+    "id": "BOUTS-2026-0005",
+    "template_id": "tmpl-false-summit-v1",
+    "instance_seed": "f7d3b1a8",
+    "title": "The Green Mirage",
+    "family": "false_summit",
+    "category": "adversarial_verification",
+    "format": "standard",
+    "weight_class": "middleweight",
+    "time_limit_minutes": 35,
+    "max_iterations": 4,
+
+    "difficulty_profile": {
+      "reasoning_depth": 6,
+      "tool_dependence": 5,
+      "ambiguity": 5,
+      "deception": 7,
+      "time_pressure": 5,
+      "error_recovery_burden": 5,
+      "non_local_dependency": 5,
+      "evaluation_strictness": 7
+    },
+
+    "discriminator_intent": {
+      "what_average_agents_do_wrong": "Implement the requested feature (a CSV export endpoint), run the visible tests, see all 38 pass, and submit. The feature works perfectly for the test data. They never test with data that exposes the two hidden invariants.",
+      "what_strong_agents_do_differently": "After passing visible tests, notice that the CSV generation doesn't handle special characters in user-generated content — commas, newlines, and quotes in data fields break the CSV structure. Fix with proper escaping. This gets them past the first hidden summit.",
+      "what_elite_agents_uniquely_notice": "The CSV export endpoint has no pagination or streaming — it loads ALL records into memory before generating the CSV. The visible test suite uses 50 records. The hidden performance test uses 500,000 records, causing an out-of-memory crash. Elite agents also notice the endpoint has no authorization check — any authenticated user can export ALL users' data, not just their own team's data. This is a critical access control bug the briefing never mentions because the briefing only asks for 'a CSV export feature.'",
+      "why_this_widens_spread": "The false summit is perfectly calibrated: visible tests pass at the first implementation. Three hidden invariants at three depths. (1) CSV escaping — moderate difficulty, found by thinking about data quality. (2) Memory/streaming — harder, found by thinking about scale. (3) Authorization — hardest, found by thinking about security without being prompted. Each level adds 15-20 points."
+    },
+
+    "dominant_failure_mode": {
+      "average_fail_first": "Implement the feature, see green, submit. Classic false summit — the agent equates 'tests pass' with 'it works'",
+      "strong_fail_second": "Fix CSV escaping but don't think about scale or security — a 'works on my test data' mindset",
+      "elite_alone_notice": "The authorization gap: the briefing asks for CSV export of 'the data' without specifying access control, but the existing codebase has role-based access control on every other endpoint. The new endpoint should inherit this pattern — omitting it is a security vulnerability",
+      "false_positive_competence": "Agent that implements a beautifully clean CSV export with TypeScript generics, comprehensive error handling, proper Content-Type headers, and streaming... for the happy path. Looks excellent. Scores 40-50. Misses the escaping + auth issues."
+    },
+
+    "briefing": "# Feature: CSV Data Export\n\n## Requirement\nThe analytics team needs to export user activity data as CSV files. Add a new endpoint `GET /api/export/activities` that generates a CSV file containing user activity records.\n\n## Specification\n- Endpoint: `GET /api/export/activities`\n- Authentication: requires valid JWT token (same as other endpoints)\n- Response: CSV file download with appropriate headers\n- Columns: `id, user_name, activity_type, description, created_at`\n- Sort: by `created_at` descending\n- Format: RFC 4180 compliant CSV\n\n## What You Have\n- Full service source code (TypeScript/Express + Prisma + PostgreSQL)\n- Existing test suite (38 tests, all passing)\n- Prisma schema with the Activity model already defined\n- Example of an existing export endpoint (`/api/export/summary`) for reference\n\n## Your Task\n1. Implement the CSV export endpoint per the specification\n2. Write tests for the new endpoint\n3. Ensure the implementation follows existing code patterns\n\n## Notes\nThe analytics team expects to use this for their weekly reports. Current data volume is about 50,000 activity records and growing.",
+
+    "provided_assets": [
+      {"path": "src/", "type": "directory", "description": "Express + Prisma API service with role-based access control", "file_count": 14},
+      {"path": "src/routes/export-summary.ts", "type": "file", "description": "Existing export endpoint — uses streaming and has team-based authorization"},
+      {"path": "src/middleware/auth.ts", "type": "file", "description": "Authentication middleware — extracts JWT and attaches user + team context"},
+      {"path": "src/middleware/rbac.ts", "type": "file", "description": "Role-based access control middleware — filters data by team membership"},
+      {"path": "tests/", "type": "directory", "description": "Existing tests (38, all passing)", "file_count": 5},
+      {"path": "prisma/schema.prisma", "type": "file", "description": "Database schema including Activity model with team_id foreign key"}
+    ],
+
+    "deliverables": [
+      {"id": "implementation", "label": "Feature Implementation", "format": "git-diff", "required": true, "scoring_weight": 50},
+      {"id": "tests", "label": "Test Coverage", "format": "test-files", "required": true, "scoring_weight": 30},
+      {"id": "notes", "label": "Implementation Notes", "format": "markdown", "required": false, "scoring_weight": 20}
+    ],
+
+    "judge_config": {
+      "format_weights": {
+        "objective": 45,
+        "process": 15,
+        "strategy": 25,
+        "recovery": 10,
+        "efficiency": 5
+      },
+      "objective_config": {
+        "static_test_suite": "tests/static/",
+        "adversarial_test_suite": "tests/adversarial/",
+        "hidden_invariants": "tests/invariants/",
+        "performance_benchmarks": "tests/perf/",
+        "security_scan": true
+      },
+      "process_rubric": {
+        "key_signals": [
+          "Does agent read the existing export endpoint (export-summary.ts) before implementing?",
+          "Does agent read the RBAC middleware before implementing?",
+          "Does agent test with special characters in data?",
+          "Does agent test with large datasets?"
+        ]
+      },
+      "strategy_rubric": {
+        "key_signals": [
+          "Does agent follow existing code patterns (streaming, RBAC)?",
+          "Does agent identify implicit requirements not in the spec (escaping, scale, authorization)?",
+          "Does agent document assumptions or flag missing spec details?"
+        ]
+      },
+      "recovery_rubric": {
+        "key_signals": [
+          "If initial implementation passes visible tests, does agent keep investigating?",
+          "Does agent's score improve between iterations (finding additional invariants)?"
+        ]
+      },
+      "integrity_checks": {
+        "positive_triggers": [
+          "Agent flags that the spec doesn't mention authorization scope — should it filter by team?",
+          "Agent notes that CSV export of all user data without scope is a data privacy concern",
+          "Agent flags that loading 50K+ records into memory is risky"
+        ],
+        "negative_triggers": [
+          "Agent reads /tests/adversarial/ or /tests/perf/",
+          "Agent copies the test data exactly to match expected outputs"
+        ]
+      }
+    },
+
+    "hidden_elements": {
+      "planted_bugs": [
+        {
+          "id": "invariant-1",
+          "severity": "high",
+          "location": "hidden — agent must implement this",
+          "description": "CSV escaping: user-generated content in 'description' field contains commas, double quotes, and newline characters. Without proper RFC 4180 escaping (double-quote wrapping, quote doubling), the CSV is structurally invalid and will break any standard CSV parser.",
+          "visible_symptom": "Test data contains only clean ASCII without special characters — visible tests pass without escaping",
+          "interconnected_with": []
+        },
+        {
+          "id": "invariant-2",
+          "severity": "critical",
+          "location": "hidden — agent must implement this",
+          "description": "Memory safety: loading all 50,000+ Activity records into memory before CSV generation will crash the Node.js process (heap out of memory). The existing export-summary.ts endpoint uses Prisma's cursor-based pagination with Node.js streams — the new endpoint should follow this pattern. Hidden performance test runs with 500K records.",
+          "visible_symptom": "None with 50 test records — only manifests at scale",
+          "interconnected_with": []
+        },
+        {
+          "id": "invariant-3",
+          "severity": "critical",
+          "location": "hidden — agent must implement this",
+          "description": "Authorization: every other data endpoint in the codebase uses the RBAC middleware to filter by team membership (user sees only their team's data). The Activity model has a team_id field. The spec says 'authentication required' but doesn't mention authorization scope. The security scan hidden test verifies that User A cannot see Team B's activities.",
+          "visible_symptom": "None — visible tests use a single-team test setup. Only multi-team adversarial tests catch this.",
+          "interconnected_with": []
+        }
+      ],
+      "red_herrings": [
+        {
+          "location": "src/routes/export-summary.ts",
+          "description": "The existing export endpoint has a comment `// TODO: add rate limiting for large exports` that looks like it might be relevant to the new endpoint. Rate limiting is a legitimate concern but is NOT tested by the hidden invariants — it's a distraction from the three actual issues (escaping, memory, authorization).",
+          "why_its_distracting": "Agents that add rate limiting are spending time on a real-but-untested concern instead of the three critical hidden invariants."
+        }
+      ],
+      "reference_solution_approach": "1) Read export-summary.ts — note it uses streaming + RBAC. 2) Read auth.ts and rbac.ts — understand the authorization pattern. 3) Read prisma/schema.prisma — note team_id on Activity. 4) Implement with: streaming (cursor-based pagination), proper CSV escaping (RFC 4180), RBAC middleware (filter by team). 5) Write tests: special character data, large dataset (confirm streaming), cross-team access (confirm RBAC). 6) Implementation notes: document that spec didn't mention authorization scope but it was inferred from codebase patterns.",
+      "reference_solution_score": 93
+    },
+
+    "calibration_expectations": {
+      "naive_agent": {"expected_score": "20-38", "expected_behavior": "Implements a working CSV endpoint that passes all 38 visible tests. Clean code. No escaping, no streaming, no RBAC. Higher floor than debug challenges because the agent DID implement something functional."},
+      "standard_agent": {"expected_score": "38-55", "expected_behavior": "Implements the endpoint and finds the CSV escaping issue (either by thinking about it or by noticing RFC 4180 in the spec). Adds escaping. Doesn't think about scale or authorization."},
+      "elite_agent": {"expected_score": "62-80", "expected_behavior": "Finds escaping + streaming (reads the existing export endpoint and follows the pattern). May or may not find the authorization gap. Good implementation notes."},
+      "reference_agent": {"expected_score": "88-95", "expected_behavior": "All three invariants addressed. Follows existing patterns. Comprehensive tests. Documents the authorization inference."}
+    },
+
+    "expected_failure_taxonomy": {
+      "weak_agents": ["visible_test_overfitting", "false_confidence_stop", "constraint_blindness"],
+      "standard_agents": ["shallow_decomposition", "false_confidence_stop"],
+      "strong_agents": ["constraint_blindness"],
+      "elite_agents": []
+    },
+
+    "mutation_strategy": {
+      "mutable_dimensions": ["feature_type", "hidden_invariant_types", "existing_pattern_to_follow", "domain", "framework"],
+      "fixed_dimensions": ["false_summit_structure", "three_invariant_depth_pattern", "implicit_requirement_from_codebase_patterns"],
+      "variant_notes": "Feature can swap (CSV export → JSON export → PDF report → webhook integration). Hidden invariants can swap (escaping → encoding → format validation) + (memory → timeout → connection pool) + (authorization → rate limiting → input validation). The key: visible tests always pass with a naive implementation; hidden invariants require deeper thinking."
+    },
+
+    "anti_contamination": {
+      "fingerprint": "sha256:c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4",
+      "public_similarity_check": "passed",
+      "freshness_score": 97,
+      "generated_at": "2026-03-31T08:00:00Z"
+    },
+
+    "lifecycle": {
+      "status": "draft",
+      "max_attempts_before_retirement": 450,
+      "max_age_weeks": 8,
+      "quarantine_triggers": ["cdi_below_c", "exploit_detected_3x", "solve_rate_above_85"]
+    }
+  }
+}

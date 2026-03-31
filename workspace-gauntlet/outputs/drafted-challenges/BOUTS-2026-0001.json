@@ -1,0 +1,185 @@
+{
+  "challenge": {
+    "id": "BOUTS-2026-0001",
+    "template_id": "tmpl-blacksite-debug-v1",
+    "instance_seed": "c3a7f1e2",
+    "title": "The Midnight Ledger",
+    "family": "blacksite_debug",
+    "category": "debug_gauntlet",
+    "format": "standard",
+    "weight_class": "middleweight",
+    "time_limit_minutes": 35,
+    "max_iterations": 4,
+
+    "difficulty_profile": {
+      "reasoning_depth": 6,
+      "tool_dependence": 5,
+      "ambiguity": 5,
+      "deception": 6,
+      "time_pressure": 5,
+      "error_recovery_burden": 7,
+      "non_local_dependency": 6,
+      "evaluation_strictness": 6
+    },
+
+    "discriminator_intent": {
+      "what_average_agents_do_wrong": "Fix the most visible symptom — the off-by-one in the pagination query — and declare victory. All 34 visible tests pass after this fix. They never investigate why the ledger balance drifts by $0.01-$0.03 on certain transactions.",
+      "what_strong_agents_do_differently": "Notice the pagination fix doesn't explain the balance drift. Trace the drift to a floating-point arithmetic issue in the transaction aggregator that accumulates rounding errors across batch operations. Fix both bugs.",
+      "what_elite_agents_uniquely_notice": "The floating-point fix reveals that the aggregator's error handler silently swallows failed batch retries, causing occasional double-counted transactions. This third bug is only visible through the retry logic in the queue processor, which most agents never read.",
+      "why_this_widens_spread": "Three bugs at three depth levels. Bug 1 (pagination) is surface — gives 25-35 points. Bug 2 (floating-point) requires tracing a symptom to a non-obvious cause — gives 50-65. Bug 3 (silent retry) requires reading a module most agents skip — gives 75-90. Each level requires deeper investigation, creating a clean 3-tier gradient."
+    },
+
+    "dominant_failure_mode": {
+      "average_fail_first": "Fix pagination off-by-one, see green tests, stop investigating",
+      "strong_fail_second": "Find the floating-point issue but miss the retry handler because it's in a separate module (queue/) that seems unrelated to the ledger",
+      "elite_alone_notice": "The silent retry swallowing in queue/processor.ts — discoverable through the error log pattern showing duplicate transaction IDs at low frequency",
+      "false_positive_competence": "Agent that produces a clean, well-tested pagination fix with excellent documentation scores 30-35. Looks competent. Missed 60% of the actual problem."
+    },
+
+    "briefing": "# Incident: The Midnight Ledger\n\n## Situation\nYour company's internal accounting ledger service has developed a discrepancy. The nightly reconciliation job reports that the ledger balance is off by small amounts — ranging from $0.01 to $4.27 — compared to the source transaction database. The amounts are inconsistent and seemingly random.\n\n## What We Know\n- The discrepancy was first noticed 5 days ago after a routine deployment\n- It doesn't happen every night — approximately 3 out of 5 reconciliation runs show a mismatch\n- The development team suspects a pagination bug in the transaction listing endpoint, since they recently refactored that code\n- All existing tests pass\n- The service handles approximately 800 transactions per day\n\n## What You Have\n- Full service source code (TypeScript/Node.js with Express + Knex)\n- Existing test suite (34 tests, all passing)\n- Transaction logs for the last 7 days (`logs/transactions-7d.log`)\n- Reconciliation reports showing the mismatches (`reports/recon-*.json`)\n- The deployment diff from 5 days ago (`deploy/recent-changes.diff`)\n\n## Your Task\n1. Find and fix ALL bugs causing the ledger discrepancy\n2. Write tests that would have caught these issues\n3. Produce a root cause analysis explaining the full picture\n\n## Developer Notes\nThe previous developer left a note: *'Pretty sure the pagination refactor introduced a rounding issue. Should be a quick fix.'*",
+
+    "provided_assets": [
+      {"path": "src/", "type": "directory", "description": "Full ledger service (Express + Knex + PostgreSQL)", "file_count": 16},
+      {"path": "src/routes/transactions.ts", "type": "file", "description": "Transaction listing with pagination (recently refactored)"},
+      {"path": "src/services/aggregator.ts", "type": "file", "description": "Transaction aggregation and balance computation"},
+      {"path": "src/queue/processor.ts", "type": "file", "description": "Batch transaction processor with retry logic"},
+      {"path": "tests/", "type": "directory", "description": "Existing test suite (34 tests, all passing)", "file_count": 4},
+      {"path": "logs/transactions-7d.log", "type": "file", "description": "7 days of transaction processing logs"},
+      {"path": "reports/", "type": "directory", "description": "Reconciliation reports showing mismatches", "file_count": 5},
+      {"path": "deploy/recent-changes.diff", "type": "file", "description": "Git diff of the recent deployment"}
+    ],
+
+    "deliverables": [
+      {"id": "fix", "label": "Code Fix", "format": "git-diff", "required": true, "scoring_weight": 45},
+      {"id": "tests", "label": "Regression Tests", "format": "test-files", "required": true, "scoring_weight": 25},
+      {"id": "root-cause", "label": "Root Cause Analysis", "format": "markdown", "required": true, "scoring_weight": 20},
+      {"id": "prevention", "label": "Prevention Recommendations", "format": "markdown", "required": false, "scoring_weight": 10}
+    ],
+
+    "judge_config": {
+      "format_weights": {
+        "objective": 45,
+        "process": 20,
+        "strategy": 10,
+        "recovery": 20,
+        "efficiency": 5
+      },
+      "objective_config": {
+        "static_test_suite": "tests/static/",
+        "adversarial_test_suite": "tests/adversarial/",
+        "hidden_invariants": "tests/invariants/",
+        "performance_benchmarks": null,
+        "security_scan": false
+      },
+      "process_rubric": {
+        "key_signals": [
+          "Does agent read the reconciliation reports before modifying code?",
+          "Does agent investigate modules beyond transactions.ts?",
+          "Does agent read the queue/processor.ts module?",
+          "Does agent run tests between each bug fix?"
+        ]
+      },
+      "strategy_rubric": {
+        "key_signals": [
+          "Does agent trace the discrepancy to multiple root causes?",
+          "Does agent recognize the developer note points to only one of three bugs?",
+          "Does agent document the interconnection between bugs in the RCA?"
+        ]
+      },
+      "recovery_rubric": {
+        "key_signals": [
+          "Does agent recover when the pagination fix doesn't fully resolve the discrepancy?",
+          "Time between discovering the fix is incomplete and investigating deeper",
+          "Does agent's score improve between iterations?"
+        ]
+      },
+      "integrity_checks": {
+        "positive_triggers": [
+          "Agent acknowledges the developer note may be incomplete",
+          "Agent flags that floating-point arithmetic should not be used for financial calculations"
+        ],
+        "negative_triggers": [
+          "Agent attempts to read files in /tests/adversarial/",
+          "Agent hardcodes reconciliation amounts"
+        ]
+      }
+    },
+
+    "hidden_elements": {
+      "planted_bugs": [
+        {
+          "id": "bug-1",
+          "severity": "medium",
+          "location": "src/routes/transactions.ts:47",
+          "description": "Off-by-one error in pagination — last transaction on each page is duplicated on the next page when the total count is not evenly divisible by page size. Causes some transactions to be counted twice in certain reconciliation windows.",
+          "visible_symptom": "Reconciliation sometimes over-counts by small amounts",
+          "interconnected_with": []
+        },
+        {
+          "id": "bug-2",
+          "severity": "high",
+          "location": "src/services/aggregator.ts:83",
+          "description": "Uses JavaScript floating-point arithmetic (Number) instead of fixed-point or decimal library for summing transaction amounts. Accumulates rounding errors across 800+ daily transactions, producing $0.01-$0.03 drift per batch.",
+          "visible_symptom": "Small, seemingly random balance discrepancies that vary by batch size",
+          "interconnected_with": ["bug-3"]
+        },
+        {
+          "id": "bug-3",
+          "severity": "high",
+          "location": "src/queue/processor.ts:112",
+          "description": "The retry handler catches transaction processing errors but doesn't check whether the original transaction was partially committed. On retry, it re-processes the full batch, causing occasional double-counting of transactions that succeeded before the error occurred.",
+          "visible_symptom": "Infrequent larger discrepancies ($1-$4) that correlate with error log entries showing retried batches",
+          "interconnected_with": ["bug-2"]
+        }
+      ],
+      "red_herrings": [
+        {
+          "location": "logs/transactions-7d.log (lines 1,200-1,350)",
+          "description": "A cluster of timeout warnings from the database connection pool during peak hours. These are caused by legitimate load spikes and have no relationship to the ledger discrepancy.",
+          "why_its_distracting": "The developer note mentions a 'rounding issue' — connection pool timeouts during financial operations look suspicious and could be misinterpreted as causing data corruption."
+        },
+        {
+          "location": "deploy/recent-changes.diff",
+          "description": "The diff includes changes to both the pagination code AND an unrelated logging format change that makes old and new log entries look slightly different.",
+          "why_its_distracting": "The format change in logs makes it harder to grep consistently across the 7-day window, potentially leading agents to think the logging change is related to the bug."
+        }
+      ],
+      "reference_solution_approach": "1) Read reconciliation reports to understand the pattern (amounts, frequency). 2) Read the deployment diff — notice pagination refactor. 3) Fix pagination off-by-one. 4) Re-run reconciliation mentally — the fix explains some but not all discrepancies. 5) Investigate aggregator.ts — find floating-point arithmetic. 6) Fix with decimal.js or integer-cents approach. 7) Trace why some discrepancies are larger ($1-$4) — the retry logic in queue/processor.ts. 8) Fix the retry handler to check for partial commits. 9) Write tests for all three: pagination boundary, decimal precision, retry idempotency.",
+      "reference_solution_score": 92
+    },
+
+    "calibration_expectations": {
+      "naive_agent": {"expected_score": "10-22", "expected_behavior": "Reads the developer note, finds the pagination bug, fixes it. Runs tests — all pass. Submits. Never reads aggregator.ts or queue/processor.ts."},
+      "standard_agent": {"expected_score": "30-48", "expected_behavior": "Fixes pagination. Notices the fix doesn't explain all discrepancies. Investigates aggregator.ts, finds the floating-point issue. Fixes it. May not find the retry bug."},
+      "elite_agent": {"expected_score": "60-78", "expected_behavior": "Finds bugs 1 and 2. Strong investigation. May find bug 3 through the error log pattern. Good RCA covering at least 2 of 3 bugs."},
+      "reference_agent": {"expected_score": "85-95", "expected_behavior": "Finds all 3 bugs, identifies the interconnection between floating-point errors and retry double-counting, writes comprehensive tests, produces detailed RCA."}
+    },
+
+    "expected_failure_taxonomy": {
+      "weak_agents": ["premature_convergence", "deception_susceptibility", "false_confidence_stop"],
+      "standard_agents": ["visible_test_overfitting", "context_drift"],
+      "strong_agents": ["scope_explosion", "false_confidence_stop"],
+      "elite_agents": ["false_confidence_stop"]
+    },
+
+    "mutation_strategy": {
+      "mutable_dimensions": ["bug_types", "domain", "framework", "red_herring_content", "log_format", "developer_note_content"],
+      "fixed_dimensions": ["three_bug_structure", "cascading_depth_pattern", "interconnection_between_bug2_and_bug3"],
+      "variant_notes": "Bug 1 can swap (pagination → offset/limit → cursor → keyset). Bug 2 can swap (floating-point → timezone → locale → charset). Bug 3 can swap (retry double-count → idempotency key missing → dead letter re-processing). Domain can rotate: accounting → inventory → billing → subscription management."
+    },
+
+    "anti_contamination": {
+      "fingerprint": "sha256:a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2",
+      "public_similarity_check": "passed",
+      "freshness_score": 97,
+      "generated_at": "2026-03-31T07:00:00Z"
+    },
+
+    "lifecycle": {
+      "status": "draft",
+      "max_attempts_before_retirement": 400,
+      "max_age_weeks": 8,
+      "quarantine_triggers": ["cdi_below_c", "exploit_detected_3x", "solve_rate_above_85"]
+    }
+  }
+}

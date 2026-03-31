@@ -1,0 +1,176 @@
+{
+  "challenge": {
+    "id": "BOUTS-2026-0004",
+    "template_id": "tmpl-fog-of-war-v1",
+    "instance_seed": "a1c5d8e3",
+    "title": "The Polite 500",
+    "family": "fog_of_war",
+    "category": "forensic_reasoning",
+    "format": "standard",
+    "weight_class": "middleweight",
+    "time_limit_minutes": 35,
+    "max_iterations": 4,
+
+    "difficulty_profile": {
+      "reasoning_depth": 6,
+      "tool_dependence": 5,
+      "ambiguity": 7,
+      "deception": 6,
+      "time_pressure": 5,
+      "error_recovery_burden": 5,
+      "non_local_dependency": 6,
+      "evaluation_strictness": 6
+    },
+
+    "discriminator_intent": {
+      "what_average_agents_do_wrong": "Investigate the 500 error directly — read the error handler, add more logging, try to reproduce. The 500 is a symptom of a deeper issue they never find because they fixate on the error itself.",
+      "what_strong_agents_do_differently": "Notice that the 500 errors only happen on the /checkout endpoint AND only when the user's cart contains items from 2+ different vendors. Trace this to the shipping cost calculator which makes an external API call per vendor — the API has started rate-limiting, and the error handler converts 429 (rate limit) into a generic 500.",
+      "what_elite_agents_uniquely_notice": "The rate limiting started because a caching layer (Redis) that was throttling outbound API calls was disabled 4 days ago when the ops team 'fixed' a Redis memory alert by restarting the service with cache disabled. Elite agents find this by reading the Redis config and correlating the timing with the ops notes in the deployment log.",
+      "why_this_widens_spread": "Two evidence synthesis steps. Step 1: correlate 500 errors with multi-vendor carts + rate limiting (requires reading both error logs AND request logs). Step 2: trace rate limiting to disabled cache (requires reading Redis config AND deployment log). Average agents never reach step 1. Strong agents reach step 1 but not step 2."
+    },
+
+    "dominant_failure_mode": {
+      "average_fail_first": "Add try-catch blocks around the checkout handler, improve error messages — treats the 500 as an error handling problem",
+      "strong_fail_second": "Find the rate limiting issue and add retry logic with backoff for the shipping API — a valid fix but doesn't address why rate limiting started happening",
+      "elite_alone_notice": "The disabled Redis cache that was throttling outbound calls — restoring it is the root fix, not just working around the rate limit",
+      "false_positive_competence": "Agent that adds comprehensive error handling with different responses for different error types, circuit breaker for the shipping API, and detailed logging. Looks like excellent resilience engineering. Score 35-45. Doesn't fix the root cause."
+    },
+
+    "briefing": "# Incident: The Polite 500\n\n## Situation\nYour e-commerce platform's checkout endpoint is intermittently returning 500 Internal Server Error. Customers see a polite error page saying 'Something went wrong. Please try again.' About 20% of checkout attempts fail.\n\n## What We Know\n- Failures started approximately 4 days ago\n- No deployment in the last 7 days (the last deploy was a minor CSS fix 10 days ago)\n- The failures are intermittent — retry usually works on the 2nd or 3rd attempt\n- Only the checkout endpoint is affected\n- The ops team investigated the infrastructure 4 days ago for a Redis memory alert and restarted the Redis instance. They report: *'Redis was consuming too much memory. We restarted it with a leaner config. Unrelated to the checkout issue — Redis is only used for sessions and caching.'*\n\n## What You Have\n- Full checkout service source code (Node.js/Express + PostgreSQL + Redis)\n- Application error logs (`logs/errors-5d.log`)\n- Request logs with status codes and timing (`logs/requests-5d.log`)\n- Redis configuration (`config/redis.conf` — current vs previous)\n- Ops deployment/change log (`logs/ops-changes.log`)\n- External API documentation for the shipping cost service (`docs/shipping-api.md`)\n\n## Your Task\n1. Identify the root cause of the intermittent 500 errors\n2. Fix the issue\n3. Write tests to detect this failure mode\n4. Produce a root cause analysis\n\n## Developer Notes\nThe error handler returns 500 for any unhandled exception. The checkout flow involves: cart validation → inventory check → shipping cost calculation → payment processing → order creation.",
+
+    "provided_assets": [
+      {"path": "src/", "type": "directory", "description": "Checkout service (Express + PostgreSQL + Redis)", "file_count": 12},
+      {"path": "tests/", "type": "directory", "description": "Existing tests (28 tests, all passing)", "file_count": 4},
+      {"path": "logs/errors-5d.log", "type": "file", "description": "5 days of error logs — shows 500 errors with stack traces"},
+      {"path": "logs/requests-5d.log", "type": "file", "description": "5 days of request logs with status codes, timing, and request metadata"},
+      {"path": "logs/ops-changes.log", "type": "file", "description": "Ops team change log — includes the Redis restart 4 days ago"},
+      {"path": "config/redis.conf", "type": "file", "description": "Current Redis configuration (post-restart)"},
+      {"path": "config/redis.conf.bak", "type": "file", "description": "Previous Redis configuration (pre-restart)"},
+      {"path": "docs/shipping-api.md", "type": "file", "description": "External shipping cost API documentation including rate limits"}
+    ],
+
+    "deliverables": [
+      {"id": "root-cause", "label": "Root Cause Analysis", "format": "markdown", "required": true, "scoring_weight": 25},
+      {"id": "fix", "label": "Code/Config Fix", "format": "git-diff", "required": true, "scoring_weight": 35},
+      {"id": "tests", "label": "Detection Tests", "format": "test-files", "required": true, "scoring_weight": 20},
+      {"id": "postmortem", "label": "Incident Postmortem", "format": "markdown", "required": true, "scoring_weight": 20}
+    ],
+
+    "judge_config": {
+      "format_weights": {
+        "objective": 35,
+        "process": 20,
+        "strategy": 25,
+        "recovery": 15,
+        "efficiency": 5
+      },
+      "objective_config": {
+        "static_test_suite": "tests/static/",
+        "adversarial_test_suite": "tests/adversarial/",
+        "hidden_invariants": "tests/invariants/",
+        "performance_benchmarks": null,
+        "security_scan": false
+      },
+      "process_rubric": {
+        "key_signals": [
+          "Does agent read BOTH error logs AND request logs to correlate patterns?",
+          "Does agent compare redis.conf with redis.conf.bak?",
+          "Does agent read the shipping API documentation (rate limit section)?",
+          "Does agent check the ops change log timing against the failure start?"
+        ]
+      },
+      "strategy_rubric": {
+        "key_signals": [
+          "Does agent form hypotheses about why failures are intermittent and only on checkout?",
+          "Does agent connect the ops Redis restart to the failure timeline?",
+          "Quality of root cause chain in the RCA: Redis restart → cache disabled → rate limiting → 500"
+        ]
+      },
+      "recovery_rubric": {
+        "key_signals": [
+          "If agent first investigates error handling, how quickly does it pivot to the deeper cause?",
+          "Does agent recover when improved error handling doesn't fix the 500 rate?"
+        ]
+      },
+      "integrity_checks": {
+        "positive_triggers": [
+          "Agent notes the ops team's claim that Redis is 'unrelated' contradicts the evidence",
+          "Agent flags that converting 429 to 500 hides the real error from monitoring"
+        ],
+        "negative_triggers": [
+          "Agent reads /tests/adversarial/",
+          "Agent claims root cause without reading the Redis config"
+        ]
+      }
+    },
+
+    "hidden_elements": {
+      "planted_bugs": [
+        {
+          "id": "bug-1",
+          "severity": "critical",
+          "location": "config/redis.conf:18",
+          "description": "The ops team's 'leaner config' disabled the API response cache module (`maxmemory-policy noeviction` changed to `maxmemory 0` + cache module commented out). This cache was throttling outbound shipping API calls to 1 per vendor per 5 minutes. Without it, every checkout makes live API calls, hitting the shipping service's rate limit (10 requests/minute) on multi-vendor carts.",
+          "visible_symptom": "Shipping API starts returning 429 errors when traffic exceeds 10 vendor-lookups per minute",
+          "interconnected_with": ["bug-2"]
+        },
+        {
+          "id": "bug-2",
+          "severity": "high",
+          "location": "src/services/shipping.ts:67",
+          "description": "The shipping cost calculator's error handler catches the 429 rate-limit response from the external API but re-throws it as a generic Error('Shipping calculation failed') without preserving the status code. The checkout handler's catch block then converts any Error into a 500 response. The original 429 (rate limit — should trigger retry with backoff) is invisible in the error logs.",
+          "visible_symptom": "Error logs show 'Shipping calculation failed' with no indication it's a rate limit issue",
+          "interconnected_with": ["bug-1"]
+        }
+      ],
+      "red_herrings": [
+        {
+          "location": "logs/errors-5d.log (throughout)",
+          "description": "Several 'ECONNRESET' errors from the payment processing service that predate the current issue. These are from a known-but-benign network blip with the payment gateway that auto-recovers.",
+          "why_its_distracting": "Connection reset errors in an e-commerce checkout look like they could cause 500s. They predate the issue by 2 weeks and affect a different service, but stressed agents may not verify the timeline."
+        },
+        {
+          "location": "logs/requests-5d.log",
+          "description": "A few requests with unusually large cart sizes (50+ items) that happen to coincide with some failures. The large carts are from a wholesale customer and are actually irrelevant — the failures correlate with VENDOR COUNT, not item count.",
+          "why_its_distracting": "Large carts → more items → more work → timeout? Plausible but wrong. A 50-item cart from 1 vendor works fine. A 3-item cart from 3 vendors fails."
+        }
+      ],
+      "reference_solution_approach": "1) Read error logs — see 'Shipping calculation failed' errors. 2) Read request logs — correlate: failures cluster on checkout requests where cart has 2+ vendors. 3) Read shipping-api.md — note the 10 req/min rate limit. 4) Read src/services/shipping.ts — find the error handler that converts 429 to generic error. 5) Read config/redis.conf vs redis.conf.bak — the cache module was disabled. 6) Read ops-changes.log — Redis restart 4 days ago matches failure start. 7) Fix: restore Redis cache config, fix error handler to preserve 429 and implement retry with backoff. 8) Write tests: rate limit handling test, multi-vendor checkout test, Redis cache hit verification.",
+      "reference_solution_score": 91
+    },
+
+    "calibration_expectations": {
+      "naive_agent": {"expected_score": "8-20", "expected_behavior": "Reads error logs, sees 'Shipping calculation failed', adds better error handling or try-catch. Never correlates with request patterns or reads Redis config."},
+      "standard_agent": {"expected_score": "30-48", "expected_behavior": "Correlates errors with multi-vendor carts. Finds the 429→500 error masking in shipping.ts. Adds retry logic with backoff. Doesn't trace to the Redis cache being disabled."},
+      "elite_agent": {"expected_score": "62-80", "expected_behavior": "Finds the error masking AND traces to the disabled Redis cache. Connects the ops Redis restart to the timeline. Strong root cause analysis."},
+      "reference_agent": {"expected_score": "88-95", "expected_behavior": "Full chain: Redis restart → cache disabled → rate limiting → 429→500 masking. Restores cache + fixes error handler + writes comprehensive tests + detailed postmortem."}
+    },
+
+    "expected_failure_taxonomy": {
+      "weak_agents": ["premature_convergence", "deception_susceptibility"],
+      "standard_agents": ["context_drift", "false_confidence_stop"],
+      "strong_agents": ["shallow_decomposition"],
+      "elite_agents": ["false_confidence_stop"]
+    },
+
+    "mutation_strategy": {
+      "mutable_dimensions": ["external_api_type", "caching_mechanism", "error_masking_type", "domain", "framework", "ops_team_misdirection"],
+      "fixed_dimensions": ["two_bug_structure", "distributed_clue_pattern", "unreliable_witness_from_ops"],
+      "variant_notes": "External API can swap (shipping → tax → currency → geolocation). Cache mechanism can swap (Redis → in-memory → CDN → database cache). Error masking can swap (429→500 → timeout→500 → auth_error→500). Ops misdirection can swap (Redis restart → config rollback → scaling change → certificate renewal)."
+    },
+
+    "anti_contamination": {
+      "fingerprint": "sha256:b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3",
+      "public_similarity_check": "passed",
+      "freshness_score": 96,
+      "generated_at": "2026-03-31T07:45:00Z"
+    },
+
+    "lifecycle": {
+      "status": "draft",
+      "max_attempts_before_retirement": 400,
+      "max_age_weeks": 7,
+      "quarantine_triggers": ["cdi_below_c", "exploit_detected_3x", "solve_rate_above_85"]
+    }
+  }
+}

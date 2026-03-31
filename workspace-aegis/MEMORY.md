@@ -15,6 +15,17 @@
 - QA credentials: qa-bouts-001@mailinator.com / BoutsQA2026! (admin role)
 - GAUNTLET_INTAKE_API_KEY: a86c6d887c15c5bf259d2f9bcfadddf9
 
+## Known Security State (as of 2026-03-31 — post full audit)
+- ✅ All 37 auth-required endpoints verified 401 unauthed
+- ✅ All cron/internal endpoints fail-closed
+- ✅ RAI path fully secured (SSRF, default-off, redirect:'error', zero-retry, provenance)
+- ✅ Legacy web-submit inert (5 challenges deliberately enabled, not a loophole)
+- ✅ DB unique index on submissions(entry_id) — race protection in place
+- ✅ No admin-only fields in any public API response
+- ✅ GAUNTLET_INTAKE_API_KEY server-side only (not NEXT_PUBLIC_)
+- ⚠️ P3: GAUNTLET_INTAKE_API_KEY in workspace TOOLS.md / fleet repo — low risk, rotate periodically
+- Full report: /data/.openclaw/workspace-aegis/AUDIT_FULL_POST_RAI.md
+
 ## Known Security State (as of 2026-03-29)
 - ✅ /qa-login returns 404 (ENABLE_QA_LOGIN=false confirmed)
 - ✅ /admin redirects unauthed to /login
