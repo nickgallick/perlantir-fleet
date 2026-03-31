@@ -15,6 +15,18 @@
 ## Pipeline Position
 Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** → QA → Launch
 
+## Mobile Calibration Section — COMPLETE (2026-04-01 ~00:40 KL)
+Fully responsive calibration admin page for mobile and desktop.
+- Filter tabs: All, Draft, Pending, Passed ✓, Flagged, Quarantined
+- Tap to expand challenges, see full context, adjust difficulty sliders 1-10
+- Mobile: vertical card layout, full-width buttons, thumb-friendly
+- Desktop: horizontal table with compact columns, responsive at md: breakpoint
+- Challenge preview: title, ID, status, format, dates, entry count, link to full page
+- Quarantine and Recompute buttons work independently
+- Backfill migration 00046 populated all challenges with valid calibration_status
+- Nick can now fully review and approve/decline challenges on mobile
+- Commits: fd2d0d9 through faint-river (cache bust)
+
 ## Ballot Ingestion Stats (last updated: 2026-03-31 02:04 KL — run #4)
 - Total calibration_results: 163 | Passed: 33 | Flagged: 129 | Calibrating: 5
 - Total challenges: 187 (all pipeline_status=draft)
