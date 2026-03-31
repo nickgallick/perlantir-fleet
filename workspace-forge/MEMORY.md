@@ -34,26 +34,48 @@ Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** →
 - API: added prompt+format to forge-review GET
 - 5 Gauntlet challenges: all calibration_status=passed, status=reserve
 
-## Performance Breakdown Remediation — COMPLETE (2026-03-31 ~18:45 KL) — commit 3f769e5
-All A1–D3 issues fixed. Pipeline verified end-to-end. Deployed and live.
+## Performance Breakdown Full Remediation — VERIFIED COMPLETE (2026-03-31 ~20:00 KL)
+Nick verified 3/3 pipeline runs pass. Final commit: 61be0da. Live: https://agent-arena-roan.vercel.app
 
-### Key decisions
-- LLM model: Haiku 4.5 (was Sonnet 4.6) — Sonnet took 85-90s (busted Vercel 60s limit), Haiku runs in 41s
-- Pipeline: synchronous (no fire-and-forget). Both GET endpoints await pipeline fully before responding.
-- Default tab: 'classic' — score data always immediately visible. Premium auto-switches on ready.
-- Competitive comparison: MIN_ENTRIES=5 gate. field_stats computed from real DB — never LLM-estimated.
-- Public replay: model_id/latency_ms/is_fallback/short_rationale stripped. Verified live (0 infra fields).
-- FEEDBACK_REPORT_PUBLIC_COLUMNS explicit whitelist — error_message/generated_by_model/etc never returned.
-- UNIQUE constraint on submission_feedback_reports.submission_id: applied by Nick in Supabase SQL editor.
-- DB cleanup: duplicate rows deleted, stuck generating row reset to pending.
+### All fixes (A1–D3 + pipeline reliability)
 
-### Pipeline — FULLY WORKING (real LLM diagnosis, commit cd91231)
-- Root cause of fallback: max_tokens:2000 was too low — full output is ~2500 tokens, JSON truncated mid-response → parse failed → fallback
-- Fix: Haiku 4.5 (fast + reliable via Bedrock), max_tokens:3500, maxDuration:120 on routes, fetch timeout 45s
-- 3x stress test results: Run1 53.9s PASS, Run2 49.0s PASS, Run3 45.0s PASS — 3/3 ✅
-- All runs: confidence HIGH, real LLM (no fallback), decisive_moment cites specific code patterns
-- fetch timeout set to 100s (Haiku via Bedrock P99 is ~90s on 3500-token output)
-- Haiku quality is excellent for structured forensic JSON — specific evidence-linked analysis
+#### A — Runtime/Pipeline
+- A1: UNIQUE constraint on submission_feedback_reports.submission_id — Nick applied in Supabase SQL editor. Migration 00045 on file. DB: duplicate rows deleted, stuck 'generating' row reset.
+- A2: Both GET feedback endpoints now synchronous (await pipeline). Fire-and-forget removed — was silently dying on Vercel serverless.
+- A3: Timeout → 'failed' state (not spinner). AbortController covers network + LLM timeouts.
+- A4: Classic tab is default. Score data visible immediately. Premium auto-switches only on report ready.
+
+#### B — Trust/Security
+- B1: Competitive comparison gated at MIN_ENTRIES=5. field_stats from real DB (median/quartile/winner). LLM never estimates numeric deltas. Currently null for all challenges (all < 5 entries — correct).
+- B2: model_id/latency_ms/is_fallback stripped from public replay API. Verified live — 0 infra fields in unauthenticated response.
+- B3: short_rationale owner/admin only. API already scoped it; type updated to optional.
+- B4: FEEDBACK_REPORT_PUBLIC_COLUMNS explicit whitelist in loadFeedbackReport(). error_message/generated_by_model/generation_ms/pipeline_version never returned.
+
+#### C — Browser/UX
+- C1: Legacy judge panel labeled 'Legacy scoring · /10 scale'. Lane cards show /100. No denominator confusion.
+- C2: Loading = inline pulse in tab button + 'View scores →' shortcut. No full-page spinner. Failed/error = clear message.
+- C3: challenge-detail-header chip: 'Xm session' (was ambiguous 'once started').
+- C4: Percentile → 'top N%' with tooltip. evidence_density score hidden. Ambiguity badge only for medium/high.
+
+#### D — Premium Feedback Quality
+- D1: decisive_moment prompt requires specific evidence (flag/metric/score/behavior cited). Coaching prompt has specificity gate.
+- D2: Internal metrics hidden from UI. Percentile human-readable with tooltip.
+- D3: MIN_ENTRIES=5 enforced in signal extractor + diagnosis prompt. No fake comparisons on small fields.
+
+#### Pipeline reliability (post-remediation fix)
+- Root cause: max_tokens:2000 too low → Haiku output ~2500 tokens → JSON truncated mid-response → parse failed → silent fallback every time
+- Fix: max_tokens:3500, fetch timeout 100s (Haiku/Bedrock P99 ~90s on large output), maxDuration:120 on routes
+- Model: Haiku 4.5 (Sonnet 4.6 was 45-95s on large outputs — too slow, not used)
+- 3/3 stress test: Run1 53.9s PASS, Run2 49.0s PASS, Run3 45.0s PASS — all confidence:HIGH, real LLM, no fallback
+
+### Permanent patterns (do not change without reason)
+- feedback pipeline: synchronous, not fire-and-forget
+- diagnosis model: Haiku 4.5, max_tokens:3500, timeout:100s
+- coaching model: Haiku 4.5
+- route maxDuration: 120 on both feedback routes
+- competitive comparison: only when field_stats.sample_count >= 5
+- public replay judge_output columns: JUDGE_OUTPUT_COLUMNS_PUBLIC (no model_id/latency_ms/is_fallback/short_rationale)
+- feedback report columns: FEEDBACK_REPORT_PUBLIC_COLUMNS explicit whitelist
 
 ## Performance Breakdown System — COMPLETE + LIVE (2026-03-31 ~15:00 KL) — commit ed56e6b
 

@@ -8,12 +8,24 @@ Git: 3f769e5 | https://agent-arena-roan.vercel.app | pushed to GitHub
 
 ## Status: COMPLETE — Performance Breakdown System fully live + verified 3/3 by Nick
 
-## Performance Breakdown — FULLY COMPLETE (2026-03-31 ~19:15 KL) — commit cd91231
-- Migration 00045: applied ✅
-- Pipeline: Haiku 4.5, max_tokens:3500, maxDuration:120, 46.7s, confidence:HIGH, real LLM ✅
-- Root cause fixed: max_tokens too low (2000) was truncating JSON mid-response → parse fail → fallback
-- All A1–D3 + LLM quality verified ✅ TypeScript clean ✅
+## Performance Breakdown — FULLY COMPLETE + VERIFIED (2026-03-31 ~20:00 KL) — commit 61be0da
+Nick verified 3/3 pipeline runs pass. Zero open items.
+
+### Final state
+- Migration 00045: applied (UNIQUE constraint on submission_feedback_reports.submission_id) ✅
+- Pipeline: synchronous, Haiku 4.5, max_tokens:3500, maxDuration:120, fetch timeout 100s ✅
+- 3/3 stress test: 53.9s / 49.0s / 45.0s — all PASS, confidence:HIGH, real LLM diagnosis ✅
+- A1–D3 all fixed ✅  TypeScript clean ✅  GitHub pushed ✅
 - Live: https://agent-arena-roan.vercel.app ✅
+
+### Commits this session
+| Hash | Description |
+|---|---|
+| 7d978e0 | Full A1–D3 remediation |
+| 85d02da | Timeout increase (interim) |
+| 3f769e5 | Haiku model switch |
+| cd91231 | max_tokens:3500 + maxDuration:120 |
+| 61be0da | fetch timeout 100s (3/3 verified) |
 
 ## Admin Mobile Fix — COMPLETE (2026-03-31 ~15:34 KL) — commit fec9909
 - Sidebar: mobile horizontal scroll pill strip (replaces vertical sidebar)
