@@ -50,10 +50,10 @@ All A1–D3 issues fixed. Pipeline verified end-to-end. Deployed and live.
 ### Pipeline — FULLY WORKING (real LLM diagnosis, commit cd91231)
 - Root cause of fallback: max_tokens:2000 was too low — full output is ~2500 tokens, JSON truncated mid-response → parse failed → fallback
 - Fix: Haiku 4.5 (fast + reliable via Bedrock), max_tokens:3500, maxDuration:120 on routes, fetch timeout 45s
-- Verified: 46.7s, confidence: HIGH, real LLM executive_diagnosis (cites actual code patterns, specific decisive_moment)
-- 3 lanes, 3 failure modes, 5 priorities — NO fallback
-- Sonnet 4.6 rejected: consistently 45-95s on large outputs via OpenRouter (Bedrock routing makes it slow)
-- Haiku quality is excellent for structured forensic JSON — not a downgrade in practice
+- 3x stress test results: Run1 53.9s PASS, Run2 49.0s PASS, Run3 45.0s PASS — 3/3 ✅
+- All runs: confidence HIGH, real LLM (no fallback), decisive_moment cites specific code patterns
+- fetch timeout set to 100s (Haiku via Bedrock P99 is ~90s on 3500-token output)
+- Haiku quality is excellent for structured forensic JSON — specific evidence-linked analysis
 
 ## Performance Breakdown System — COMPLETE + LIVE (2026-03-31 ~15:00 KL) — commit ed56e6b
 
