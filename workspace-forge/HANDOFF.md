@@ -1,14 +1,31 @@
 # Forge Handoff
 
 ## Last Updated
-2026-03-31 ~06:42 KL
+2026-03-31 ~10:30 KL
 
 ## Latest Deploy
-Git: eaf4261 | https://agent-arena-roan.vercel.app
+Git: 9817615 | https://agent-arena-roan.vercel.app
+
+## ⚠️ PENDING: Manual SQL migration required — Nick must apply in Supabase SQL editor
+**Migration file**: `supabase/migrations/00042_fix_rls_recursion_and_verify_columns.sql`
+**Why**: Supabase PAT expired — CLI + Management API both return 401. Cannot apply programmatically.
+**Impact without it**: 
+- `positive_signal`, `primary_weakness` on judge_outputs still missing → feedback UI derives from dimension scores (works, just no judge-populated signals)
+- `overall_verdict` on challenge_entries still missing → breakdown synthesizes from lane data (works)
+- RLS policies still have recursion in DB layer — **workaround deployed** (all profile/entry reads use adminClient in app code), authenticated flows fully restored
+- After migration: permanent DB-level fix, adminClient workarounds can be reverted
+
+**SQL to apply** (copy/paste into Supabase SQL Editor → Run):
+See full file at `/data/agent-arena/supabase/migrations/00042_fix_rls_recursion_and_verify_columns.sql`
+Key blocks:
+1. `ALTER TABLE public.judge_outputs ADD COLUMN IF NOT EXISTS positive_signal TEXT, ADD COLUMN IF NOT EXISTS primary_weakness TEXT;`
+2. `ALTER TABLE public.challenge_entries ADD COLUMN IF NOT EXISTS overall_verdict TEXT;`
+3. `CREATE OR REPLACE FUNCTION public.is_admin() RETURNS boolean LANGUAGE sql STABLE SECURITY DEFINER...`
+4. Drop and recreate all RLS policies using `public.is_admin()` instead of inline profiles subqueries
 
 ---
 
-## Session Summary — 2026-03-31 (Full Pre-Launch Pass)
+## Session Summary — 2026-03-31 (Launch Timing + Feedback Model)
 
 ### All commits this session (oldest → newest):
 - `0818dc1` — Free-at-launch: all Stripe/payment surfaces disabled
@@ -17,6 +34,41 @@ Git: eaf4261 | https://agent-arena-roan.vercel.app
 - `ce114a5` — API docs auth section clarified (x-arena-api-key vs bouts_sk_)
 - `76190de` — Pre-launch remediation pass (RLS migration, admin 500 fixes, v1 challenges filter)
 - `eaf4261` — Deferred items completed (junk challenges deleted, USDC labels, RI toggle, MCP restored)
+- `335b23e` — Launch timing + feedback model (see below)
+- `1031d1a` — Fix missed timing copy: LIVE SESSION badge, Time Limit label, landing card
+
+---
+
+## Launch Timing + Feedback Model — COMPLETE (2026-03-31 ~08:00 KL)
+
+### Schema (migration 00041 — applied manually in Supabase SQL editor)
+- `judge_outputs.positive_signal` TEXT — strongest positive per lane
+- `judge_outputs.primary_weakness` TEXT — key weakness per lane
+- `challenge_entries.overall_verdict` TEXT — synthesized top-level verdict
+
+### Timing model
+- Challenge window (starts_at → ends_at) and per-entry session (time_limit_minutes) are now fully separated throughout UI, data model, docs, and copy
+- Default challenge window: 48 hours (admin creator auto-fills end date)
+- Default per-entry session: 60 minutes (starts when user opens workspace)
+- Edge case policy: sessions started before challenge close may finish; new entries blocked at close
+
+### Key files changed
+- `supabase/migrations/00041_timing_feedback_model.sql`
+- `src/lib/validators/challenge.ts` — time_limit_minutes allows 0 (sandbox no-limit)
+- `src/components/admin/challenge-creator.tsx` — Challenge Window + Per-Entry Session sections
+- `src/app/(public)/challenges/[id]/page.tsx` — timing card, live countdown, ChallengeCountdown component
+- `src/app/(public)/challenges/[id]/workspace/page.tsx` — dual-clock (Your Session / Challenge Closes)
+- `src/app/api/challenges/[id]/workspace/route.ts` — passes ends_at to client
+- `src/app/(public)/submissions/[id]/status/page.tsx` — provisional placement, standings-at-close note
+- `src/app/api/challenge-submissions/[submissionId]/route.ts` — challenge_ends_at, provisional_placement, total_entries
+- `src/components/replay/post-match-breakdown.tsx` — full rewrite (verdict synthesis, per-lane signals, improvement guidance, relative context)
+- `src/app/(public)/replays/[entryId]/page.tsx` — passes overall_verdict, placement, isProvisional to breakdown
+- `src/app/api/replays/[entryId]/route.ts` — overall_verdict, total_entries, challenge_ends_at, positive_signal, primary_weakness
+- `src/app/(public)/how-it-works/page.tsx` — timing FAQs rewritten
+- `src/app/docs/compete/page.tsx` — Results & Standings section added, timing rules updated
+- `src/app/docs/quickstart/page.tsx` — session timer clarified, results timing updated
+- `src/components/challenges/challenge-detail-header.tsx` — "LIVE SESSION" → "Open — enter any time", "Time Limit" → "Per-Entry Session"
+- `src/components/landing/current-challenge.tsx` — rewritten to fetch real active challenge, correct timing copy
 
 ---
 
