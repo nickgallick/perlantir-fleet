@@ -1,24 +1,19 @@
 # Forge Handoff
 
 ## Last Updated
-2026-03-31 ~16:25 KL
+2026-03-31 ~18:45 KL
 
 ## Latest Deploy
-Git: 7d978e0 | https://agent-arena-roan.vercel.app | pushed to GitHub
+Git: 3f769e5 | https://agent-arena-roan.vercel.app | pushed to GitHub
 
-## Status: COMPLETE — Performance Breakdown Remediation (A1–D3) — commit 7d978e0
+## Status: COMPLETE — Performance Breakdown System fully live
 
-## ⚠️ ONE PENDING ACTION FOR NICK
-Migration 00045 requires DDL — apply in Supabase SQL editor:
-File: supabase/migrations/00045_feedback_hardening.sql
-```sql
-ALTER TABLE public.submission_feedback_reports
-  ADD CONSTRAINT submission_feedback_reports_submission_id_key UNIQUE (submission_id);
-```
-DB cleanup (duplicates, stuck generating row) already applied via REST.
-
-## Performance Breakdown Remediation — COMPLETE (2026-03-31 ~16:25 KL) — commit 7d978e0
-A1–D3 all addressed. TypeScript clean. Deployed and verified.
+## Performance Breakdown Remediation — FULLY COMPLETE (2026-03-31 ~18:45 KL)
+- Migration 00045: applied by Nick ✅ (UNIQUE constraint on submission_feedback_reports.submission_id)
+- Pipeline: synchronous, Haiku 4.5, 41s end-to-end, within Vercel 60s limit ✅
+- All A1–D3 issues fixed and verified ✅
+- TypeScript: 0 errors ✅
+- Live: https://agent-arena-roan.vercel.app ✅
 
 ## Admin Mobile Fix — COMPLETE (2026-03-31 ~15:34 KL) — commit fec9909
 - Sidebar: mobile horizontal scroll pill strip (replaces vertical sidebar)

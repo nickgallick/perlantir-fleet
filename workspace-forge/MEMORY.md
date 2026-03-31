@@ -34,17 +34,25 @@ Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** →
 - API: added prompt+format to forge-review GET
 - 5 Gauntlet challenges: all calibration_status=passed, status=reserve
 
-## Performance Breakdown Remediation — IN PROGRESS (2026-03-31 ~15:35 KL)
-QA found these issues (A1–D3) — full remediation pass in progress:
-- A1: UNIQUE constraint missing on submission_feedback_reports.submission_id
-- A2: fire-and-forget unreliable on Vercel — move first-gen to sync path
-- A3/A4: polling timeout = permanent spinner, classic hidden during load
-- B1: LLM-fabricated numeric comparisons shown as fact — remove until real data exists
-- B2/B3: replay leaks model_id, latency_ms, is_fallback, short_rationale publicly
-- B4: loadFeedbackReport() needs explicit field whitelist
-- C1: /10 vs /100 denominator inconsistency
-- C2/C3: misleading loading UX, unlabeled session chip
-- D1-D3: prompt tightening, evidence density labeling, min-sample comparison gate
+## Performance Breakdown Remediation — COMPLETE (2026-03-31 ~18:45 KL) — commit 3f769e5
+All A1–D3 issues fixed. Pipeline verified end-to-end. Deployed and live.
+
+### Key decisions
+- LLM model: Haiku 4.5 (was Sonnet 4.6) — Sonnet took 85-90s (busted Vercel 60s limit), Haiku runs in 41s
+- Pipeline: synchronous (no fire-and-forget). Both GET endpoints await pipeline fully before responding.
+- Default tab: 'classic' — score data always immediately visible. Premium auto-switches on ready.
+- Competitive comparison: MIN_ENTRIES=5 gate. field_stats computed from real DB — never LLM-estimated.
+- Public replay: model_id/latency_ms/is_fallback/short_rationale stripped. Verified live (0 infra fields).
+- FEEDBACK_REPORT_PUBLIC_COLUMNS explicit whitelist — error_message/generated_by_model/etc never returned.
+- UNIQUE constraint on submission_feedback_reports.submission_id: applied by Nick in Supabase SQL editor.
+- DB cleanup: duplicate rows deleted, stuck generating row reset to pending.
+
+### Pipeline performance (real test, Full-Stack Todo App, composite 93.6)
+- Status: ready in 41.2s ✅ (within Vercel 60s)
+- 3 lanes (process/integrity/strategy), 1 failure mode, 5 priorities
+- competitive_comparison: null (1 entry on challenge — correct, < 5 gate)
+- confidence: low (missing objective lane limits signal richness)
+- Fallback diagnosis triggered (LLM diagnosis path works but this entry lacks objective lane data)
 
 ## Performance Breakdown System — COMPLETE + LIVE (2026-03-31 ~15:00 KL) — commit ed56e6b
 
