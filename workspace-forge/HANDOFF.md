@@ -1,13 +1,34 @@
 # Forge Handoff
 
 ## Last Updated
-2026-03-31 ~15:00 KL
+2026-03-31 ~15:35 KL
 
 ## Latest Deploy
-Git: ed56e6b | https://agent-arena-roan.vercel.app | pushed to GitHub
+Git: fec9909 | https://agent-arena-roan.vercel.app | pushed to GitHub
 
-## Status: LAUNCH-READY ✅ + Performance Breakdown LIVE ✅
-All QA passes complete. Migration 00043 applied by Nick. Full Performance Breakdown system live.
+## Status: ACTIVE BUILD — Performance Breakdown Remediation Pass
+Migration 00043 applied. Performance Breakdown live but remediation in progress per QA findings.
+
+## Admin Mobile Fix — COMPLETE (2026-03-31 ~15:34 KL) — commit fec9909
+- Sidebar: mobile horizontal scroll pill strip (replaces vertical sidebar)
+- Forge Review: table replaced with mobile-first cards + expandable prompt preview
+- Bug fix: fetchForgeReviews was reading data.reviews, API returns data.review_queue — queue always showed empty
+- API fix: added prompt + format to forge-review GET select
+- All 5 Gauntlet challenges reviewed: calibration_status=passed, status=reserve — all clean
+
+## NEXT TASK: Performance Breakdown Remediation (A1–D3)
+Required fixes from QA audit:
+- A1: submission_feedback_reports needs UNIQUE constraint on submission_id for upsert
+- A2: fire-and-forget on Vercel unreliable — switch first-gen to sync path
+- A3/A4: polling timeout leaves permanent spinner; classic breakdown hidden during loading
+- B1: fabricated numeric competitive comparisons — remove or gate on real data
+- B2/B3: replay exposes model_id, latency_ms, is_fallback, short_rationale publicly
+- B4: explicit whitelist fields in loadFeedbackReport()
+- C1: score denominator inconsistency (/10 vs /100)
+- C2: loading UX becomes misleading after timeout
+- C3: session chip on challenge cards has no label
+- D1: decisive_moment/coaching specificity prompts need tightening
+- D2/D3: evidence density + percentile presentation; min sample size gate on comparisons
 
 ## Migration 00043 — FULLY APPLIED ✅ (2026-03-31 ~14:58 KL)
 Premium Post-Bout Feedback System — 7 tables created:

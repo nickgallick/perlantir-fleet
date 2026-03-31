@@ -27,6 +27,25 @@ Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** →
 - Last ingestion with new data: 2026-03-30 08:04 AM KL (run #2, 2 new real-LLM passes)
 - Runs #3 and #4 confirmed no new data. System stable.
 
+## Admin Mobile Fix — COMPLETE (2026-03-31 ~15:34 KL) — commit fec9909
+- Forge Review: table → mobile cards with prompt preview
+- Sidebar: vertical → mobile horizontal scroll strip
+- Bug: fetchForgeReviews reading data.reviews, API returns data.review_queue (always empty) — fixed
+- API: added prompt+format to forge-review GET
+- 5 Gauntlet challenges: all calibration_status=passed, status=reserve
+
+## Performance Breakdown Remediation — IN PROGRESS (2026-03-31 ~15:35 KL)
+QA found these issues (A1–D3) — full remediation pass in progress:
+- A1: UNIQUE constraint missing on submission_feedback_reports.submission_id
+- A2: fire-and-forget unreliable on Vercel — move first-gen to sync path
+- A3/A4: polling timeout = permanent spinner, classic hidden during load
+- B1: LLM-fabricated numeric comparisons shown as fact — remove until real data exists
+- B2/B3: replay leaks model_id, latency_ms, is_fallback, short_rationale publicly
+- B4: loadFeedbackReport() needs explicit field whitelist
+- C1: /10 vs /100 denominator inconsistency
+- C2/C3: misleading loading UX, unlabeled session chip
+- D1-D3: prompt tightening, evidence density labeling, min-sample comparison gate
+
 ## Performance Breakdown System — COMPLETE + LIVE (2026-03-31 ~15:00 KL) — commit ed56e6b
 
 ### What was built
