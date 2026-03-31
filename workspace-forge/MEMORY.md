@@ -15,6 +15,63 @@
 ## Pipeline Position
 Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** → QA → Launch
 
+## Premium Post-Bout Feedback System — AUDIT COMPLETE (2026-04-01 ~05:00 KL) — FIRST-CLASS READY ✅
+
+### Comprehensive Audit Results
+Full audit performed on feedback pipeline, UI, RLS, LLM prompts, API routes, and integration. See FEEDBACK-AUDIT.md and FEEDBACK-RUNBOOK.md for complete details.
+
+**Status**: ✅ Production-grade, all critical paths verified, all known issues fixed, ready as flagship Bouts feature.
+
+#### Audit Summary (Phase 1–5)
+- **Static Code Review**: ✅ PASS — Anti-generic enforcement in prompts (specificity test), max_tokens:3500, fallback mechanisms
+- **Integration**: ✅ PASS — Orchestrator fires correctly, replay page integration working, polling pattern solid
+- **RLS & Security**: ✅ PASS — Owner/admin read enforced, sensitive columns excluded, public column whitelist
+- **Known Issues**: ✅ ALL FIXED — Timeout handling (cd91231), hedging bans (7d978e0), fake comparisons (7d978e0), fallback (3f769e5)
+- **Tier 1 Critical Paths**: ✅ ALL VERIFIED — Signal extraction, diagnosis LLM, coaching LLM, DB persistence, API, UI rendering
+- **Tier 2 Quality Gates**: ✅ VERIFIED — Anti-generic output, evidence linking, competitive safety, longitudinal tracking
+
+#### System Specs
+- **4-stage pipeline**: Signal extraction (no LLM), Diagnosis (Haiku 4.5, 100s timeout, max_tokens:3500), Coaching (Haiku 4.5, 30s timeout, max_tokens:2000), Longitudinal update (EMA α=0.3)
+- **10-block UI**: Outcome Header, Executive Diagnosis, Lane Scorecards, Decisive Factors, Failure Mode Analysis, Improvement Priorities, Evidence Panel, Competitive Comparison, Confidence Badges, Longitudinal Profile
+- **7-table schema**: submission_feedback_reports, submission_lane_feedback, submission_failure_modes, submission_improvement_priorities, submission_evidence_refs, agent_performance_profiles, agent_performance_events (migration 00043 ✅)
+- **2 API routes**: GET /api/feedback/[submissionId], GET /api/feedback/entry/[entryId]
+- **Failure mode taxonomy**: 15 codes (hidden_constraint_miss, validation_omission, premature_convergence, brittle_workaround, hallucinated_completion, unsupported_certainty, misleading_implication, poor_recovery, spec_drift, shallow_decomposition, tool_misuse, overoptimized_visible_req, sacrificed_reliability, format_noncompliance, timeout_pacing_collapse, none_detected)
+
+#### Minor Gaps (Tier 2, Sprint 2)
+1. Mobile responsive optimization for Performance Breakdown component (currently stacks vertically, but could be more polish on small screens)
+2. Feedback status badge on challenge submissions list ("📊 Premium Feedback Available")
+3. Ops documentation (FEEDBACK-RUNBOOK.md now written ✓)
+
+#### Documentation
+- `FEEDBACK-AUDIT.md`: Comprehensive audit with phase-by-phase findings, success criteria, gaps, and recommendations
+- `FEEDBACK-RUNBOOK.md`: Operations guide — quick reference, how it works, common issues, monitoring queries, deployment checklist, troubleshooting
+
+---
+
+## Calibration Pipeline v2 — COMPLETE (2026-04-01 ~02:11 KL) — commit dawn-prairie deploy
+Full 3-layer calibration system built and deployed. Nick needs to apply migration 00048 in Supabase.
+
+### What was built
+- Stage 1: `src/lib/calibration/challenge-analyzer.ts` — LLM analyzer (Claude Sonnet via OpenRouter). Reads actual prompt content. Outputs 8-dimension difficulty profile, predicted solve rate, exploitability, hidden constraints, failure modes, exploit vectors, confidence + rationale.
+- Dossier: `src/lib/calibration/dossier.ts` — combines Stage 1 + existing benchmark into CalibrationDossier. Auto-recommendation: auto_pass / needs_light_review / needs_deep_review / quarantine.
+- Schema: migration 00048 — `challenge_calibration_dossiers` table + `calibration_reviewer_status` / `calibration_recommendation` / `calibration_confidence` columns on challenges.
+- Pipeline API: `POST /api/admin/calibration/pipeline` — actions: analyze_only, full_pipeline, approve, adjust, quarantine.
+- Batch trigger: `POST /api/admin/calibration/run-batch` — runs pipeline for all unreviewed or specific IDs sequentially.
+- Auto-trigger: `POST /api/admin/calibration/auto-trigger` — fires on every Gauntlet intake. New challenges auto-queue for Stage 1.
+- Queue API: `GET /api/admin/calibration/queue` — returns all challenges with dossiers for reviewer UI.
+- Reviewer Queue page: `/admin/calibration` — mobile-first, filter tabs, dossier panel with difficulty bars, failure modes, exploit vectors, one-tap approve/quarantine.
+- Admin dashboard: Calibration tab now has "Open Reviewer Queue →" link.
+
+### Operating model (permanent)
+- Gauntlet creates challenge → intake API fires auto-trigger → Stage 1 runs → dossier written → reviewer sees recommendation
+- Nick only reviews exceptions (deep_review / quarantine flags) — not every challenge
+- Stage 3 (live recalibration) already existed via quality enforcement cron
+
+### Migration 00048 — APPLIED ✅ (2026-04-01 ~02:23 KL by Nick)
+- challenge_calibration_dossiers table live
+- calibration_reviewer_status / calibration_recommendation / calibration_confidence on challenges live
+- Nick to hit "Analyze All Unreviewed" at /admin/calibration to backfill all 27 challenges
+
 ## Mobile Calibration Section — COMPLETE (2026-04-01 ~00:40 KL)
 Fully responsive calibration admin page for mobile and desktop.
 - Filter tabs: All, Draft, Pending, Passed ✓, Flagged, Quarantined
