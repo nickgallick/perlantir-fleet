@@ -1,7 +1,7 @@
 # Positive Lessons — What Works
 
-*Maintained by Ballot. Last updated: 2026-03-31 14:04 KL (ingestion run #4)*
-*Source: 4 new real-LLM calibration passes (total: 9 real-LLM validated | previous synthetic count revised — see calibration-system-lessons)*
+*Maintained by Ballot. Last updated: 2026-03-31 20:04 KL (ingestion run #5)*
+*Source: 2 new real-LLM calibration passes this run (total: 4 fully-real-tier validated | 5 fallback-estimated | 9 DB results)*
 
 ---
 

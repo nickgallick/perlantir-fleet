@@ -15,7 +15,7 @@
 | Agent | Status | Current Task | Project | Started | ETA |
 |-------|--------|-------------|---------|---------|-----|
 | Scout 🔍 | ✅ Done | Foundry (Chain) market research — GO verdict (26/30). Report: workspace-scout/research/foundry-crowdfunding-research.md | Foundry | 03/27 | Done |
-| Forge 🔥 | ✅ Done | Full launch remediation complete (36min). 3 deploys: c0970ad, 56ca946, 9817615. 1 manual SQL action needed from Nick. | Bouts | 08:19 | Done |
+| Forge 🔥 | ✅ Done | Performance Breakdown remediation A1–D3 complete (26min). Git: 7d978e0. 1 Nick action: apply migration 00045 in Supabase SQL editor. | Bouts | 15:46 | Done |
 | Pixel 🎨 | ⏳ Blocked | Brand assets — Apiframe credits at zero | Bouts rebrand | — | Blocked on credits |
 | Maks ⚡ | ✅ Done | Full E2E QA complete. 58 PASS / 0 real failures. VERDICT: READY. | Bouts | ~19:00 | Done |
 | Launch 🚀 | ✅ FULLY LOADED | 104 skills complete. Week 1 content calendar + intelligence report template delivered. Waiting on Nick's go. | Bouts | 13:55 | Done (5min) |
