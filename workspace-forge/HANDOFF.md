@@ -1,13 +1,24 @@
 # Forge Handoff
 
 ## Last Updated
-2026-03-31 ~15:35 KL
+2026-03-31 ~16:25 KL
 
 ## Latest Deploy
-Git: fec9909 | https://agent-arena-roan.vercel.app | pushed to GitHub
+Git: 7d978e0 | https://agent-arena-roan.vercel.app | pushed to GitHub
 
-## Status: ACTIVE BUILD — Performance Breakdown Remediation Pass
-Migration 00043 applied. Performance Breakdown live but remediation in progress per QA findings.
+## Status: COMPLETE — Performance Breakdown Remediation (A1–D3) — commit 7d978e0
+
+## ⚠️ ONE PENDING ACTION FOR NICK
+Migration 00045 requires DDL — apply in Supabase SQL editor:
+File: supabase/migrations/00045_feedback_hardening.sql
+```sql
+ALTER TABLE public.submission_feedback_reports
+  ADD CONSTRAINT submission_feedback_reports_submission_id_key UNIQUE (submission_id);
+```
+DB cleanup (duplicates, stuck generating row) already applied via REST.
+
+## Performance Breakdown Remediation — COMPLETE (2026-03-31 ~16:25 KL) — commit 7d978e0
+A1–D3 all addressed. TypeScript clean. Deployed and verified.
 
 ## Admin Mobile Fix — COMPLETE (2026-03-31 ~15:34 KL) — commit fec9909
 - Sidebar: mobile horizontal scroll pill strip (replaces vertical sidebar)
@@ -16,19 +27,12 @@ Migration 00043 applied. Performance Breakdown live but remediation in progress 
 - API fix: added prompt + format to forge-review GET select
 - All 5 Gauntlet challenges reviewed: calibration_status=passed, status=reserve — all clean
 
-## NEXT TASK: Performance Breakdown Remediation (A1–D3)
-Required fixes from QA audit:
-- A1: submission_feedback_reports needs UNIQUE constraint on submission_id for upsert
-- A2: fire-and-forget on Vercel unreliable — switch first-gen to sync path
-- A3/A4: polling timeout leaves permanent spinner; classic breakdown hidden during loading
-- B1: fabricated numeric competitive comparisons — remove or gate on real data
-- B2/B3: replay exposes model_id, latency_ms, is_fallback, short_rationale publicly
-- B4: explicit whitelist fields in loadFeedbackReport()
-- C1: score denominator inconsistency (/10 vs /100)
-- C2: loading UX becomes misleading after timeout
-- C3: session chip on challenge cards has no label
-- D1: decisive_moment/coaching specificity prompts need tightening
-- D2/D3: evidence density + percentile presentation; min sample size gate on comparisons
+## Performance Breakdown Remediation — DONE (commit 7d978e0)
+A1: UNIQUE constraint 00045 SQL ready (apply in Supabase — see above). DB already cleaned.
+A2: Sync pipeline. A3: Graceful failure states. A4: Classic tab default.
+B1: Real DB stats, MIN_ENTRIES=5. B2/B3: Infra fields scoped. B4: Explicit whitelist.
+C1: /10 vs /100 labeled. C2: Honest inline loading. C3: 'session' label. C4: Percentile tooltip.
+D1: Evidence-required prompts. D2: Internal metrics hidden. D3: Sample gate.
 
 ## Migration 00043 — FULLY APPLIED ✅ (2026-03-31 ~14:58 KL)
 Premium Post-Bout Feedback System — 7 tables created:
