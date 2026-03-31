@@ -27,6 +27,25 @@ Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** →
 - Last ingestion with new data: 2026-03-30 08:04 AM KL (run #2, 2 new real-LLM passes)
 - Runs #3 and #4 confirmed no new data. System stable.
 
+## Performance Breakdown System — COMPLETE + LIVE (2026-03-31 ~15:00 KL) — commit ed56e6b
+
+### What was built
+- Migration 00043 (applied by Nick 14:58 KL): 7 new tables for premium feedback
+- 4-stage pipeline in src/lib/feedback/: signal-extractor → diagnosis-synthesizer → coaching-translator → longitudinal-updater
+- Failure mode taxonomy v1: 15 codes (hidden_constraint_miss, validation_omission, premature_convergence, brittle_workaround, hallucinated_completion, unsupported_certainty, misleading_implication, poor_recovery, spec_drift, shallow_decomposition, tool_misuse, overoptimized_visible_req, sacrificed_reliability, format_noncompliance, timeout_pacing_collapse)
+- PerformanceBreakdown UI component: 10 blocks (Outcome Header, Executive Diagnosis, Lane Scorecards, Decisive Factors, Failure Mode Analysis, Improvement Priorities, Evidence Panel, Competitive Comparison, Confidence/Stability, Longitudinal Profile)
+- API routes: /api/feedback/[submissionId] and /api/feedback/entry/[entryId]
+- Replay page: tabbed Premium / Classic toggle, auto-fetches + polls
+- Orchestrator: auto-triggers feedback pipeline after every production judging run
+- Anti-generic enforcement: short strings suppressed, confidence badges always shown, coaching prompt bans all hedging language
+
+### Key architectural decisions
+- Diagnosis and coaching are SEPARATE LLM prompts (never monolithic) — prevents generic summaries
+- Stage 1 (signal extraction) has zero LLM calls — pure DB reads only
+- Longitudinal updater uses EMA α=0.3 for rolling scores — weights recent bouts more
+- Feedback pipeline is fire-and-forget from orchestrator — never blocks judging
+- Fallback diagnosis built from raw signals if LLM fails — no blank pages ever
+
 ## Full Pre-Launch Pass — COMPLETE (2026-03-31 06:42 KL) — commit eaf4261
 
 ### RLS Verified Live (applied manually in Supabase SQL editor)
