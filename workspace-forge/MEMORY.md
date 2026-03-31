@@ -47,12 +47,13 @@ All A1–D3 issues fixed. Pipeline verified end-to-end. Deployed and live.
 - UNIQUE constraint on submission_feedback_reports.submission_id: applied by Nick in Supabase SQL editor.
 - DB cleanup: duplicate rows deleted, stuck generating row reset to pending.
 
-### Pipeline performance (real test, Full-Stack Todo App, composite 93.6)
-- Status: ready in 41.2s ✅ (within Vercel 60s)
-- 3 lanes (process/integrity/strategy), 1 failure mode, 5 priorities
-- competitive_comparison: null (1 entry on challenge — correct, < 5 gate)
-- confidence: low (missing objective lane limits signal richness)
-- Fallback diagnosis triggered (LLM diagnosis path works but this entry lacks objective lane data)
+### Pipeline — FULLY WORKING (real LLM diagnosis, commit cd91231)
+- Root cause of fallback: max_tokens:2000 was too low — full output is ~2500 tokens, JSON truncated mid-response → parse failed → fallback
+- Fix: Haiku 4.5 (fast + reliable via Bedrock), max_tokens:3500, maxDuration:120 on routes, fetch timeout 45s
+- Verified: 46.7s, confidence: HIGH, real LLM executive_diagnosis (cites actual code patterns, specific decisive_moment)
+- 3 lanes, 3 failure modes, 5 priorities — NO fallback
+- Sonnet 4.6 rejected: consistently 45-95s on large outputs via OpenRouter (Bedrock routing makes it slow)
+- Haiku quality is excellent for structured forensic JSON — not a downgrade in practice
 
 ## Performance Breakdown System — COMPLETE + LIVE (2026-03-31 ~15:00 KL) — commit ed56e6b
 

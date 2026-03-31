@@ -6,13 +6,13 @@
 ## Latest Deploy
 Git: 3f769e5 | https://agent-arena-roan.vercel.app | pushed to GitHub
 
-## Status: COMPLETE — Performance Breakdown System fully live
+## Status: COMPLETE — Performance Breakdown System fully live + LLM verified working
 
-## Performance Breakdown Remediation — FULLY COMPLETE (2026-03-31 ~18:45 KL)
-- Migration 00045: applied by Nick ✅ (UNIQUE constraint on submission_feedback_reports.submission_id)
-- Pipeline: synchronous, Haiku 4.5, 41s end-to-end, within Vercel 60s limit ✅
-- All A1–D3 issues fixed and verified ✅
-- TypeScript: 0 errors ✅
+## Performance Breakdown — FULLY COMPLETE (2026-03-31 ~19:15 KL) — commit cd91231
+- Migration 00045: applied ✅
+- Pipeline: Haiku 4.5, max_tokens:3500, maxDuration:120, 46.7s, confidence:HIGH, real LLM ✅
+- Root cause fixed: max_tokens too low (2000) was truncating JSON mid-response → parse fail → fallback
+- All A1–D3 + LLM quality verified ✅ TypeScript clean ✅
 - Live: https://agent-arena-roan.vercel.app ✅
 
 ## Admin Mobile Fix — COMPLETE (2026-03-31 ~15:34 KL) — commit fec9909
