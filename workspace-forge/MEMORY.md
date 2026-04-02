@@ -15,6 +15,44 @@
 ## Pipeline Position
 Scout → **Forge (architecture)** → Pixel → Maks → **Forge (review)** → QA → Launch
 
+## Final Combined Remediation — COMPLETE (2026-04-02 ~12:30 KL) — commit 86f8e30 ✅
+
+### All items from Nick's final QA brief resolved
+
+**Feedback V2 fixes (code):**
+- A1: `v2-causal-chains.ts` + `CausalChainBlock` — all causal labels now use `FAILURE_MODE_LABELS` canonical map via `humanizeCausalLabel()`. No raw snake_case in UI.
+- A2: `total_score_damage` was always 0 — root cause: code only counted edge children that appeared in diagnosis.failure_modes (theoretical relationships), not actual failures. Fix: count ALL non-primary failure_modes for damage. DB backfilled: 4 chains now have correct non-zero values (48–61 pts).
+- A3: All 4 V2 reports backfilled with `challenge_calibration_context_json` from their challenge's calibration dossier.
+- A4/A5: Verified — honest suppression intact, infra whitelist intact, no /10 confusion.
+
+**Calibration fixes (code):**
+- B1: 13 dossiers had ai_analysis but missing `decision` field in JSONB (legacy format). Decision rebuilt deterministically from ai_analysis fields. `_reconstructed: true` flag set for traceability.
+- B2/B3: 4 challenges had empty dossiers (no ai_analysis). LLM re-analysis run via `scripts/backfill-empty-dossiers.ts`. Reviewer status PRESERVED (approved→approved, quarantined→quarantined).
+- B4: `RecBadge` in calibration page now accepts `reviewerStatus`. For approved/adjusted/quarantined: AI rec shown as dimmed secondary ("AI: Quarantine") — not active alert. Eliminates contradictory badge pairs.
+- B7: `approve` action blocks hollow approvals (422 if no ai_analysis exists).
+- B5/B6: Verified correct from prior session.
+
+**Data backfill counts (final state):**
+- Causal chains total_score_damage=0: 4 → 0 ✅
+- V2 reports with calibration context: 0 → 4 ✅
+- Dossiers missing decision field: 13 → 0 ✅
+- Empty dossiers (no ai_analysis): 4 → 0 ✅
+
+**New infra:**
+- `src/app/api/internal/final-remediation/route.ts` — admin backfill endpoint (A2+A3+B1)
+- `scripts/backfill-empty-dossiers.ts` — standalone LLM re-analysis script (B2/B3)
+- `run-batch` now accepts `force_reanalysis_ids` (preserves reviewer_status for final states)
+
+**Intentionally suppressed (data-dependent — correct):**
+- Judge disagreement: no judge_outputs → suppressed ✅
+- Change deltas: no prior submission → suppressed ✅ (all 4 reports are first bouts)
+- Win conditions: field_sample_count < 5 → suppressed ✅
+- Preservation: insufficient longitudinal data → suppressed ✅
+
+**No outstanding follow-ups remain.**
+
+---
+
 ## Premium Post-Bout Feedback System — AUDIT COMPLETE (2026-04-01 ~05:00 KL) — FIRST-CLASS READY ✅
 
 ### Comprehensive Audit Results
@@ -45,6 +83,77 @@ Full audit performed on feedback pipeline, UI, RLS, LLM prompts, API routes, and
 #### Documentation
 - `FEEDBACK-AUDIT.md`: Comprehensive audit with phase-by-phase findings, success criteria, gaps, and recommendations
 - `FEEDBACK-RUNBOOK.md`: Operations guide — quick reference, how it works, common issues, monitoring queries, deployment checklist, troubleshooting
+
+## Feedback System V2 — FULLY DEPLOYED & LIVE (2026-04-01 ~08:02 KL) — commits d1a5e84 through 4e18363 ✅
+
+### What was built
+10-upgrade comprehensive system build replacing "good" with "best-in-class."
+
+**Complete implementation** (not concept):
+1. Counterfactual Coaching Engine — impact estimation per fix (empirical field + symptom severity)
+2. Judge Disagreement/Agreement Map — alignment analysis + plain-language diagnosis
+3. Submission-to-Submission Delta Intelligence — bout-to-bout change tracking
+4. Failure Mode Causal Chain/Root Cause Graph — root cause + downstream effects
+5. Stronger Evidence Anchoring — trust enforcement (no false precision)
+6. Win-Condition Modeling — what top performers did (field sample ≥5 only)
+7. "What Not to Change" Safeguard — overcorrection risk detection
+8. Challenge-Type/Archetype Performance Intelligence — specialty tracking
+9. Confidence-Aware Rendering — low-evidence mode (observed_signals)
+10. Calibration-Aware Feedback Context — challenge difficulty context
+
+**Data Model**: Migration 00050 — 7 new tables + column additions on submission_feedback_reports
+- submission_counterfactual_analysis
+- submission_judge_disagreement
+- submission_change_deltas
+- submission_causal_chains
+- submission_win_condition_analysis
+- submission_preservation_recommendations
+- agent_challenge_archetype_performance
+
+**Pipeline**: pipeline-v2.ts — 12 stages (5 v1 + 7 v2, non-fatal failures)
+- Deterministic (no LLM in V2 stages)
+- Partial writes (robust to failures)
+- +10s latency added
+- All results persist to DB
+
+**Type Safety**: v2-types.ts — strict TypeScript, no `any`
+- CounterfactualAnalysis, JudgeDisagreementAnalysis, ChangeDeltas, CausalChain, WinConditionAnalysis, PreservationRecommendation, ArchetypePerformanceSummary, RenderingMode, LowEvidenceWarning
+
+**Analysis Modules** (7 deterministic algorithms):
+- v2-counterfactual.ts: ranges + confidence (never false precision)
+- v2-judge-disagreement.ts: alignment metrics + narrative
+- v2-change-deltas.ts: prior submission comparison
+- v2-causal-chains.ts: root cause graph + damage attribution
+- v2-win-conditions.ts: field modeling (≥5 sample only)
+- v2-preservation.ts: overcorrection risk detection
+- v2-rendering.ts: confidence→rendering mode mapping
+
+**Trust Safeguards** (hard rules):
+- No estimated deltas as fact (ranges only)
+- No quantitative comparison without measured source
+- No strong claim without evidence anchor
+- Suppress when support weak
+- No generic language
+- No internal metrics in UI
+
+**Architecture**: See FEEDBACK-V2-ARCHITECTURE.md (15KB comprehensive spec)
+
+### Phased Deployment
+- Phase 1 (Today): Apply migration 00050, deploy pipeline-v2, switch API
+- Phase 2 (This week): Update UI component with V2 blocks
+- Phase 3 (Next week): Add causal chains, win-conditions, preservation, rendering modes
+
+### Deployment Complete ✅
+1. ✅ Migration 00050 applied in Supabase (verified 2026-04-01 ~06:07 KL)
+2. ✅ API route already uses pipeline-v2 (integrated at commit 609f3dc)
+3. ✅ PerformanceBreakdown.tsx renders all V2 data (integrated at commit 609f3dc)
+4. ✅ All 7 V2 blocks live and rendering
+
+### System Status
+- V2 pipeline runs automatically on new submissions
+- All data persists to 7 new tables in Supabase
+- UI renders counterfactual, disagreement, deltas, causal, win-conditions, preservation, rendering-mode blocks
+- No manual action required — system is fully autonomous
 
 ---
 
