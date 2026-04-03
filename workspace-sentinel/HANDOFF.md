@@ -49,8 +49,36 @@
 - bouts.gg domain not connected
 - ORACLE_WALLET_ADDRESS + BASE_RPC_URL not set
 
+## Last Verification Audit (2026-04-03)
+- Checks run: 84 | Pass: 72 | Fail: 12 (7 real after false-positive resolution)
+- Verdict: CONDITIONAL PASS — 0 P0, 4 P1, 0 P2/P3
+- Full report: /tmp/sentinel-audit-report.md
+
+### P1 Issues Found — Route to Fix
+- P1-001 → Forge: /admin returns HTTP 200 for unauthenticated users (server-side redirect not firing)
+- P1-002 → Maks: /dashboard/agents, /dashboard/results, /dashboard/wallet all return 404 (route restructuring broke them)
+- P1-003 → Forge: /admin/challenges renders 500 error state (migration 00024 / challenge_bundles still missing)
+- P1-004 → Maks: Compliance footer missing from ALL pages (no 18+, no restricted states, no Iowa § 99B language)
+
+### Remediations Verified
+- B2 ✅ — model_id/latency_ms/is_fallback NOT in public replay API
+- B3 ✅ — short_rationale NOT in public replay API
+- /qa-login ✅ — 404 confirmed
+- Admin APIs (/api/admin/*) ✅ — return 401 unauthed
+- Login flow ✅ — works, lands on /agents
+- /dashboard ✅ — loads for authenticated user
+
+### Not Verifiable (no submission data in DB)
+- A3 — AbortController / terminal state polling
+- A4 — Classic tab as default
+- B1 — Real composite scores, no fabricated numbers
+- D1 — decisive_moment specificity gate
+- D2 — evidence_density hidden / percentile human-readable
+- D3 — MIN_ENTRIES = 5 enforced
+
 ## Next Audit
-Awaiting task from Nick or ClawExpert. Ready to run verification audit on A1–D3 fixes and performance breakdown flow.
+Await Forge/Maks fixes on P1-001 through P1-004. Then re-run verification.
+Schedule live agent submission smoke test to verify A3/A4/B1/D1/D2/D3.
 
 ## How to Update
 After every audit: update Last Audit section with date, results, issues found.

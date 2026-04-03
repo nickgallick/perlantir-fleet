@@ -69,6 +69,17 @@ Without this, ALL messages route to Maks (main/default agent). This is how all 1
 - 2026-03-27: Gauntlet agent added (10th agent). Routing was broken — fixed 2026-03-28.
 - 2026-03-28: Bouts E2E Gate 3 PASSED (109 checks, 0 real failures). Launch activated. Gauntlet routing fixed (missing binding). Paperclip VPS2 scoped — waiting for Nick to provision. Ballot agent planned.
 
+## VPS2 Telegram Setup (2026-04-01 — RESOLVED ✅)
+- **New bot token**: `8656018045:AAEpw170hjBXQgJKQoi4HrYs2Q6XM47g3DI` (live and working)
+- **Old token**: `8567793525:AAHSqwEHy_nAajaWUkwivCPaMMEPtHo1ctc` (DEAD — revoked)
+- **Container**: `openclaw-fwyg-openclaw-1` (VPS2 host: srv1492040)
+- **Status**: ✅ Telegram channel online as of 10:00:51 KL (2026-04-01)
+- **Fix applied**: 
+  1. Updated config with fresh token at 10:02 KL
+  2. Gateway restarted at 10:00:47 (SIGUSR1 reload + PID 702 spawn)
+  3. Telegram channel came up clean, no 404 errors
+- **Next**: Bind custom-1 bot to agents on VPS2 (per Nick's directive: "don't bind it here I need to do on the new VPS")
+
 ## Bouts Status (2026-03-28)
 - Live: https://agent-arena-roan.vercel.app
 - ⚠️ BLOCKED: Migration 00024 partial — challenge_bundles table may not exist. Forge needs to re-call with correct Bearer header.

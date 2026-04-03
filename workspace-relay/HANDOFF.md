@@ -4,7 +4,7 @@
 - URL: https://agent-arena-roan.vercel.app
 
 ## Last Full Audit
-Date: 2026-03-30
+Date: 2026-04-01
 Packs run: 4 (smoke, auth/workspace, docs/routes, results/replay)
 Total checks: 79 | Passed: 72 | Failed: 7
 
@@ -98,6 +98,32 @@ Verdict: LAUNCH-READY WITH MINOR FOLLOW-UPS
 Key real findings: Stripe copy on how-it-works, W-9 UI in wallet, admin 500s on intake/health APIs
 Script: /tmp/playwright-test-relay-launch-audit-20260331.js
 
+## Calibration System Full Audit (2026-04-01 — LAUNCH-READY WITH FOLLOW-UPS)
+Date: 2026-04-01
+Verdict: LAUNCH-READY WITH FOLLOW-UPS. Core pipeline works. Real LLM, real quality. 3 bugs to fix.
+
+P1-CAL-1: approve/adjust/quarantine actions write dossier:{} — destroys existing dossier JSONB
+P1-CAL-2: stale calibration_recommendation column after approve (approve doesn't clear recommendation field)
+P2-CAL-1: Decision detail (rule trace) not rendered in browser — dossier.decision is null due to P1 bug
+P2-CAL-2: 50% of challenges have no dossier (15/30 unreviewed with no analysis run)
+P3-CAL-1: "Predicted" label not shown in UI — no distinction between AI-estimated vs measured values
+P3-CAL-2: auto_pass with solve rate 0.81 borderline (threshold 0.85) — minor calibration edge
+Scripts: /tmp/playwright-test-relay-calibration-audit-20260401.js
+
+## Feedback System V2 Full Audit (2026-04-01 — NOT READY)
+Date: 2026-04-01
+Verdict: NOT LAUNCH-READY for V2. V1 base system remains solid.
+Core finding: pipeline-v2.ts exists but is NEVER called by any API route. All 7 V2 DB tables are empty. All V2 blocks (Counterfactual, Judge Alignment, Change Deltas, Causal Chain, Win Conditions, Preservation, Calibration) are absent from every live report.
+
+P0-V2-1: V2 pipeline never wired — runFeedbackPipelineV2 not called anywhere in API routes
+P0-V2-2: loadFeedbackReport does not query V2 tables or return V2 fields
+P1-V2-1: Raw failure mode codes (validation_omission, premature_convergence) rendered as user-visible text
+P2-V2-1: Calibration context universally null (challenge_calibration_context_json null on all reports)
+P2-V2-2: Challenge archetype shows "unknown" for all entries
+P2-V2-3: Longitudinal recurring weakness/strength labeled as "recurring" with count=1 (misleading)
+P3-V2-1: No tooltip on disabled premium tab explaining unavailability
+Scripts: /tmp/playwright-test-relay-feedbackv2-audit-20260401.js
+
 ## Full Post-RAI Browser Regression (2026-03-31 — PASSED)
 Run: 57 checks | PASS: 53 | FAIL: 0 (1 was timing artifact) | WARN: 3
 E2E invoke flow confirmed: confirm dialog → cancel → confirm → invoke → invalid_response state → retry
@@ -137,25 +163,9 @@ Screenshots: /tmp/relay-screenshots/rai-final-*.png
 Checks: 29 | PASS: 15 | FAIL: 3 | WARN: 11 | Confidence: MEDIUM
 
 ### F-RAI-01 — P1: Challenge detail crashes (weight_class_id=null → charAt TypeError)
-- All active challenges have weight_class_id=null
-- formatWeightClass(null) crashes the page → "Something went wrong"
-- Fix: null guard in formatWeightClass()
-
 ### F-RAI-02 — P1: Workspace API missing remote_invocation_supported in select
-- /api/challenges/[id]/workspace does NOT select remote_invocation_supported
-- Always defaults to false → all challenges would show "Connector Required"
-- Fix: add remote_invocation_supported to select query
-
 ### F-RAI-03 — P2: Sandbox challenges 404 on public API
-- /api/challenges/sandbox-id → 404 even though active in DB
-
 ### F-RAI-04 — P2: RAI settings section not discoverable without endpoint configured
-
-### CONFIRMED CLEAN:
-- No manual text submission textarea anywhere (old path fully removed)
-- No /settings/tokens broken links in RAI pages
-- Docs/remote-invocation loads correctly
-- Workspace terminal states (expired/submitted) render correctly
 
 Report: /tmp/relay-automation-report-20260330-rai.md
 Script: /tmp/playwright-test-relay-regression-rai-20260330.js
@@ -167,3 +177,108 @@ Script: /tmp/playwright-test-relay-regression-rai-20260330.js
 - Sub-ratings column present ✅
 - Agent radar chart present ✅
 - API smoke ✅
+
+---
+
+## V2 + Calibration Final Live Verification (2026-04-02)
+Date: 2026-04-02
+Method: DB direct inspection + API response analysis + calibration browser run (30 checks, 25 pass)
+Verdict: **FEEDBACK V2 — READY WITH P1 FOLLOW-UPS | CALIBRATION — READY WITH P2 FOLLOW-UPS**
+
+### Feedback V2 — What Changed Since Last Audit
+ALL three P0s from 2026-04-01 are FIXED:
+- V2 pipeline is now wired in both /api/feedback/[submissionId] and /api/feedback/entry/[entryId]
+- loadFeedbackReportV2 now queries all 7 V2 child tables
+- DB confirms: 4 reports with pipeline_version='v2', status='ready'
+- DB confirms: submission_counterfactual_analysis (4 rows), submission_causal_chains (4 rows)
+- Suppression working: judge_disagreement=0, change_deltas=0, win_conditions=0, preservation=0 — all 4 blocks cleanly absent
+
+### Remaining Feedback V2 Issues
+
+P1-V2-NEW-1: Raw snake_case codes in CausalChain secondary_symptoms
+- DB: secondary_symptoms = ['premature_convergence', 'hidden_constraint_miss']
+- UI: CausalChainBlock renders these as-is via .join(', ')
+- User sees: "Note: premature_convergence, hidden_constraint_miss were consequences, not root causes."
+- Fix: humanize secondary_symptoms array in CausalChainBlock using DRIVER_LABELS map
+
+P1-V2-NEW-2: Raw snake_case in CausalChain root_failure_mode
+- DB: root_failure_mode = 'validation_omission'
+- UI: .replace(/_/g, ' ') → 'validation omission' but not title-cased, no friendly label
+- load-report-v2.ts does NOT humanize causal chain root_failure_mode before returning
+- User sees: 'validation omission' (lowercase, no context) instead of 'Validation Gap'
+- Fix: humanize root_failure_mode in load-report-v2.ts assembly or in the block component
+
+P1-V2-NEW-3: primary_loss_driver and secondary_loss_driver raw in DB but NOT humanized at API layer before Vercel responds
+- DB: primary_loss_driver = 'validation_omission', secondary_loss_driver = 'premature_convergence'
+- load-report-v2.ts applies humanizeDriver() ✅ — this IS correct in code
+- Confirmed: humanizeDriver() maps to 'Validation Gap' / 'Locked In Too Early' — CORRECT
+- STATUS: Not a bug — humanization happens in loadFeedbackReportV2 before API response
+
+P2-V2-PERSIST: calibration_context null for all 4 existing reports
+- All reports have challenge_calibration_context_json = null
+- Block cleanly suppressed in UI — no user-facing gap
+- New reports going forward will populate this when calibration dossiers have difficulty profiles
+- STATUS: Known data gap, not a code bug. New reports will fix naturally.
+
+P2-V2-PERSIST-2: generated_by_model and generation_ms in DB but NOT in REPORT_PUBLIC_COLUMNS whitelist
+- These fields exist in DB rows
+- REPORT_PUBLIC_COLUMNS explicitly excludes them — confirmed
+- API response does NOT include them
+- STATUS: PASS — field whitelist is working correctly
+
+### Calibration — What Changed Since Last Audit
+P1-CAL-1 (dossier JSONB wiped on approve/adjust/quarantine) — FIXED in code
+- approve: fetches existing dossier, spreads it, appends review_action ✅
+- adjust: same pattern ✅
+- quarantine: same pattern ✅
+- CAVEAT: 3 previously-actioned dossiers (2 approved, 1 quarantined) still have empty dossier {}
+  These were actioned BEFORE the fix was deployed. Historical data only — no new wipes.
+
+P1-CAL-2 (stale calibration_recommendation after approve) — VERIFIED FIXED
+- approve action keeps original recommendation label, only changes reviewer_status to 'approved'
+- calibration_status set to 'passed'
+- No contradictory badge state
+
+### Remaining Calibration Issues
+
+P2-CAL-PERSIST-1: 3 historical approved/quarantined dossiers have empty dossier {}
+- challenge IDs: 0029c039 (quarantined), 2f33fe15 (approved), 7274d2fc (approved)
+- dossier.decision = null, dossier.keys = 0
+- UI gracefully renders these (no crash confirmed) — check passed
+- Fix: one-time backfill OR re-run analysis for these 3 challenges
+
+P2-CAL-PERSIST-2: 10 non-sandbox challenges have no dossier at all
+- Breakdown: 3 complete, 3 reserve, 3 upcoming, 1 active
+- Some are [Sandbox] prefix titles (mislabeled) — may be intentional
+- Others (Fix the Async Queue, Flatten Nested Comments, Debug LRU Cache, Optimize This Query, Test Suite: Find the Bugs) are real challenges without analysis
+- Fix: run backfill for these 5+ real challenges before launch
+
+P3-CAL-1: "Predicted Solve Rate" label visible in queue cards but NOT in expanded dossier detail view
+- Browser confirmed: label present at queue level ✅
+- Expanded dossier view: 'Predicted' label not found
+- May be rendering the dossier.ai_analysis.predicted_solve_rate_band without the "Predicted" prefix in detail view
+- Fix: ensure expanded detail consistently labels all estimated metrics as predicted/AI-estimated
+
+### Calibration — B1 promptLength Bug
+- auto-trigger route: builds dossier with promptLength = challenge.prompt.length ✅
+- No false-fire quarantine visible in DB (0 auto-quarantine flags on current dossiers)
+- Status: VERIFIED FIXED — no false-fires in production data
+
+### Regressions (Section C)
+All clean:
+- /replays: loads ✅
+- /results: loads ✅
+- /admin: accessible ✅
+- /qa-login: returns 404 ✅ (F1 from last month RESOLVED — regression cleared)
+- /challenges: loads ✅
+
+### Summary Scores
+Feedback V2:  7/10 → was 2/10 (P0s cleared, 2 P1 snake_case issues remain)
+Calibration:  7/10 → was 6/10 (dossier wipe fixed, data gaps remain)
+
+### Next Actions for Forge
+1. [P1] CausalChainBlock: humanize secondary_symptoms array before rendering
+2. [P1] CausalChainBlock or load-report-v2: humanize root_failure_mode to friendly label
+3. [P2] Backfill calibration analysis for 5 real challenges missing dossiers
+4. [P2] Restore dossier content for 3 historically-wiped approved/quarantined challenges
+5. [P3] Expand dossier detail view to show "Predicted" prefix on AI-estimated metrics

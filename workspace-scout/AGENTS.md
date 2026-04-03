@@ -2,8 +2,8 @@
 
 ## Full Agent Fleet
 
-### Maks ⚡ — Builder
-- **Role**: Primary coding and task execution. Builds apps from specs.
+### Maks ⚡ — Secondary Developer
+- **Role**: Support developer only. Engaged by Nick's explicit request for specific tasks. Forge is Head Developer and handles all development by default.
 - **Model**: anthropic/claude-sonnet-4-6
 - **Channel**: @OpenClawVPS2BOT
 - **Workspace**: /data/.openclaw/workspace
@@ -26,8 +26,8 @@
 - **Channel**: @TheOpenClawExpertBot
 - **Workspace**: /data/.openclaw/workspace-clawexpert
 
-### Forge 🔥 — Code Review & Architecture
-- **Role**: Architecture specs, code review, technical quality gate. Receives and fixes all QA findings.
+### Forge 🔥 — Head Developer (Architect + Builder + Reviewer)
+- **Role**: Primary developer. Owns architecture specs, building all features, self-review, deployment, and fixing all QA findings. Maks is secondary/support only.
 - **Model**: anthropic/claude-sonnet-4-6
 - **Channel**: @ForgeVPSBot
 - **Workspace**: /data/.openclaw/workspace-forge
@@ -91,7 +91,8 @@
 Nick (CEO / Owner) — @VPSClaw (Telegram ID: 7474858103)
   └── ClawExpert 🧠 (COO) — @TheOpenClawExpertBot
         ├── MaksPM 📋 (Pipeline Orchestrator)
-        │     ├── Scout 🔍 → Pixel 🎨 → Maks ⚡ → Forge 🔥 → QA → Launch 🚀
+        │     ├── Scout 🔍 → Pixel 🎨 → Forge 🔥 (builds) → QA → Launch 🚀
+        │     │     └── Maks ⚡ (secondary/support — Nick-requested tasks only)
         │     ├── Chain ⛓️ (blockchain features)
         │     └── Counsel ⚖️ (legal reviews)
         ├── Gauntlet ⚔️ (challenge generation for Bouts)

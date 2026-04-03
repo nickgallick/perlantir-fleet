@@ -1,7 +1,196 @@
 {
+  "plugins": {
+    "allow": [
+      "whatsapp",
+      "discord",
+      "telegram",
+      "slack",
+      "nostr",
+      "googlechat",
+      "llm-task"
+    ],
+    "entries": {
+      "telegram": {
+        "enabled": true
+      }
+    },
+    "installs": {
+      "oxylabs-ai-studio-openclaw": {
+        "source": "npm",
+        "spec": "oxylabs-ai-studio-openclaw",
+        "installPath": "/data/.openclaw/extensions/oxylabs-ai-studio-openclaw",
+        "version": "1.0.2",
+        "resolvedName": "oxylabs-ai-studio-openclaw",
+        "resolvedVersion": "1.0.2",
+        "resolvedSpec": "oxylabs-ai-studio-openclaw@1.0.2",
+        "integrity": "sha512-MFM35WGe5n2ZVPn5AWNAB6h3jWuoAoqFRALbBvwdUkCZr36Gzm9aEO+Co/x+dkrtCr3nn90CUtuIV7J3mht4tg==",
+        "shasum": "f54b60ab393b87069d094f8519de3c4b58f2829c",
+        "resolvedAt": "2026-03-27T01:41:37.748Z",
+        "installedAt": "2026-03-27T01:42:27.910Z"
+      }
+    }
+  },
+  "tools": {
+    "web": {
+      "search": {
+        "enabled": true,
+        "provider": "brave"
+      },
+      "fetch": {
+        "enabled": true
+      }
+    },
+    "profile": "coding",
+    "sessions": {
+      "visibility": "all"
+    },
+    "agentToAgent": {
+      "enabled": true
+    }
+  },
+  "channels": {
+    "telegram": {
+      "dmPolicy": "allowlist",
+      "groupPolicy": "disabled",
+      "streaming": "partial",
+      "botToken": "8446459267:AAHcyZMhGGUZ1F7PykARbXK58JGGl0N5Ih4",
+      "enabled": true,
+      "allowFrom": [
+        "7474858103"
+      ],
+      "accounts": {
+        "default": {
+          "dmPolicy": "allowlist",
+          "botToken": "8446459267:AAHcyZMhGGUZ1F7PykARbXK58JGGl0N5Ih4",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
+        },
+        "pm": {
+          "dmPolicy": "allowlist",
+          "botToken": "8608454670:AAGBE4QWHPY-w7I1i6S6pSwz8T3xAS6LGTQ",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
+        },
+        "scout": {
+          "dmPolicy": "allowlist",
+          "botToken": "8604845082:AAHn9acacFqzqZ2y2N18qb7SNNY0aYe0-K0",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
+        },
+        "clawexpert": {
+          "dmPolicy": "allowlist",
+          "botToken": "8345790323:AAFJ-bbjLNpz7gTTSHD5a8IocPfdy6vABDA",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
+        },
+        "launch": {
+          "dmPolicy": "allowlist",
+          "botToken": "8769637136:AAGDbfBe9rxXw_DxPnBiZfE4zPhO8rrqeBU",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
+        },
+        "forge": {
+          "dmPolicy": "allowlist",
+          "botToken": "8705994304:AAHF3akB-Htw4OoT7693zukPl4XPCc0iuQE",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
+        },
+        "pixel": {
+          "dmPolicy": "allowlist",
+          "botToken": "8775069765:AAF6T6y-ekGAPYFxlu5XQj3Tu5aLOtn81b0",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
+        },
+        "chain": {
+          "dmPolicy": "allowlist",
+          "botToken": "8624458366:AAE0AK0p1c6KUTJnjw7TU52BpnYzAXLfMl0",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
+        },
+        "counsel": {
+          "dmPolicy": "allowlist",
+          "botToken": "8611581579:AAG9xCSet-cevK0-QXTkJU_co6l5k5G6xso",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
+        },
+        "gauntlet": {
+          "dmPolicy": "allowlist",
+          "botToken": "8781410149:AAG6DxiaNg8xgxUx5cSdAG4R-Dac-0b19Ck",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
+        },
+        "sentinel": {
+          "dmPolicy": "allowlist",
+          "botToken": "8616138074:AAFS1u0-iqE036zjlcE7R7u4zBRXJBVz95M",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
+        },
+        "polish": {
+          "dmPolicy": "allowlist",
+          "botToken": "8648758163:AAHTBpEzq46Qm-UzLVlcFY6cMhAsM4sMRmE",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
+        },
+        "aegis": {
+          "dmPolicy": "allowlist",
+          "botToken": "8728583518:AAGvSvJ87PmnG5Jc5J_EiLyU8fYjryuOTHo",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
+        },
+        "relay": {
+          "dmPolicy": "allowlist",
+          "botToken": "8706368839:AAFRo61w3UQ2pR9c0s1MtZ_sUDvF7tU_be4",
+          "allowFrom": [
+            "7474858103"
+          ],
+          "groupPolicy": "disabled",
+          "streaming": "partial"
+        }
+      }
+    }
+  },
   "meta": {
     "lastTouchedVersion": "2026.3.24",
-    "lastTouchedAt": "2026-03-31T16:09:05.442Z"
+    "lastTouchedAt": "2026-04-02T19:18:08.421Z"
   },
   "env": {
     "VERCEL_TOKEN": "vcp_7GiwykvvHW98J25mWLz1P39n24v61d4YjzgfdWM84d9f8IfAsj3kBNub",
@@ -286,24 +475,6 @@
       }
     ]
   },
-  "tools": {
-    "profile": "coding",
-    "web": {
-      "search": {
-        "enabled": true,
-        "provider": "brave"
-      },
-      "fetch": {
-        "enabled": true
-      }
-    },
-    "sessions": {
-      "visibility": "all"
-    },
-    "agentToAgent": {
-      "enabled": true
-    }
-  },
   "bindings": [
     {
       "agentId": "main",
@@ -434,146 +605,6 @@
     "enabled": true,
     "token": "hooks_R0ddvlV8VIER6QRhJ8KujsOdZfJG7HxM"
   },
-  "channels": {
-    "telegram": {
-      "enabled": true,
-      "dmPolicy": "allowlist",
-      "botToken": "8446459267:AAHcyZMhGGUZ1F7PykARbXK58JGGl0N5Ih4",
-      "allowFrom": [
-        "7474858103"
-      ],
-      "groupPolicy": "disabled",
-      "streaming": "partial",
-      "accounts": {
-        "default": {
-          "dmPolicy": "allowlist",
-          "botToken": "8446459267:AAHcyZMhGGUZ1F7PykARbXK58JGGl0N5Ih4",
-          "allowFrom": [
-            "7474858103"
-          ],
-          "groupPolicy": "disabled",
-          "streaming": "partial"
-        },
-        "pm": {
-          "dmPolicy": "allowlist",
-          "botToken": "8608454670:AAGBE4QWHPY-w7I1i6S6pSwz8T3xAS6LGTQ",
-          "allowFrom": [
-            "7474858103"
-          ],
-          "groupPolicy": "disabled",
-          "streaming": "partial"
-        },
-        "scout": {
-          "dmPolicy": "allowlist",
-          "botToken": "8604845082:AAHn9acacFqzqZ2y2N18qb7SNNY0aYe0-K0",
-          "allowFrom": [
-            "7474858103"
-          ],
-          "groupPolicy": "disabled",
-          "streaming": "partial"
-        },
-        "clawexpert": {
-          "dmPolicy": "allowlist",
-          "botToken": "8345790323:AAFJ-bbjLNpz7gTTSHD5a8IocPfdy6vABDA",
-          "allowFrom": [
-            "7474858103"
-          ],
-          "groupPolicy": "disabled",
-          "streaming": "partial"
-        },
-        "launch": {
-          "dmPolicy": "allowlist",
-          "botToken": "8769637136:AAGDbfBe9rxXw_DxPnBiZfE4zPhO8rrqeBU",
-          "allowFrom": [
-            "7474858103"
-          ],
-          "groupPolicy": "disabled",
-          "streaming": "partial"
-        },
-        "forge": {
-          "dmPolicy": "allowlist",
-          "botToken": "8705994304:AAHF3akB-Htw4OoT7693zukPl4XPCc0iuQE",
-          "allowFrom": [
-            "7474858103"
-          ],
-          "groupPolicy": "disabled",
-          "streaming": "partial"
-        },
-        "pixel": {
-          "dmPolicy": "allowlist",
-          "botToken": "8775069765:AAF6T6y-ekGAPYFxlu5XQj3Tu5aLOtn81b0",
-          "allowFrom": [
-            "7474858103"
-          ],
-          "groupPolicy": "disabled",
-          "streaming": "partial"
-        },
-        "chain": {
-          "dmPolicy": "allowlist",
-          "botToken": "8624458366:AAE0AK0p1c6KUTJnjw7TU52BpnYzAXLfMl0",
-          "allowFrom": [
-            "7474858103"
-          ],
-          "groupPolicy": "disabled",
-          "streaming": "partial"
-        },
-        "counsel": {
-          "dmPolicy": "allowlist",
-          "botToken": "8611581579:AAG9xCSet-cevK0-QXTkJU_co6l5k5G6xso",
-          "allowFrom": [
-            "7474858103"
-          ],
-          "groupPolicy": "disabled",
-          "streaming": "partial"
-        },
-        "gauntlet": {
-          "dmPolicy": "allowlist",
-          "botToken": "8781410149:AAG6DxiaNg8xgxUx5cSdAG4R-Dac-0b19Ck",
-          "allowFrom": [
-            "7474858103"
-          ],
-          "groupPolicy": "disabled",
-          "streaming": "partial"
-        },
-        "sentinel": {
-          "dmPolicy": "allowlist",
-          "botToken": "8616138074:AAFS1u0-iqE036zjlcE7R7u4zBRXJBVz95M",
-          "allowFrom": [
-            "7474858103"
-          ],
-          "groupPolicy": "disabled",
-          "streaming": "partial"
-        },
-        "polish": {
-          "dmPolicy": "allowlist",
-          "botToken": "8648758163:AAHTBpEzq46Qm-UzLVlcFY6cMhAsM4sMRmE",
-          "allowFrom": [
-            "7474858103"
-          ],
-          "groupPolicy": "disabled",
-          "streaming": "partial"
-        },
-        "aegis": {
-          "dmPolicy": "allowlist",
-          "botToken": "8728583518:AAGvSvJ87PmnG5Jc5J_EiLyU8fYjryuOTHo",
-          "allowFrom": [
-            "7474858103"
-          ],
-          "groupPolicy": "disabled",
-          "streaming": "partial"
-        },
-        "relay": {
-          "dmPolicy": "allowlist",
-          "botToken": "8706368839:AAFRo61w3UQ2pR9c0s1MtZ_sUDvF7tU_be4",
-          "allowFrom": [
-            "7474858103"
-          ],
-          "groupPolicy": "disabled",
-          "streaming": "partial"
-        }
-      }
-    }
-  },
   "gateway": {
     "port": 18789,
     "mode": "local",
@@ -599,36 +630,5 @@
   "memory": {
     "backend": "builtin",
     "citations": "on"
-  },
-  "plugins": {
-    "allow": [
-      "whatsapp",
-      "discord",
-      "telegram",
-      "slack",
-      "nostr",
-      "googlechat",
-      "llm-task"
-    ],
-    "entries": {
-      "telegram": {
-        "enabled": true
-      }
-    },
-    "installs": {
-      "oxylabs-ai-studio-openclaw": {
-        "source": "npm",
-        "spec": "oxylabs-ai-studio-openclaw",
-        "installPath": "/data/.openclaw/extensions/oxylabs-ai-studio-openclaw",
-        "version": "1.0.2",
-        "resolvedName": "oxylabs-ai-studio-openclaw",
-        "resolvedVersion": "1.0.2",
-        "resolvedSpec": "oxylabs-ai-studio-openclaw@1.0.2",
-        "integrity": "sha512-MFM35WGe5n2ZVPn5AWNAB6h3jWuoAoqFRALbBvwdUkCZr36Gzm9aEO+Co/x+dkrtCr3nn90CUtuIV7J3mht4tg==",
-        "shasum": "f54b60ab393b87069d094f8519de3c4b58f2829c",
-        "resolvedAt": "2026-03-27T01:41:37.748Z",
-        "installedAt": "2026-03-27T01:42:27.910Z"
-      }
-    }
   }
 }

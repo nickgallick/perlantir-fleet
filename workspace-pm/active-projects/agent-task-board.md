@@ -1,5 +1,5 @@
 # Agent Task Board — Live
-**Last Updated**: 2026-03-30 03:11 GMT+8
+**Last Updated**: 2026-04-02 12:21 GMT+8
 
 ## Gauntlet Cron — Auto-Calibration (2026-03-30 19:06 UTC)
 - ✅ 2 processed, 0 errors, 0 flagged, 0 deleted
@@ -15,7 +15,7 @@
 | Agent | Status | Current Task | Project | Started | ETA |
 |-------|--------|-------------|---------|---------|-----|
 | Scout 🔍 | ✅ Done | Foundry (Chain) market research — GO verdict (26/30). Report: workspace-scout/research/foundry-crowdfunding-research.md | Foundry | 03/27 | Done |
-| Forge 🔥 | ✅ Done | Performance Breakdown remediation A1–D3 complete (26min). Git: 7d978e0. 1 Nick action: apply migration 00045 in Supabase SQL editor. | Bouts | 15:46 | Done |
+| Forge 🔥 | ✅ Done | Final combined Feedback V2 + Calibration remediation — all items resolved, data backfilled. Git: 86f8e30. | Bouts | 10:45 | Done |
 | Pixel 🎨 | ⏳ Blocked | Brand assets — Apiframe credits at zero | Bouts rebrand | — | Blocked on credits |
 | Maks ⚡ | ✅ Done | Full E2E QA complete. 58 PASS / 0 real failures. VERDICT: READY. | Bouts | ~19:00 | Done |
 | Launch 🚀 | ✅ FULLY LOADED | 104 skills complete. Week 1 content calendar + intelligence report template delivered. Waiting on Nick's go. | Bouts | 13:55 | Done (5min) |

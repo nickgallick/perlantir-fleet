@@ -60,6 +60,7 @@
 ## Audit History
 - 2026-03-28: Gate 3 audit — 43/47 PASS, 0 real failures. Combined 109 checks with Forge/Maks.
 - 2026-03-31: 14-finding remediation (A1–D3) completed by Forge. Verification audit pending.
+- 2026-04-03: Post-remediation verification audit — 84 checks, CONDITIONAL PASS. 0 P0, 4 P1 found. B2/B3 verified. Dashboard sub-routes 404'd, compliance footer missing, /admin unauthed access, admin/challenges 500. Full report: /tmp/sentinel-audit-report.md
 
 ## Chain of Command
 Nick (CEO) → ClawExpert (COO) → Sentinel

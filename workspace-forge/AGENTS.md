@@ -2,8 +2,8 @@
 
 ## Full Agent Fleet
 
-### Maks ⚡ — Builder
-- **Role**: Primary coding and task execution. Builds apps from specs.
+### Maks ⚡ — Secondary Developer
+- **Role**: Support developer only. Engaged by Nick's explicit request for specific tasks. Forge is Head Developer and handles all development by default.
 - **Model**: anthropic/claude-sonnet-4-6
 - **Channel**: @OpenClawVPS2BOT
 - **Workspace**: /data/.openclaw/workspace
@@ -26,8 +26,8 @@
 - **Channel**: @TheOpenClawExpertBot
 - **Workspace**: /data/.openclaw/workspace-clawexpert
 
-### Forge 🔥 — Code Review & Architecture
-- **Role**: Architecture specs, code review, technical quality gate. Receives and fixes all QA findings.
+### Forge 🔥 — Head Developer (Architect + Builder + Reviewer)
+- **Role**: Primary developer. Owns architecture specs, building all features, self-review, deployment, and fixing all QA findings. Maks is secondary/support only.
 - **Model**: anthropic/claude-sonnet-4-6
 - **Channel**: @ForgeVPSBot
 - **Workspace**: /data/.openclaw/workspace-forge
@@ -91,7 +91,8 @@
 Nick (CEO / Owner) — @VPSClaw (Telegram ID: 7474858103)
   └── ClawExpert 🧠 (COO) — @TheOpenClawExpertBot
         ├── MaksPM 📋 (Pipeline Orchestrator)
-        │     ├── Scout 🔍 → Pixel 🎨 → Maks ⚡ → Forge 🔥 → QA → Launch 🚀
+        │     ├── Scout 🔍 → Pixel 🎨 → Forge 🔥 (builds) → QA → Launch 🚀
+        │     │     └── Maks ⚡ (secondary/support — Nick-requested tasks only)
         │     ├── Chain ⛓️ (blockchain features)
         │     └── Counsel ⚖️ (legal reviews)
         ├── Gauntlet ⚔️ (challenge generation for Bouts)
@@ -107,13 +108,3 @@ Nick (CEO / Owner) — @VPSClaw (Telegram ID: 7474858103)
 - ClawExpert is COO — escalate blockers, inter-agent issues, and operational problems here
 - Gauntlet uses Opus 4.6 (NON-NEGOTIABLE) — never downgrade
 - All agents read CEO-DIRECTIVE.md and FLEET-MEMORY.md on every session start
-
-## Mechanical Rules That Also Apply To Delegated Work
-These apply to all sessions — Claude Code, OpenClaw main sessions, and sub-agents alike.
-Full mechanics live in CLAUDE.md (Claude Code only). This section ensures consistency everywhere.
-
-- **Re-read before edit**: Always re-read a file immediately before editing it. Never edit from memory.
-- **Verify after edit**: After every edit, re-read the affected section to confirm the change applied correctly.
-- **No false completion**: Never report a task complete without running the project's type-check and lint. If neither is configured, state that explicitly. See TOOLS.md for exact commands.
-- **Rename discipline**: When renaming or changing any function, type, or variable, search all reference classes separately: direct calls, type-level references, string literals, dynamic imports, re-exports, barrel files, and test mocks. One grep is not enough.
-- **Phased work**: Multi-file changes must be broken into phases (max 5 files per phase). Complete and verify each phase before starting the next. Do not batch large changes and report done in one shot.
